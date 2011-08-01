@@ -21,10 +21,9 @@
 
   <!-- ================================================================================ -->
   <target name="osx" >
-    <property name = "platform"           value    = "win64"                    />  
+    <property name = "platform"           value    = "osx"                      />  
     <property name = "lib.platform.dir"   location = "${lib.dir}/${platform}"   />
     <property name = "dist.platform.dir"  location = "${dist.dir}/${platform}"  />
-    
 
     <antcall target="compile"/>
   </target>
@@ -64,7 +63,6 @@
     <mkdir     dir         = "${dist.dir}" />
     <mkdir     dir         = "${dist.platform.dir}" />
     <mkdir     dir         = "${dist.platform.dir}/libs" />
-    <mkdir     dir         = "${dist.platform.dir}/projects" />
     
     <jar       jarfile     = "${jarfile}"
                basedir     = "${build.dir}"
@@ -72,9 +70,11 @@
 
     <copy      file        = "${jarfile}" 
                todir       = "${dist.platform.dir}" />
+    
     <copy      todir       = "${dist.platform.dir}/libs"  includeEmptyDirs = "false" >
       <fileset dir         = "${lib.platform.dir}" >
         <include name="*.jar" />
+        <include name="*.jnilib" />
       </fileset>
       <fileset dir              = "${lib.dir}" >
         <include name="*.jar" />
@@ -84,24 +84,17 @@
         <exclude name="linux/*" />
       </fileset>
     </copy>
+    
     <copy      todir            = "${dist.platform.dir}"
                includeEmptyDirs = "false" >
       <fileset dir              = "${lib.platform.dir}" >
         <include name="*.dll" />
       </fileset>
     </copy>
-    <copy      file             = "setup.txt"
-               todir            = "${dist.platform.dir}" />
-    <copy      todir            = "${dist.platform.dir}/projects"
-               includeEmptyDirs = "false" >
-      <fileset dir              = "projects" >
-        <include name="**/*" />
-      </fileset>
-    </copy>
     
     <delete file = "${jarfile}"    failonerror = "false" />
-    <delete dir  = "${build.dir}"  failonerror="false"   />
-    <delete dir  = "${jar.dir}"    failonerror="false"   />
+    <delete dir  = "${build.dir}"  failonerror = "false" />
+    <delete dir  = "${jar.dir}"    failonerror = "false" />
     
   </target>
 

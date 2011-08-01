@@ -31,7 +31,7 @@
   <target name="build_win64" depends="compile.win64,dist-win64.finish">
   </target>
   
-  <target name="build_osx" depends="compile.win32,dist-osx.finish">
+  <target name="build_osx" depends="compile.osx,dist-osx.finish">
   </target>
   
   <target name="build_all" depends="build_win32,build_win64,build_osx">

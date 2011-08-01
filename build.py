@@ -43,6 +43,13 @@ def get_java_home():
                                      , title = 'Please select your JDK (Not JRE!) installation directory:' )
   return dirname
   
+def get_abs_user_path( file_name ):
+  if sys.platform == 'win32':
+    abs_user_path = os.path.abspath( os.environ['APPDATA'] + '/' + file_name )
+    print abs_user_path
+    return abs_user_path
+  else:                       return os.path.abspath( '/' + file_name )
+  
 def main():
   print ' '
   print ' +---------------------------------------------+'
@@ -51,7 +58,7 @@ def main():
   print ' '
   
   if not os.environ.has_key('JAVA_HOME'):
-    java_home_file = os.path.abspath('res/java_home.txt')
+    java_home_file = get_abs_user_path('java_home.txt')
     java_home      = ''
     if os.path.isfile(java_home_file):
       with open(java_home_file,'r') as file:

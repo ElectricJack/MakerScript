@@ -14,6 +14,7 @@
   
   <!-- ================================================================================ -->
   <target name="launch4j" >
+    
     <launch4j>
       <config headerType  = "gui"
               outfile     = "${dist.platform.dir}/${ant.project.name}.exe"
@@ -51,6 +52,17 @@
                includeEmptyDirs = "false" >
       <fileset dir              = "${res.appfiles.dir}"  />
     </copy>
+    
+    <mkdir     dir              = "${dist.platform.dir}/projects" />
+    <copy      file             = "setup.txt"
+               todir            = "${dist.platform.dir}" />
+    <copy      todir            = "${dist.platform.dir}/projects"
+               includeEmptyDirs = "false" >
+      <fileset dir              = "projects" >
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    
     <!-- Copy java runtime files -->
     <unzip src="${res.java.dir}/java-${platform}.zip" dest="${dist.platform.dir}"/>
     

@@ -51,6 +51,16 @@
       <fileset dir    = "${res.appfiles.dir}"  />
     </copy>
     
+    <mkdir     dir              = "${dist.platform.dir}/projects" />
+    <copy      file             = "setup.txt"
+               todir            = "${dist.platform.dir}" />
+    <copy      todir            = "${dist.platform.dir}/projects"
+               includeEmptyDirs = "false" >
+      <fileset dir              = "projects" >
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    
     <!-- Copy java runtime files -->
     <unzip src="${res.java.dir}/java-${platform}.zip" dest="${dist.platform.dir}"/>
     
