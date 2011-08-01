@@ -1,0 +1,13 @@
+
+Write push/pull scripts for working with study's
+
+
+Math/GeomStudy
+  - Add quaternion class
+  - Improve, extend and test current math functionality
+
+MeshStudy
+  - Rearchitecht the mesh container system
+
+
+

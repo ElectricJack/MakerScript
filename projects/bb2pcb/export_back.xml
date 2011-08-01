@@ -1,0 +1,125 @@
+<root type="MakerScriptGeom">
+  <polys type="ArrayList">
+    <child_0 type="PolyLine">
+      <count type="int" value="38" />
+      <p_0 type="Vector2" value="[30.776104, 40.568634]" />
+      <p_1 type="Vector2" value="[40.346416, 40.568615]" />
+      <p_2 type="Vector2" value="[40.571323, 40.28659]" />
+      <p_3 type="Vector2" value="[41.29236, 39.939358]" />
+      <p_4 type="Vector2" value="[42.092644, 39.939358]" />
+      <p_5 type="Vector2" value="[42.81368, 40.28659]" />
+      <p_6 type="Vector2" value="[43.31265, 40.91228]" />
+      <p_7 type="Vector2" value="[43.49073, 41.6925]" />
+      <p_8 type="Vector2" value="[43.31265, 42.472725]" />
+      <p_9 type="Vector2" value="[42.81368, 43.098415]" />
+      <p_10 type="Vector2" value="[42.092644, 43.44565]" />
+      <p_11 type="Vector2" value="[41.29236, 43.44565]" />
+      <p_12 type="Vector2" value="[40.571323, 43.098415]" />
+      <p_13 type="Vector2" value="[40.346382, 42.816395]" />
+      <p_14 type="Vector2" value="[30.776012, 42.816395]" />
+      <p_15 type="Vector2" value="[30.551178, 43.098415]" />
+      <p_16 type="Vector2" value="[29.830145, 43.44565]" />
+      <p_17 type="Vector2" value="[29.029858, 43.44565]" />
+      <p_18 type="Vector2" value="[28.308823, 43.098415]" />
+      <p_19 type="Vector2" value="[27.809853, 42.472725]" />
+      <p_20 type="Vector2" value="[27.631771, 41.6925]" />
+      <p_21 type="Vector2" value="[27.809853, 40.91228]" />
+      <p_22 type="Vector2" value="[28.114136, 40.530636]" />
+      <p_23 type="Vector2" value="[23.620209, 11.320108]" />
+      <p_24 type="Vector2" value="[23.40382, 11.215913]" />
+      <p_25 type="Vector2" value="[22.904852, 10.590222]" />
+      <p_26 type="Vector2" value="[22.72677, 9.81]" />
+      <p_27 type="Vector2" value="[22.904852, 9.029777]" />
+      <p_28 type="Vector2" value="[23.403822, 8.404087]" />
+      <p_29 type="Vector2" value="[24.124857, 8.056855]" />
+      <p_30 type="Vector2" value="[24.925144, 8.056855]" />
+      <p_31 type="Vector2" value="[25.64618, 8.404088]" />
+      <p_32 type="Vector2" value="[26.14515, 9.029778]" />
+      <p_33 type="Vector2" value="[26.323229, 9.81]" />
+      <p_34 type="Vector2" value="[26.14515, 10.590222]" />
+      <p_35 type="Vector2" value="[25.840855, 10.971794]" />
+      <p_36 type="Vector2" value="[30.334764, 40.18237]" />
+      <p_37 type="Vector2" value="[30.551178, 40.28659]" />
+    </child_0>
+    <child_1 type="PolyLine">
+      <count type="int" value="36" />
+      <p_0 type="Vector2" value="[43.038403, 82.26089]" />
+      <p_1 type="Vector2" value="[67.324005, 82.26101]" />
+      <p_2 type="Vector2" value="[67.54883, 81.979095]" />
+      <p_3 type="Vector2" value="[68.26986, 81.63186]" />
+      <p_4 type="Vector2" value="[69.07015, 81.63187]" />
+      <p_5 type="Vector2" value="[69.791176, 81.979095]" />
+      <p_6 type="Vector2" value="[70.29015, 82.60478]" />
+      <p_7 type="Vector2" value="[70.46823, 83.385]" />
+      <p_8 type="Vector2" value="[70.29015, 84.16523]" />
+      <p_9 type="Vector2" value="[69.791176, 84.79092]" />
+      <p_10 type="Vector2" value="[69.07015, 85.138145]" />
+      <p_11 type="Vector2" value="[68.26985, 85.138145]" />
+      <p_12 type="Vector2" value="[67.54883, 84.79092]" />
+      <p_13 type="Vector2" value="[67.32437, 84.508896]" />
+      <p_14 type="Vector2" value="[43.038918, 84.508896]" />
+      <p_15 type="Vector2" value="[42.816395, 84.78783]" />
+      <p_16 type="Vector2" value="[42.816395, 111.41312]" />
+      <p_17 type="Vector2" value="[43.31265, 112.03478]" />
+      <p_18 type="Vector2" value="[43.49073, 112.815]" />
+      <p_19 type="Vector2" value="[43.31265, 113.59522]" />
+      <p_20 type="Vector2" value="[42.81368, 114.22091]" />
+      <p_21 type="Vector2" value="[42.092644, 114.56815]" />
+      <p_22 type="Vector2" value="[41.29236, 114.56815]" />
+      <p_23 type="Vector2" value="[40.571323, 114.22091]" />
+      <p_24 type="Vector2" value="[40.072353, 113.59522]" />
+      <p_25 type="Vector2" value="[39.89427, 112.815]" />
+      <p_26 type="Vector2" value="[40.072353, 112.03478]" />
+      <p_27 type="Vector2" value="[40.568535, 111.41259]" />
+      <p_28 type="Vector2" value="[40.568592, 84.78749]" />
+      <p_29 type="Vector2" value="[40.072353, 84.16523]" />
+      <p_30 type="Vector2" value="[39.89427, 83.385]" />
+      <p_31 type="Vector2" value="[40.072353, 82.60478]" />
+      <p_32 type="Vector2" value="[40.571323, 81.979095]" />
+      <p_33 type="Vector2" value="[41.29236, 81.63186]" />
+      <p_34 type="Vector2" value="[42.092644, 81.63187]" />
+      <p_35 type="Vector2" value="[42.81368, 81.979095]" />
+    </child_1>
+    <child_2 type="PolyLine">
+      <count type="int" value="36" />
+      <p_0 type="Vector2" value="[58.696205, 40.993145]" />
+      <p_1 type="Vector2" value="[45.904434, 53.785023]" />
+      <p_2 type="Vector2" value="[45.94323, 53.954998]" />
+      <p_3 type="Vector2" value="[45.76515, 54.73522]" />
+      <p_4 type="Vector2" value="[45.26618, 55.360912]" />
+      <p_5 type="Vector2" value="[44.545143, 55.708145]" />
+      <p_6 type="Vector2" value="[43.744858, 55.708145]" />
+      <p_7 type="Vector2" value="[43.023823, 55.360912]" />
+      <p_8 type="Vector2" value="[42.524853, 54.73522]" />
+      <p_9 type="Vector2" value="[42.34677, 53.954998]" />
+      <p_10 type="Vector2" value="[42.524853, 53.174778]" />
+      <p_11 type="Vector2" value="[43.023823, 52.549088]" />
+      <p_12 type="Vector2" value="[43.744858, 52.201855]" />
+      <p_13 type="Vector2" value="[44.308712, 52.20186]" />
+      <p_14 type="Vector2" value="[57.100533, 39.41004]" />
+      <p_15 type="Vector2" value="[57.06177, 39.24]" />
+      <p_16 type="Vector2" value="[57.239853, 38.459778]" />
+      <p_17 type="Vector2" value="[57.736107, 37.837322]" />
+      <p_18 type="Vector2" value="[57.736107, 18.570034]" />
+      <p_19 type="Vector2" value="[57.239853, 17.947723]" />
+      <p_20 type="Vector2" value="[57.06177, 17.1675]" />
+      <p_21 type="Vector2" value="[57.239853, 16.387278]" />
+      <p_22 type="Vector2" value="[57.738827, 15.761587]" />
+      <p_23 type="Vector2" value="[58.45986, 15.414356]" />
+      <p_24 type="Vector2" value="[59.26015, 15.414356]" />
+      <p_25 type="Vector2" value="[59.98118, 15.761587]" />
+      <p_26 type="Vector2" value="[60.480156, 16.387278]" />
+      <p_27 type="Vector2" value="[60.658234, 17.1675]" />
+      <p_28 type="Vector2" value="[60.480156, 17.947723]" />
+      <p_29 type="Vector2" value="[59.983963, 18.569921]" />
+      <p_30 type="Vector2" value="[59.983894, 37.837498]" />
+      <p_31 type="Vector2" value="[60.480156, 38.459778]" />
+      <p_32 type="Vector2" value="[60.658234, 39.24]" />
+      <p_33 type="Vector2" value="[60.480156, 40.02022]" />
+      <p_34 type="Vector2" value="[59.98118, 40.645912]" />
+      <p_35 type="Vector2" value="[59.26015, 40.993145]" />
+    </child_2>
+  </polys>
+  <targets type="ArrayList">
+  </targets>
+</root>

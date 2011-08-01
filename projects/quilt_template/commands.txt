@@ -1,0 +1,26 @@
+set stock size  263.525 253.5 2.5
+
+load "quilt_template2.dxf"
+clean
+
+select path 4
+select path 5
+  offset z -0.25
+  mill along paths
+select none
+
+export gcode "01_quilt_etching.nc"
+
+select path 3
+  flip
+  offset z -0.75
+  mill offset paths 1.45
+  offset z -0.75
+  mill offset paths 1.45
+  offset z -0.75
+  mill offset paths 1.45
+  offset z -0.75
+  mill offset paths 1.45
+select none
+
+export gcode "02_quilt_cutout.nc"

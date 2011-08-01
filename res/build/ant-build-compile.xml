@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<project name="compile" basedir="../../">
+
+  <!-- ================================================================================ -->
+  <target name="win32" >
+    <property name = "platform"           value    = "win32"                    />  
+    <property name = "lib.platform.dir"   location = "${lib.dir}/${platform}"   />
+    <property name = "dist.platform.dir"  location = "${dist.dir}/${platform}"  />
+
+    <antcall target="compile"/>
+  </target>
+  
+  <!-- ================================================================================ -->
+  <target name="win64" >
+    <property name = "platform"           value    = "win64"                    />  
+    <property name = "lib.platform.dir"   location = "${lib.dir}/${platform}"   />
+    <property name = "dist.platform.dir"  location = "${dist.dir}/${platform}"  />
+
+    <antcall target="compile"/>
+  </target>
+
+  <!-- ================================================================================ -->
+  <target name="osx" >
+    <property name = "platform"           value    = "win64"                    />  
+    <property name = "lib.platform.dir"   location = "${lib.dir}/${platform}"   />
+    <property name = "dist.platform.dir"  location = "${dist.dir}/${platform}"  />
+    
+
+    <antcall target="compile"/>
+  </target>
+  
+  
+  <!-- ================================================================================ -->
+  <target name="compile" description="Compile ${ant.project.name}" >
+    <mkdir dir               = "${build.dir}" />
+    
+    <javac srcdir            = "${src.dir}"
+           destdir           = "${build.dir}"
+           source            = "1.5"
+           target            = "1.5"
+           includeantruntime = "false" >
+      <classpath>
+
+        <fileset dir="${lib.dir}" >
+          <include name="*.jar"/>
+          <exclude name="win32/*" />
+          <exclude name="win64/*" />
+          <exclude name="osx/*" />
+          <exclude name="linux/*" />
+        </fileset>
+        <fileset dir="${lib.platform.dir}" >    
+          <include name="*.jar"/>
+        </fileset>
+
+      </classpath>           
+    </javac>
+    
+    <property  name        = "jarfile"  value = "${jar.dir}/${ant.project.name}.jar" />
+    
+    <delete    dir         = "${dist.platform.dir}"                 failonerror = "false" />
+    <delete    file        = "${dist.dir}/ms_setup_${platform}.exe" failonerror = "false" />
+               
+    <mkdir     dir         = "${jar.dir}" />
+    <mkdir     dir         = "${dist.dir}" />
+    <mkdir     dir         = "${dist.platform.dir}" />
+    <mkdir     dir         = "${dist.platform.dir}/libs" />
+    <mkdir     dir         = "${dist.platform.dir}/projects" />
+    
+    <jar       jarfile     = "${jarfile}"
+               basedir     = "${build.dir}"
+               manifest    = "${manifest.file}" />
+
+    <copy      file        = "${jarfile}" 
+               todir       = "${dist.platform.dir}" />
+    <copy      todir       = "${dist.platform.dir}/libs"  includeEmptyDirs = "false" >
+      <fileset dir         = "${lib.platform.dir}" >
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir              = "${lib.dir}" >
+        <include name="*.jar" />
+        <exclude name="win32/*" />
+        <exclude name="win64/*" />
+        <exclude name="osx/*" />
+        <exclude name="linux/*" />
+      </fileset>
+    </copy>
+    <copy      todir            = "${dist.platform.dir}"
+               includeEmptyDirs = "false" >
+      <fileset dir              = "${lib.platform.dir}" >
+        <include name="*.dll" />
+      </fileset>
+    </copy>
+    <copy      file             = "setup.txt"
+               todir            = "${dist.platform.dir}" />
+    <copy      todir            = "${dist.platform.dir}/projects"
+               includeEmptyDirs = "false" >
+      <fileset dir              = "projects" >
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    
+    <delete file = "${jarfile}"    failonerror = "false" />
+    <delete dir  = "${build.dir}"  failonerror="false"   />
+    <delete dir  = "${jar.dir}"    failonerror="false"   />
+    
+  </target>
+
+</project>

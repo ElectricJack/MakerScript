@@ -1,0 +1,1120 @@
+
+<!-- saved from url=(0184)http://webcache.googleusercontent.com/search?q=cache:i1kUR6whcQkJ:www.inf.u-szeged.hu/~boglarka/decpol.ps.gz+polygon+with+holes+to+convex&cd=1&hl=en&ct=clnk&gl=us&source=www.google.com -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--<base href="http://www.inf.u-szeged.hu/~boglarka/decpol.ps.gz">--><base href="."></head><body bgcolor="#ffffff" vlink="blue" link="blue"><div style="margin:-1px -1px 0;padding:0;border:1px solid #999;background:#fff"><div style="margin:12px;padding:8px;border:1px solid #999;background:#ddd;font:13px arial,sans-serif;color:#000;font-weight:normal;text-align:left">This is the html version of the file <a href="http://www.inf.u-szeged.hu/~boglarka/decpol.ps.gz" style="text-decoration:underline;color:#00c">http://www.inf.u-szeged.hu/~boglarka/decpol.ps.gz</a>.<br><b>Google</b> automatically generates html versions of documents as we crawl the web.</div></div><div style="position:relative">
+
+
+
+<meta name="Producer" content="GNU Ghostscript 7.07">
+<meta name="Creator" content="dvips(k) 5.92b Copyright 2002 Radical Eye Software">
+<title>Decomposition of a polygon with holes into convex polygons</title>
+
+<table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="1"><b>Page 1</b></a></font></td></tr></tbody></table><font size="4" face="Times"><span style="font-size:28px;font-family:Times">
+<div style="position:absolute;top:271;left:174"><nobr>Decomposition of a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b></nobr></div>
+<div style="position:absolute;top:308;left:311"><nobr>into <b style="color:black;background-color:#99ff99">convex</b> polygons</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:19px;font-family:Times">
+<div style="position:absolute;top:304;left:630"><nobr>∗</nobr></div>
+<div style="position:absolute;top:369;left:163"><nobr>José Fernández<font style="font-size:12px">†</font>, Boglárka Tóth<font style="font-size:12px">‡</font>, Lázaro Cánovas and Blas Pelegr´ın</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:14px;font-family:Times">
+<div style="position:absolute;top:399;left:202"><nobr>Dpto. Estadıstica e Investigación Operativa, Universidad de Murcia, Spain</nobr></div>
+<div style="position:absolute;top:439;left:434"><nobr>Abstract</nobr></div>
+<div style="position:absolute;top:466;left:213"><nobr>Decomposing a <b style="color:black;background-color:#ffff66">polygon</b> (with <b style="color:black;background-color:#a0ffff">holes</b>) into <b style="color:black;background-color:#99ff99">convex</b> polygons has many and</nobr></div>
+<div style="position:absolute;top:486;left:189"><nobr>diverse applications. In particular, it is of special interest in facility location,</nobr></div>
+<div style="position:absolute;top:506;left:189"><nobr>since it allows to define the feasible set of a given problem through a set of</nobr></div>
+<div style="position:absolute;top:527;left:189"><nobr>analytical constraints. In this paper we present a method for decomposing a</nobr></div>
+<div style="position:absolute;top:547;left:189"><nobr><b style="color:black;background-color:#ffff66">polygon</b> with polygonal <b style="color:black;background-color:#a0ffff">holes</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons without adding new vertices.</nobr></div>
+<div style="position:absolute;top:567;left:189"><nobr>The partitions produced by the method may not have minimal cardinality, but</nobr></div>
+<div style="position:absolute;top:588;left:189"><nobr>its easy implementation and quick running times even for polygons with many</nobr></div>
+<div style="position:absolute;top:608;left:189"><nobr>vertices make the method very suitable to be used when optimal decompositions</nobr></div>
+<div style="position:absolute;top:628;left:189"><nobr>are not required, as for instance in location problems. Furthermore, an existing</nobr></div>
+<div style="position:absolute;top:649;left:189"><nobr>procedure for removing unnecessary edges of partitions of polygons without</nobr></div>
+<div style="position:absolute;top:669;left:189"><nobr><b style="color:black;background-color:#a0ffff">holes</b> has been adapted to handle the case with <b style="color:black;background-color:#a0ffff">holes</b>.</nobr></div>
+<div style="position:absolute;top:707;left:189"><nobr>Keywords: Location, <b style="color:black;background-color:#99ff99">Convex</b> <b style="color:black;background-color:#ffff66">polygon</b> decomposition, <b style="color:black;background-color:#a0ffff">Holes</b>.</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:758;left:145"><nobr>1 Introduction</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:804;left:145"><nobr>A <b style="color:black;background-color:#99ff99">convex</b> decomposition of a <b style="color:black;background-color:#ffff66">polygon</b> P is a set of <b style="color:black;background-color:#99ff99">convex</b> polygons whose union gives</nobr></div>
+<div style="position:absolute;top:826;left:145"><nobr>P, and such that the intersection of any two of them, if non-empty, consists totally</nobr></div>
+<div style="position:absolute;top:847;left:145"><nobr>of edges and vertices. The problem of decomposing a <b style="color:black;background-color:#ffff66">polygon</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons</nobr></div>
+<div style="position:absolute;top:869;left:145"><nobr>appears for instance in object representation, pattern recognition [4], database systems</nobr></div>
+<div style="position:absolute;top:890;left:145"><nobr>[17] and graphics [20]. Other applications can be found in [4, 23] and references</nobr></div>
+<div style="position:absolute;top:912;left:145"><nobr>therein. For different but related <b style="color:black;background-color:#ffff66">polygon</b> decomposition problems see [13, 21, 22].</nobr></div>
+<div style="position:absolute;top:934;left:171"><nobr>The problem that led us to consider it was the definition of the feasible set in</nobr></div>
+<div style="position:absolute;top:955;left:145"><nobr>constrained planar location problems. Location science deals with the location of one</nobr></div>
+<div style="position:absolute;top:977;left:145"><nobr>or more facilities in a way that optimizes a certain objective such as minimizing trans-</nobr></div>
+<div style="position:absolute;top:999;left:145"><nobr>portation costs, minimizing the undesirable effects produced by the facility, capturing</nobr></div>
+<div style="position:absolute;top:1020;left:145"><nobr>the largest market share, etc. For more details related with locational aspects, the</nobr></div>
+<div style="position:absolute;top:1042;left:145"><nobr>interested reader is referred to [2, 3, 18]. Whatever the location problem considered,</nobr></div>
+<div style="position:absolute;top:1064;left:145"><nobr>it is required that the point(s) to be located belongs to a particular geographical</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:1097;left:165"><nobr>∗<font style="font-size:12px">Part of the results in this paper are from [5], and were presented in [6].</font></nobr></div>
+<div style="position:absolute;top:1115;left:166"><nobr>†<font style="font-size:12px">Correspondence to: Dr. José Fernández Hernández, Facultad de Matemáticas, Universidad de</font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:1135;left:145"><nobr>Murcia, 30100 Espinardo, Murcia, Spain. E-mail: josefdez@um.es</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:8px;font-family:Times">
+<div style="position:absolute;top:1151;left:166"><nobr>‡<font style="font-size:12px">On leave from the Research Group on Artificial Intelligence of the Hungarian Academy of Sciences</font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:12px;font-family:Times">
+<div style="position:absolute;top:1171;left:145"><nobr>and the University of Szeged, H-6720 Szeged, Aradi vértanúk tere 1., Hungary.</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:1213;left:466"><nobr>1</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:1363;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="2"><b>Page 2</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:1342;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:1396;left:145"><nobr>area. That area may have a more or less complicated shape, but it can always be</nobr></div>
+<div style="position:absolute;top:1418;left:145"><nobr>approximated by a <b style="color:black;background-color:#ffff66">polygon</b>, maybe with polygonal <b style="color:black;background-color:#a0ffff">holes</b> (representing areas inside</nobr></div>
+<div style="position:absolute;top:1440;left:145"><nobr>the <b style="color:black;background-color:#ffff66">polygon</b> where the location is not possible), whose number of vertices will depend</nobr></div>
+<div style="position:absolute;top:1461;left:145"><nobr>on the desired accuracy of the approximation. Unfortunately, those polygons, usually</nobr></div>
+<div style="position:absolute;top:1483;left:145"><nobr>nonconvex, cannot be written in an analytical way through a set of linear constraints.</nobr></div>
+<div style="position:absolute;top:1505;left:145"><nobr>So, in order to get an analytical expression of the feasible set the <b style="color:black;background-color:#ffff66">polygon</b> must be</nobr></div>
+<div style="position:absolute;top:1526;left:145"><nobr>decomposed into simpler sets. The location problem will be then solved in some (usu-</nobr></div>
+<div style="position:absolute;top:1548;left:145"><nobr>ally not all) of those sets. The most appropriate kind of sets into which decompose</nobr></div>
+<div style="position:absolute;top:1570;left:145"><nobr>the <b style="color:black;background-color:#ffff66">polygon</b> is into <b style="color:black;background-color:#99ff99">convex</b> polygons, for both their easy analytical writing and good</nobr></div>
+<div style="position:absolute;top:1591;left:145"><nobr>optimization properties.</nobr></div>
+<div style="position:absolute;top:1613;left:171"><nobr>When decomposing a <b style="color:black;background-color:#ffff66">polygon</b> P into <b style="color:black;background-color:#99ff99">convex</b> polygons we may follow two different</nobr></div>
+<div style="position:absolute;top:1635;left:145"><nobr>goals: (a) partition a <b style="color:black;background-color:#ffff66">polygon</b> into as few <b style="color:black;background-color:#99ff99">convex</b> pieces as possible, or (b) as quickly</nobr></div>
+<div style="position:absolute;top:1656;left:145"><nobr>as possible. The goals conflict, so we have to choose between one of the two following</nobr></div>
+<div style="position:absolute;top:1678;left:145"><nobr>approaches: (1) compromise on the number of pieces, i.e., find a quick algorithm</nobr></div>
+<div style="position:absolute;top:1700;left:145"><nobr>whose inefficiency in terms of the number of pieces is bounded with respect to the</nobr></div>
+<div style="position:absolute;top:1721;left:145"><nobr>optimum, or (2) compromise on the time complexity, i.e., find an algorithm that</nobr></div>
+<div style="position:absolute;top:1743;left:145"><nobr>produces an optimal partition, as quickly as possible. Furthermore, three different</nobr></div>
+<div style="position:absolute;top:1765;left:145"><nobr>types of partition can be used: by diagonals (the endpoints of the edges of the partition</nobr></div>
+<div style="position:absolute;top:1786;left:145"><nobr>must be vertices), by segments (the endpoints of the edges need only lie on ∂P) or</nobr></div>
+<div style="position:absolute;top:1808;left:145"><nobr>free (the endpoints may be any point of P).</nobr></div>
+<div style="position:absolute;top:1830;left:171"><nobr>When <b style="color:black;background-color:#99ff99">convex</b> decompositions are to be applied in location problems, the best</nobr></div>
+<div style="position:absolute;top:1851;left:145"><nobr>compromise solution is to find a quick algorithm whose inefficiency in terms of the</nobr></div>
+<div style="position:absolute;top:1873;left:145"><nobr>number of pieces is bounded with respect to the optimum: many location problems</nobr></div>
+<div style="position:absolute;top:1895;left:145"><nobr>are easier to solve in <b style="color:black;background-color:#99ff99">convex</b> regions and making use of a branch-and-bound process</nobr></div>
+<div style="position:absolute;top:1916;left:145"><nobr>or other techniques, it is not necessary to find the optimal solution in all the subsets,</nobr></div>
+<div style="position:absolute;top:1938;left:145"><nobr>so finding <b style="color:black;background-color:#99ff99">convex</b> decompositions with minimal cardinality may be wasting time. On</nobr></div>
+<div style="position:absolute;top:1960;left:145"><nobr>the other hand, from the optimization point of view it is not advisable to add new</nobr></div>
+<div style="position:absolute;top:1981;left:145"><nobr>(Steiner) vertices in the partition because in many location problems vertices must</nobr></div>
+<div style="position:absolute;top:2003;left:145"><nobr>be treated with special attention since they may be local (sometimes global) optimal</nobr></div>
+<div style="position:absolute;top:2025;left:145"><nobr>points or give information about optimal points, and adding new vertices will cause</nobr></div>
+<div style="position:absolute;top:2046;left:145"><nobr>extra work in fathoming them. So, for location problems the partition by diagonals</nobr></div>
+<div style="position:absolute;top:2068;left:145"><nobr>is recommended.</nobr></div>
+<div style="position:absolute;top:2090;left:171"><nobr>Unfortunately, most of the research on <b style="color:black;background-color:#ffff66">polygon</b> decomposition is devoted to the</nobr></div>
+<div style="position:absolute;top:2111;left:145"><nobr>second compromise solution (see for instance [1, 12, 14]), and usually only the case</nobr></div>
+<div style="position:absolute;top:2133;left:145"><nobr>without <b style="color:black;background-color:#a0ffff">holes</b> is considered: the problem of decomposing a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b> into</nobr></div>
+<div style="position:absolute;top:2155;left:145"><nobr>the minimum number of <b style="color:black;background-color:#99ff99">convex</b> pieces is known to be NP-hard (see [12, 16]), so for</nobr></div>
+<div style="position:absolute;top:2176;left:145"><nobr>the researchers that problem does not hold out the attraction of finding polynomial</nobr></div>
+<div style="position:absolute;top:2198;left:145"><nobr>algorithms obtaining optimal decomposition with time complexity as small as possible.</nobr></div>
+<div style="position:absolute;top:2220;left:171"><nobr>For the case without <b style="color:black;background-color:#a0ffff">holes</b>, Hertel and Mehlhorn [11] presented an algorithm suit-</nobr></div>
+<div style="position:absolute;top:2241;left:145"><nobr>able for being applied to location problems. The idea of that algorithm is basically</nobr></div>
+<div style="position:absolute;top:2263;left:145"><nobr>this: triangulate the <b style="color:black;background-color:#ffff66">polygon</b> to be decomposed and then remove inessential diago-</nobr></div>
+<div style="position:absolute;top:2285;left:145"><nobr>nals. Their technique obtains <b style="color:black;background-color:#99ff99">convex</b> decompositions by diagonals and its inefficiency</nobr></div>
+<div style="position:absolute;top:2306;left:145"><nobr>in terms of the number of pieces is bounded with respect to the optimum. Recently,</nobr></div>
+<div style="position:absolute;top:2328;left:145"><nobr>Fernández, Cánovas and Pelegrın [7] presented new algorithms with the same aim</nobr></div>
+<div style="position:absolute;top:2350;left:145"><nobr>which proved to be better than Hertel and Mehlhorn’s, for both the cardinality of the</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:2551;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="3"><b>Page 3</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:2530;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:2584;left:145"><nobr>partitions they produce and the running times they use. An actual implementation</nobr></div>
+<div style="position:absolute;top:2606;left:145"><nobr>of those algorithms can be found in [8].</nobr></div>
+<div style="position:absolute;top:2628;left:171"><nobr>As for the case with <b style="color:black;background-color:#a0ffff">holes</b>, Narkhede and Manocha [19] implemented the algorithm</nobr></div>
+<div style="position:absolute;top:2649;left:145"><nobr>described in [24] for triangulating simple polygons having no <b style="color:black;background-color:#a0ffff">holes</b> and extended</nobr></div>
+<div style="position:absolute;top:2671;left:145"><nobr>the code to handle <b style="color:black;background-color:#a0ffff">holes</b>. Recently, Held [10] has also presented an algorithm able</nobr></div>
+<div style="position:absolute;top:2693;left:145"><nobr>to triangulate polygons with <b style="color:black;background-color:#a0ffff">holes</b>. If we apply a process for removing inessential</nobr></div>
+<div style="position:absolute;top:2714;left:145"><nobr>diagonals to the triangulations obtained by both algorithms, then we can obtain</nobr></div>
+<div style="position:absolute;top:2736;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> decompositions.</nobr></div>
+<div style="position:absolute;top:2758;left:171"><nobr>In this paper we slightly modify the algorithms in [7] so that they can also decom-</nobr></div>
+<div style="position:absolute;top:2779;left:145"><nobr>pose a special kind of non-simple polygons which we called quasi-in-simple polygons.</nobr></div>
+<div style="position:absolute;top:2801;left:145"><nobr>Then, with the help of this kind of polygons a method for decomposing polygons</nobr></div>
+<div style="position:absolute;top:2823;left:145"><nobr>with <b style="color:black;background-color:#a0ffff">holes</b> is proposed. The paper is organized as follows. In Section 2, we revise</nobr></div>
+<div style="position:absolute;top:2844;left:145"><nobr>the main features of the algorithms in [7]. In Section 3 we describe the modification</nobr></div>
+<div style="position:absolute;top:2866;left:145"><nobr>which allows the algorithms to decompose quasi-in-simple polygons and in Section 4</nobr></div>
+<div style="position:absolute;top:2888;left:145"><nobr>we present the method for decomposing <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b>.</nobr></div>
+<div style="position:absolute;top:2909;left:171"><nobr>Throughout this paper, ang(a, b, c) denotes the angle between 0 and 360 degrees</nobr></div>
+<div style="position:absolute;top:2931;left:145"><nobr>swept by a counterclockwise rotation from line segment ba to line segment bc. The</nobr></div>
+<div style="position:absolute;top:2953;left:145"><nobr>vertices of a <b style="color:black;background-color:#ffff66">polygon</b> displaying a reflex (concave) angle are called notches.</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:3007;left:145"><nobr>2 Decomposing polygons without <b style="color:black;background-color:#a0ffff">holes</b></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:3052;left:145"><nobr>Although the notion of <b style="color:black;background-color:#ffff66">polygon</b> should be clear for everybody, we next give one of</nobr></div>
+<div style="position:absolute;top:3074;left:145"><nobr>the possible definitions.</nobr></div>
+<div style="position:absolute;top:3115;left:145"><nobr>Definition 1 Let v<font style="font-size:9px">1</font>,v<font style="font-size:9px">2</font>,...,v<font style="font-size:9px">n </font>be n points in the plane (here and throughout all index</nobr></div>
+<div style="position:absolute;top:3136;left:145"><nobr>arithmetic will be mod n, implying a cyclic ordering of the points, with v<font style="font-size:9px">1 </font>following</nobr></div>
+<div style="position:absolute;top:3159;left:145"><nobr>v<font style="font-size:9px">n</font>) and let e<font style="font-size:9px">1 </font>= v<font style="font-size:9px">1</font>v<font style="font-size:9px">2</font>,e<font style="font-size:9px">2 </font>= v<font style="font-size:9px">2</font>v<font style="font-size:9px">3</font>,...,e<font style="font-size:9px">n </font>= v<font style="font-size:9px">n</font>v<font style="font-size:9px">1 </font>be the n segments connecting the points.</nobr></div>
+<div style="position:absolute;top:3180;left:145"><nobr>Suppose the following conditions hold:</nobr></div>
+<div style="position:absolute;top:3216;left:155"><nobr>p1) The intersection of each pair of segments adjacent in the cyclic ordering is the</nobr></div>
+<div style="position:absolute;top:3238;left:189"><nobr>single point shared between them: e<font style="font-size:9px">i </font>∩ e<font style="font-size:9px">i+1 </font>= v<font style="font-size:9px">i+1</font>, ∀i = 1,...,n.</nobr></div>
+<div style="position:absolute;top:3275;left:155"><nobr>p2) Nonadjacent segments do not intersect: e<font style="font-size:9px">i </font>∩ e<font style="font-size:9px">j </font>= ∅, ∀j = i + 1.</nobr></div>
+<div style="position:absolute;top:3311;left:145"><nobr>The closed finite connected region of the plane bounded by the segments e<font style="font-size:9px">1</font>,...,e<font style="font-size:9px">n </font>is</nobr></div>
+<div style="position:absolute;top:3333;left:145"><nobr>said to be the simple <b style="color:black;background-color:#ffff66">polygon</b> generated by the points v<font style="font-size:9px">1</font>,...,v<font style="font-size:9px">n</font>. The points v<font style="font-size:9px">i </font>are</nobr></div>
+<div style="position:absolute;top:3355;left:145"><nobr>called the vertices of the <b style="color:black;background-color:#ffff66">polygon</b>, and the segments e<font style="font-size:9px">i </font>are called its edges.</nobr></div>
+<div style="position:absolute;top:3396;left:171"><nobr>The boundary of a simple <b style="color:black;background-color:#ffff66">polygon</b> P, denoted by ∂P, is formed by the vertices and</nobr></div>
+<div style="position:absolute;top:3417;left:145"><nobr>edges of P; notice that ∂P ⊂ P. The term “simple” is used to distinguish this kind of</nobr></div>
+<div style="position:absolute;top:3439;left:145"><nobr>polygons from those that cross themselves, that is, from those that do not satisfy p2.</nobr></div>
+<div style="position:absolute;top:3461;left:145"><nobr>Nevertheless, throughout we will drop the modifier “simple”: unless otherwise stated,</nobr></div>
+<div style="position:absolute;top:3482;left:145"><nobr>the term <b style="color:black;background-color:#ffff66">polygon</b> will be used to refer to simple polygons. In fact, all the papers</nobr></div>
+<div style="position:absolute;top:3504;left:145"><nobr>dealing with <b style="color:black;background-color:#ffff66">polygon</b> decomposition problems only consider simple polygons; on the</nobr></div>
+<div style="position:absolute;top:3526;left:145"><nobr>other hand, some non-simple polygons can be seen as union of simple polygons, in</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:3739;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="4"><b>Page 4</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:3718;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:3772;left:145"><nobr>which the intersection points of the edges of the non-simple <b style="color:black;background-color:#ffff66">polygon</b> are vertices of</nobr></div>
+<div style="position:absolute;top:3794;left:145"><nobr>the polygons forming the union.</nobr></div>
+<div style="position:absolute;top:3816;left:171"><nobr>In [7], the authors presented different algorithms for the decomposition by diago-</nobr></div>
+<div style="position:absolute;top:3837;left:145"><nobr>nals of a simple <b style="color:black;background-color:#ffff66">polygon</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons, which proved to be very suitable for</nobr></div>
+<div style="position:absolute;top:3859;left:145"><nobr>being used when optimal decompositions are not required: they are quick and its</nobr></div>
+<div style="position:absolute;top:3881;left:145"><nobr>inefficiency in terms of the number of pieces is bounded with respect to the optimum.</nobr></div>
+<div style="position:absolute;top:3902;left:145"><nobr>Those algorithms follow a “divide and conquer” scheme. They start with the whole</nobr></div>
+<div style="position:absolute;top:3924;left:145"><nobr><b style="color:black;background-color:#ffff66">polygon</b> to be decomposed. Then, given a initial vertex, a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> of the</nobr></div>
+<div style="position:absolute;top:3946;left:145"><nobr>partition is generated using a procedure and is cut off from the initial <b style="color:black;background-color:#ffff66">polygon</b>. This</nobr></div>
+<div style="position:absolute;top:3967;left:145"><nobr>process is repeated with the remaining <b style="color:black;background-color:#ffff66">polygon</b> until it is <b style="color:black;background-color:#99ff99">convex</b>, in which case it will</nobr></div>
+<div style="position:absolute;top:3989;left:145"><nobr>be the last <b style="color:black;background-color:#ffff66">polygon</b> of the partition. Next, we briefly describe them.</nobr></div>
+<div style="position:absolute;top:4011;left:171"><nobr>Three similar procedures are described in [7] to generate <b style="color:black;background-color:#99ff99">convex</b> polygons. The</nobr></div>
+<div style="position:absolute;top:4032;left:145"><nobr>first one, called MP1, works as follows. The vertices of the next future <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:4054;left:145"><nobr>of the partition are stored in a list, L. Initially, L consists of one vertex, say v<font style="font-size:9px">1</font>. Then,</nobr></div>
+<div style="position:absolute;top:4076;left:145"><nobr>we add the next consecutive vertex (in clockwise order) of P, v<font style="font-size:9px">2</font>, to L. If the last</nobr></div>
+<div style="position:absolute;top:4097;left:145"><nobr>vertex we have already added to L is v<font style="font-size:9px">i </font>then we provisionally add v<font style="font-size:9px">i+1 </font>to L if the</nobr></div>
+<div style="position:absolute;top:4119;left:145"><nobr>angles ang(v<font style="font-size:9px">i−1</font>,v<font style="font-size:9px">i</font>,v<font style="font-size:9px">i+1</font>), ang(v<font style="font-size:9px">i</font>,v<font style="font-size:9px">i+1</font>,v<font style="font-size:9px">1</font>) and ang(v<font style="font-size:9px">i+1</font>,v<font style="font-size:9px">1</font>,v<font style="font-size:9px">2</font>) are less than or equal to</nobr></div>
+<div style="position:absolute;top:4141;left:145"><nobr>180<font style="font-size:9px">o </font>(this is to avoid v<font style="font-size:9px">i</font>, v<font style="font-size:9px">i+1 </font>and v<font style="font-size:9px">1 </font>to become notches, respectively). We go on adding</nobr></div>
+<div style="position:absolute;top:4162;left:145"><nobr>new vertices to L until all the vertices of P are in L or until we first find a vertex</nobr></div>
+<div style="position:absolute;top:4184;left:145"><nobr>failing one of the three conditions. In the first case, the <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> generated is</nobr></div>
+<div style="position:absolute;top:4206;left:145"><nobr>the whole <b style="color:black;background-color:#ffff66">polygon</b> P, that is, it was <b style="color:black;background-color:#99ff99">convex</b>, and the algorithm stops, being P the last</nobr></div>
+<div style="position:absolute;top:4227;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> of the decomposition of the initial <b style="color:black;background-color:#ffff66">polygon</b>. Otherwise, if the final</nobr></div>
+<div style="position:absolute;top:4249;left:145"><nobr>provisional list is L = {v<font style="font-size:9px">1</font>, ..., v<font style="font-size:9px">r</font>} and r = 2, then L produces the edge v<font style="font-size:9px">1</font>v<font style="font-size:9px">2</font>, which is</nobr></div>
+<div style="position:absolute;top:4271;left:145"><nobr>not considered as <b style="color:black;background-color:#ffff66">polygon</b> of the final partition, and the procedure stops. The other</nobr></div>
+<div style="position:absolute;top:4292;left:145"><nobr>possibility is 2 &lt;r&lt;n. In this case, we have to check whether the <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:4314;left:145"><nobr>generated by the diagonal v<font style="font-size:9px">r</font>v<font style="font-size:9px">1 </font>contains vertices of P \L. To do so, it is not necessary</nobr></div>
+<div style="position:absolute;top:4336;left:145"><nobr>to check all the vertices of P \ L (see [7]). If a vertex v is found to be in the <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:4357;left:145"><nobr>generated by L, then we remove from L its last vertex v<font style="font-size:9px">r</font>, and all the vertices of L</nobr></div>
+<div style="position:absolute;top:4379;left:145"><nobr>in the semiplane generated by v<font style="font-size:9px">1</font>v containing v<font style="font-size:9px">r</font>. This process is repeated with the</nobr></div>
+<div style="position:absolute;top:4401;left:145"><nobr>new L until no vertex is inside the <b style="color:black;background-color:#ffff66">polygon</b> generated by L. If L has then more than</nobr></div>
+<div style="position:absolute;top:4422;left:145"><nobr>two vertices, it generates one of the polygons of the partition, else the procedure does</nobr></div>
+<div style="position:absolute;top:4444;left:145"><nobr>not generate a <b style="color:black;background-color:#ffff66">polygon</b> in this call. The algorithm continues by calling MP1 again,</nobr></div>
+<div style="position:absolute;top:4466;left:145"><nobr>considering as initial vertex the last vertex of L.</nobr></div>
+<div style="position:absolute;top:4487;left:171"><nobr>The second procedure MP2 begins generating a list L with MP1 and then, so as</nobr></div>
+<div style="position:absolute;top:4509;left:145"><nobr>to get a bigger <b style="color:black;background-color:#ffff66">polygon</b>, tries to expand L by adding consecutive, in counterclockwise</nobr></div>
+<div style="position:absolute;top:4531;left:145"><nobr>order, adjacent vertices to it in its first position. The last procedure MP3 works like</nobr></div>
+<div style="position:absolute;top:4552;left:145"><nobr>MP2 but only chooses a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> as a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> of the partition if one</nobr></div>
+<div style="position:absolute;top:4574;left:145"><nobr>(or both) of the vertices of the diagonal is a notch; if it is not the case, the <b style="color:black;background-color:#99ff99">convex</b></nobr></div>
+<div style="position:absolute;top:4596;left:145"><nobr><b style="color:black;background-color:#ffff66">polygon</b> is not considered as a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> of the partition and the procedure</nobr></div>
+<div style="position:absolute;top:4617;left:145"><nobr>MP2 is called again considering as initial vertex the last vertex of the previous not</nobr></div>
+<div style="position:absolute;top:4639;left:145"><nobr>considered <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b>.</nobr></div>
+<div style="position:absolute;top:4661;left:171"><nobr>The computational studies in [7] suggest that MP3 is the best procedure, since</nobr></div>
+<div style="position:absolute;top:4682;left:145"><nobr>although the computational times are similar for the three procedures, the cardinality</nobr></div>
+<div style="position:absolute;top:4704;left:145"><nobr>of the partitions produced with MP2 and MP3 are better than with MP1, and MP3</nobr></div>
+<div style="position:absolute;top:4726;left:145"><nobr>has in addition the property that the partitions that it produces have no diagonals</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:4927;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="5"><b>Page 5</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:4906;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:4960;left:145"><nobr>joining two vertices which are not notches, which are known to be non-optimal.</nobr></div>
+<div style="position:absolute;top:4982;left:171"><nobr>It is not difficult to see that a procedure better than MP3 can be obtained as</nobr></div>
+<div style="position:absolute;top:5004;left:145"><nobr>follows. Instead of applying MP2 from the last vertex of the last <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:5025;left:145"><nobr>generated, we apply it from the first notch (in clockwise order) that we find starting</nobr></div>
+<div style="position:absolute;top:5047;left:145"><nobr>from the last vertex of the last <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> generated (which may or may not be</nobr></div>
+<div style="position:absolute;top:5069;left:145"><nobr>that last vertex). In this way, whenever MP2 produces a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b>, we are sure</nobr></div>
+<div style="position:absolute;top:5090;left:145"><nobr>that at least one of the vertices of the diagonal is a notch, and no computational effort</nobr></div>
+<div style="position:absolute;top:5112;left:145"><nobr>is wasted. This new procedure will be called MP4. Notice that since we start from a</nobr></div>
+<div style="position:absolute;top:5134;left:145"><nobr>notch, the new <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> will be generated adding vertices either clockwise or</nobr></div>
+<div style="position:absolute;top:5155;left:145"><nobr>counterclockwise, but not both.</nobr></div>
+<div style="position:absolute;top:5177;left:171"><nobr>Another new procedure, which will be called MP5, apply MP1 from the first notch</nobr></div>
+<div style="position:absolute;top:5199;left:145"><nobr>(in clockwise order) that we find starting from the last vertex of the last <b style="color:black;background-color:#99ff99">convex</b> poly-</nobr></div>
+<div style="position:absolute;top:5220;left:145"><nobr>gon (remind that MP1 try to add vertices clockwise only). If from a given notch no</nobr></div>
+<div style="position:absolute;top:5242;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> is generated the procedure is repeated from the next one. However,</nobr></div>
+<div style="position:absolute;top:5264;left:145"><nobr>since MP1 adds vertices clockwise only, it may happen that MP1 does not produce</nobr></div>
+<div style="position:absolute;top:5285;left:145"><nobr>any <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> from any notch. In that case, we apply the same process but</nobr></div>
+<div style="position:absolute;top:5307;left:145"><nobr>counterclockwise (using a procedure similar to MP1, but which adds vertices counter-</nobr></div>
+<div style="position:absolute;top:5329;left:145"><nobr>clockwise); and so on. That is, in MP5 we change the direction only when it is not</nobr></div>
+<div style="position:absolute;top:5350;left:145"><nobr>possible to generate any <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> from any notch.</nobr></div>
+<div style="position:absolute;top:5372;left:171"><nobr>It is important to note that, whatever the procedure we choose, the choice of</nobr></div>
+<div style="position:absolute;top:5394;left:145"><nobr>the initial vertex affects the final solution, i.e., different initial vertices may produce</nobr></div>
+<div style="position:absolute;top:5415;left:145"><nobr>different partitions, even with different cardinality.</nobr></div>
+<div style="position:absolute;top:5437;left:171"><nobr>The partitions produced by the algorithms may contain inessential diagonals.</nobr></div>
+<div style="position:absolute;top:5478;left:145"><nobr>Definition 2 A diagonal d is said to be essential for vertex v if removal of d creates</nobr></div>
+<div style="position:absolute;top:5500;left:145"><nobr>a piece that is nonconvex at v. A diagonal that is not essential for any vertex is called</nobr></div>
+<div style="position:absolute;top:5521;left:145"><nobr>inessential.</nobr></div>
+<div style="position:absolute;top:5562;left:171"><nobr>If a diagonal is inessential, it can be removed from the partition since the two</nobr></div>
+<div style="position:absolute;top:5584;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> polygons sharing the diagonal can be merged to generate a single one. Observe</nobr></div>
+<div style="position:absolute;top:5606;left:145"><nobr>that if d is essential for v then it must be incident to v and v must be a notch.</nobr></div>
+<div style="position:absolute;top:5627;left:171"><nobr>In [7] the authors presented a merging process to remove inessential diagonals,</nobr></div>
+<div style="position:absolute;top:5649;left:145"><nobr>which can be used after any partitioning process. Everyone of the diagonals of the</nobr></div>
+<div style="position:absolute;top:5671;left:145"><nobr>partition is considered in order and it is checked whether it can be removed, taking</nobr></div>
+<div style="position:absolute;top:5693;left:145"><nobr>into account that if the polygons P<font style="font-size:9px">s </font>and P<font style="font-size:9px">t </font>sharing a given diagonal have already</nobr></div>
+<div style="position:absolute;top:5714;left:145"><nobr>been merged to other polygons P<font style="font-size:9px">∗</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:5724;left:402"><nobr>s <font style="font-size:15px">and P</font>∗</nobr></div>
+<div style="position:absolute;top:5724;left:463"><nobr>t <font style="font-size:15px">then the polygons to be considered when</font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:5736;left:145"><nobr>checking whether that diagonal can be removed are the merged polygons P<font style="font-size:9px">s </font>∪P<font style="font-size:9px">∗</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:5745;left:752"><nobr>s <font style="font-size:15px">and</font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:5758;left:145"><nobr>P<font style="font-size:9px">t </font>∪ P<font style="font-size:9px">∗</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:5767;left:194"><nobr>t <font style="font-size:15px">, and not the single polygons P</font>s <font style="font-size:15px">and P</font>t <font style="font-size:15px">sharing the diagonal. The following</font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:5779;left:145"><nobr>results were obtained.</nobr></div>
+<div style="position:absolute;top:5820;left:145"><nobr>Theorem 3 Let OPT be the fewest number of <b style="color:black;background-color:#99ff99">convex</b> subpolygons into which a poly-</nobr></div>
+<div style="position:absolute;top:5842;left:145"><nobr>gon P may be partitioned. If <b style="color:black;background-color:#ffff66">polygon</b> P has r notches, then</nobr></div>
+<div style="position:absolute;top:5884;left:371"><nobr>⌈</nobr></div>
+<div style="position:absolute;top:5873;left:381"><nobr>r</nobr></div>
+<div style="position:absolute;top:5897;left:380"><nobr>2</nobr></div>
+<div style="position:absolute;top:5884;left:391"><nobr>⌉ + 1 ≤ OPT ≤ 2r + 1.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:6115;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="6"><b>Page 6</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:6094;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:6148;left:145"><nobr>Corollary 4 Any decomposition without inessential diagonals is within four times of</nobr></div>
+<div style="position:absolute;top:6170;left:145"><nobr>the minimum decomposition. In particular, this holds for the partitions generated by</nobr></div>
+<div style="position:absolute;top:6192;left:145"><nobr>any decomposition algorithm after applying the merging process.</nobr></div>
+<div style="position:absolute;top:6233;left:171"><nobr>Nevertheless, we think that the bound on the absolute quality of an algorithm is</nobr></div>
+<div style="position:absolute;top:6254;left:145"><nobr>not a good representative measure of its performance since the bound must take the</nobr></div>
+<div style="position:absolute;top:6276;left:145"><nobr>worst possible case into account, which hardly appears in practice. In fact, the com-</nobr></div>
+<div style="position:absolute;top:6298;left:145"><nobr>putational studies presented in [7] clearly show that the performance of the algorithms</nobr></div>
+<div style="position:absolute;top:6319;left:145"><nobr>is much better.</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:6373;left:145"><nobr>3 Decomposing quasi-in-simple polygons</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:6419;left:145"><nobr>As explained above, most of the research on <b style="color:black;background-color:#ffff66">polygon</b> decomposition is devoted to</nobr></div>
+<div style="position:absolute;top:6440;left:145"><nobr>polygons without <b style="color:black;background-color:#a0ffff">holes</b>. In fact, to the extent of our knowledge, apart from the</nobr></div>
+<div style="position:absolute;top:6462;left:145"><nobr>procedures described in [10, 19] to triangulate polygons with <b style="color:black;background-color:#a0ffff">holes</b>, [5] is the only</nobr></div>
+<div style="position:absolute;top:6484;left:145"><nobr>published work where algorithms for decomposing a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b> into <b style="color:black;background-color:#99ff99">convex</b></nobr></div>
+<div style="position:absolute;top:6505;left:145"><nobr>polygons are described. In this paper, the most practical and efficient of the two</nobr></div>
+<div style="position:absolute;top:6527;left:145"><nobr>algorithms presented in [5] is described. Remind that our aim is to design a quick</nobr></div>
+<div style="position:absolute;top:6549;left:145"><nobr>algorithm for decomposing a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons by diagonals</nobr></div>
+<div style="position:absolute;top:6570;left:145"><nobr>and whose inefficiency in terms of the number of pieces is bounded with respect to</nobr></div>
+<div style="position:absolute;top:6592;left:145"><nobr>the optimum. First, we define what we mean by a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b>.</nobr></div>
+<div style="position:absolute;top:6633;left:145"><nobr>Definition 5 Let P be a <b style="color:black;background-color:#ffff66">polygon</b> enclosing other polygons H<font style="font-size:9px">1</font>,...,H<font style="font-size:9px">h</font>, each of which</nobr></div>
+<div style="position:absolute;top:6655;left:145"><nobr>is empty (does not enclose any other <b style="color:black;background-color:#ffff66">polygon</b>). Suppose the following conditions hold:</nobr></div>
+<div style="position:absolute;top:6691;left:155"><nobr>h1) ∂P ∩ ∂H<font style="font-size:9px">i </font>= ∅, ∀i = 1,...,h.</nobr></div>
+<div style="position:absolute;top:6728;left:155"><nobr>h2) H<font style="font-size:9px">i </font>∩ H<font style="font-size:9px">j </font>= ∅, ∀i = j.</nobr></div>
+<div style="position:absolute;top:6765;left:145"><nobr>The region of the plane interior to or on the boundary of P, but exterior to or on the</nobr></div>
+<div style="position:absolute;top:6786;left:145"><nobr>boundary of H<font style="font-size:9px">1</font>,...,H<font style="font-size:9px">h </font>is called <b style="color:black;background-color:#ffff66">polygon</b> P with <b style="color:black;background-color:#a0ffff">holes</b> H<font style="font-size:9px">1</font>,...,H<font style="font-size:9px">h</font>.</nobr></div>
+<div style="position:absolute;top:6828;left:171"><nobr>The algorithm for the decomposition of polygons with <b style="color:black;background-color:#a0ffff">holes</b> uses a kind of non-</nobr></div>
+<div style="position:absolute;top:6849;left:145"><nobr>simple polygons, which we call quasi-in-simple polygons, that cannot be seen as union</nobr></div>
+<div style="position:absolute;top:6871;left:145"><nobr>of simple polygons.</nobr></div>
+<div style="position:absolute;top:6912;left:145"><nobr>Definition 6 Let P be a non-simple <b style="color:black;background-color:#ffff66">polygon</b>. P is said to be a quasi-in-simple poly-</nobr></div>
+<div style="position:absolute;top:6934;left:145"><nobr>gon if it can be seen as a simple <b style="color:black;background-color:#ffff66">polygon</b> with simple polygonal <b style="color:black;background-color:#a0ffff">holes</b>, in such a way</nobr></div>
+<div style="position:absolute;top:6955;left:145"><nobr>that the <b style="color:black;background-color:#a0ffff">holes</b> form a tree whose nodes are the <b style="color:black;background-color:#a0ffff">holes</b> and whose edges are double edges</nobr></div>
+<div style="position:absolute;top:6977;left:145"><nobr>of P connecting <b style="color:black;background-color:#a0ffff">holes</b> or double vertices of P shared by the <b style="color:black;background-color:#a0ffff">holes</b>, the tree being joined</nobr></div>
+<div style="position:absolute;top:6999;left:145"><nobr>to the border <b style="color:black;background-color:#ffff66">polygon</b> through a double edge of P or a double vertex of P.</nobr></div>
+<div style="position:absolute;top:7040;left:171"><nobr>The polygons in Fig.1 may help to clarify this definition. A slight modification</nobr></div>
+<div style="position:absolute;top:7061;left:145"><nobr>of the algorithms described in Section 2, which we describe next, allows them to</nobr></div>
+<div style="position:absolute;top:7083;left:145"><nobr>decompose this kind of non-simple polygons. In the procedures to generate the next</nobr></div>
+<div style="position:absolute;top:7105;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> of the partition, a vertex v is considered to be inside the <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+</span></font>
+
+<div style="position:absolute;top:7303;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="7"><b>Page 7</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:7282;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:7865;left:145"><nobr>Figure 1: Polygons a) and b) are quasi-in-simple whereas <b style="color:black;background-color:#ffff66">polygon</b> d) is quasi-out-</nobr></div>
+<div style="position:absolute;top:7886;left:145"><nobr>simple. <b style="color:black;background-color:#ffff66">Polygon</b> c) is neither quasi-in-simple nor quasi-out-simple.</nobr></div>
+<div style="position:absolute;top:8251;left:224"><nobr>Figure 2: The diagonal v<font style="font-size:9px">5</font>v<font style="font-size:9px">1 </font>does not allow to resolve v<font style="font-size:9px">8 </font>and v<font style="font-size:9px">9</font>.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:8491;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="8"><b>Page 8</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:8470;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:8832;left:313"><nobr>Figure 3: Modification of the algorithms.</nobr></div>
+<div style="position:absolute;top:8883;left:145"><nobr>generated by the vertices in L (this implies we will have to remove some vertices of</nobr></div>
+<div style="position:absolute;top:8906;left:145"><nobr>L) if v lies in its interior or on its boundary. We need to require this since otherwise,</nobr></div>
+<div style="position:absolute;top:8927;left:145"><nobr>we may provoke the impossibility of resolving some vertices (see Fig.2).</nobr></div>
+<div style="position:absolute;top:8948;left:171"><nobr>The modification is the following: now, a vertex v on the boundary of the <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:8970;left:145"><nobr>generated by the vertices in L is considered outside that <b style="color:black;background-color:#ffff66">polygon</b> (no removing of</nobr></div>
+<div style="position:absolute;top:8992;left:145"><nobr>vertices will be then necessary) if the co-ordinates of v coincide with those of one of</nobr></div>
+<div style="position:absolute;top:9013;left:145"><nobr>the vertices in L. In this way, double vertices (with the same co-ordinates) do not</nobr></div>
+<div style="position:absolute;top:9035;left:145"><nobr>exclude themselves from forming part of a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b>. No more modifications</nobr></div>
+<div style="position:absolute;top:9057;left:145"><nobr>are necessary. For instance, in Fig.3, v<font style="font-size:9px">10 </font>and v<font style="font-size:9px">11 </font>are now considered to be outside the</nobr></div>
+<div style="position:absolute;top:9078;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> generated by L = [v<font style="font-size:9px">1</font>,v<font style="font-size:9px">2</font>,v<font style="font-size:9px">3</font>,v<font style="font-size:9px">4</font>], so we can draw the diagonal d = v<font style="font-size:9px">4</font>v<font style="font-size:9px">1</font>.</nobr></div>
+<div style="position:absolute;top:9100;left:171"><nobr>The modification above does not allow to decompose another kind of non-simple</nobr></div>
+<div style="position:absolute;top:9122;left:145"><nobr>polygons which we call quasi-out-simple. We say that a <b style="color:black;background-color:#ffff66">polygon</b> is quasi-out-simple</nobr></div>
+<div style="position:absolute;top:9143;left:145"><nobr>if it can be seen as a tree as described in Definition 6, but where the tree is not inside</nobr></div>
+<div style="position:absolute;top:9165;left:145"><nobr>any other <b style="color:black;background-color:#ffff66">polygon</b> acting as border <b style="color:black;background-color:#ffff66">polygon</b> (that is why we use the terms in and out).</nobr></div>
+<div style="position:absolute;top:9187;left:145"><nobr>Fig.1.d is an example of this kind of polygons. The reason for which the modification</nobr></div>
+<div style="position:absolute;top:9208;left:145"><nobr>allows to decompose quasi-in-simple polygons is that the internal angles of double</nobr></div>
+<div style="position:absolute;top:9230;left:145"><nobr>vertices do not overlap, so the diagonals and edges incident to a double vertex cannot</nobr></div>
+<div style="position:absolute;top:9252;left:145"><nobr>intersect the diagonals or edges incident to the other double vertex. Internal angles of</nobr></div>
+<div style="position:absolute;top:9273;left:145"><nobr>double vertices in quasi-out-simple polygons do overlap, so a diagonal or edge incident</nobr></div>
+<div style="position:absolute;top:9295;left:145"><nobr>to a double vertex may intersect a diagonal or edge incident to the other double vertex.</nobr></div>
+<div style="position:absolute;top:9317;left:145"><nobr>Consider for instance the <b style="color:black;background-color:#ffff66">polygon</b> in Fig.4. Using the procedure MP1 and considering</nobr></div>
+<div style="position:absolute;top:9339;left:145"><nobr>as initial vertex v<font style="font-size:9px">1</font>, the algorithm draws the diagonals v<font style="font-size:9px">9</font>v<font style="font-size:9px">5</font>, v<font style="font-size:9px">11</font>v<font style="font-size:9px">9</font>, v<font style="font-size:9px">14</font>v<font style="font-size:9px">11</font>, v<font style="font-size:9px">17</font>v<font style="font-size:9px">15 </font>and</nobr></div>
+<div style="position:absolute;top:9361;left:145"><nobr>v<font style="font-size:9px">2</font>v<font style="font-size:9px">17</font>, in that order. With the modification, the next diagonal is v<font style="font-size:9px">11</font>v<font style="font-size:9px">4</font>, since v<font style="font-size:9px">15 </font>is</nobr></div>
+<div style="position:absolute;top:9382;left:145"><nobr>considered now outside the <b style="color:black;background-color:#ffff66">polygon</b> generated by the vertices in L = [v<font style="font-size:9px">4</font>,v<font style="font-size:9px">5</font>,v<font style="font-size:9px">9</font>,v<font style="font-size:9px">11</font>]</nobr></div>
+<div style="position:absolute;top:9404;left:145"><nobr>(v<font style="font-size:9px">15 </font>is the double vertex of v<font style="font-size:9px">9</font>). As we can see, v<font style="font-size:9px">11</font>v<font style="font-size:9px">4 </font>intersects the diagonal v<font style="font-size:9px">17</font>v<font style="font-size:9px">15</font></nobr></div>
+<div style="position:absolute;top:9425;left:145"><nobr>and the edges v<font style="font-size:9px">14</font>v<font style="font-size:9px">15 </font>and v<font style="font-size:9px">15</font>v<font style="font-size:9px">16</font>. Notice that the diagonal and the edges are incident</nobr></div>
+<div style="position:absolute;top:9447;left:145"><nobr>to v<font style="font-size:9px">15</font>, the double vertex of v<font style="font-size:9px">9</font>.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:9679;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="9"><b>Page 9</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:9658;left:787"><nobr></nobr></div>
+<div style="position:absolute;top:9986;left:145"><nobr>Figure 4: The modification does not allow the decomposition of quasi-out-simple</nobr></div>
+<div style="position:absolute;top:10008;left:145"><nobr>polygons.</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:10051;left:145"><nobr>4 Decomposing polygons with <b style="color:black;background-color:#a0ffff">holes</b></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:10097;left:145"><nobr>The algorithm for the decomposition of a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons re-</nobr></div>
+<div style="position:absolute;top:10118;left:145"><nobr>duces the problem with <b style="color:black;background-color:#a0ffff">holes</b> to the decomposition of quasi-in-simple polygons (with-</nobr></div>
+<div style="position:absolute;top:10140;left:145"><nobr>out <b style="color:black;background-color:#a0ffff">holes</b>). Following the notation in Definition 5, let P be a <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b></nobr></div>
+<div style="position:absolute;top:10162;left:145"><nobr>H<font style="font-size:9px">1</font>,...,H<font style="font-size:9px">h</font>. The algorithm starts applying any of the procedures described in Section</nobr></div>
+<div style="position:absolute;top:10183;left:145"><nobr>2, modified as in Section 3, to the border <b style="color:black;background-color:#ffff66">polygon</b> P. Each <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> generated</nobr></div>
+<div style="position:absolute;top:10205;left:145"><nobr>is cut off from P and stored in a list LPCP, with the rest of <b style="color:black;background-color:#99ff99">convex</b> polygons gen-</nobr></div>
+<div style="position:absolute;top:10226;left:145"><nobr>erated so far by the algorithm. Let Q denote the remaining border <b style="color:black;background-color:#ffff66">polygon</b> still to</nobr></div>
+<div style="position:absolute;top:10248;left:145"><nobr>be decomposed. If a diagonal d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>is intersected by any of the <b style="color:black;background-color:#a0ffff">holes</b> (see Fig.5a),</nobr></div>
+<div style="position:absolute;top:10270;left:145"><nobr>or the <b style="color:black;background-color:#ffff66">polygon</b> that it generates contains a hole, then the algorithm draws a new</nobr></div>
+<div style="position:absolute;top:10291;left:145"><nobr>diagonal (not intersected by any of the <b style="color:black;background-color:#a0ffff">holes</b> nor by the border <b style="color:black;background-color:#ffff66">polygon</b>) from the</nobr></div>
+<div style="position:absolute;top:10313;left:145"><nobr>initial vertex of the diagonal, v<font style="font-size:9px">i</font>, to one of the vertices of one of the <b style="color:black;background-color:#a0ffff">holes</b>, using the</nobr></div>
+<div style="position:absolute;top:10335;left:145"><nobr>procedure DrawTrueDiagonal, which will be explained in detail later. Let d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f</font></nobr></div>
+<div style="position:absolute;top:10357;left:145"><nobr>be the true diagonal so obtained and let H be the hole containing v<font style="font-size:9px">f </font>. Using d as a</nobr></div>
+<div style="position:absolute;top:10378;left:145"><nobr>bridge between the border <b style="color:black;background-color:#ffff66">polygon</b> and the hole, H is then “absorbed” by Q, that</nobr></div>
+<div style="position:absolute;top:10400;left:145"><nobr>is, H becomes part of the border <b style="color:black;background-color:#ffff66">polygon</b>. Notice that the new border <b style="color:black;background-color:#ffff66">polygon</b> Q</nobr></div>
+<div style="position:absolute;top:10422;left:145"><nobr>is a quasi-in-simple <b style="color:black;background-color:#ffff66">polygon</b> (see Fig. 5b). Every time the algorithm absorbs a hole,</nobr></div>
+<div style="position:absolute;top:10443;left:145"><nobr>for the quasi-in-simple <b style="color:black;background-color:#ffff66">polygon</b> Q, formed by the part of P still to be decomposed</nobr></div>
+<div style="position:absolute;top:10465;left:145"><nobr>and the <b style="color:black;background-color:#a0ffff">holes</b> already absorbed, it happens that the number of vertices and number</nobr></div>
+<div style="position:absolute;top:10487;left:145"><nobr>of edges of the tree described in Definition 6 are increased one unit. The algorithm</nobr></div>
+<div style="position:absolute;top:10508;left:145"><nobr>goes on then generating <b style="color:black;background-color:#99ff99">convex</b> polygons with the new Q until it is <b style="color:black;background-color:#99ff99">convex</b>. Below</nobr></div>
+<div style="position:absolute;top:10530;left:145"><nobr>the steps of the algorithm are detailed.</nobr></div>
+<div style="position:absolute;top:10568;left:171"><nobr>Algorithm AbsHol (In: P, H<font style="font-size:9px">1</font>,...,H<font style="font-size:9px">h</font>; Out: LPCP)</nobr></div>
+<div style="position:absolute;top:10601;left:167"><nobr>1. Read the vertices of the border <b style="color:black;background-color:#ffff66">polygon</b> P as well as those of the <b style="color:black;background-color:#a0ffff">holes</b> H<font style="font-size:9px">1</font>,...,H<font style="font-size:9px">h</font>.</nobr></div>
+<div style="position:absolute;top:10637;left:167"><nobr>2. LPCP ← ∅, Q ← P.</nobr></div>
+<div style="position:absolute;top:10672;left:167"><nobr>3. While Q is not <b style="color:black;background-color:#99ff99">convex</b> do</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:10867;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="10"><b>Page 10</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:10846;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:11149;left:355"><nobr>Figure 5: Absorption of <b style="color:black;background-color:#a0ffff">holes</b>.</nobr></div>
+<div style="position:absolute;top:11199;left:192"><nobr>3.1. Obtain a <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> C of the partition of Q using one of the procedures</nobr></div>
+<div style="position:absolute;top:11221;left:228"><nobr>described in Section 2, modified as in Section 3. Let d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>be the</nobr></div>
+<div style="position:absolute;top:11243;left:228"><nobr>diagonal generating the <b style="color:black;background-color:#ffff66">polygon</b>.</nobr></div>
+<div style="position:absolute;top:11272;left:192"><nobr>3.2. If d is cut by a hole then</nobr></div>
+<div style="position:absolute;top:11301;left:211"><nobr>3.2.1. (d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>,H ) ←DrawTrueDiagonal(d).</nobr></div>
+<div style="position:absolute;top:11326;left:211"><nobr>3.2.2. (Absorption of H ) Modify the list Q of vertices of the border <b style="color:black;background-color:#ffff66">polygon</b>,</nobr></div>
+<div style="position:absolute;top:11348;left:260"><nobr>adding counterclockwise and after v<font style="font-size:9px">i </font>all the vertices of H (starting</nobr></div>
+<div style="position:absolute;top:11369;left:260"><nobr>and finishing by v<font style="font-size:9px">f </font>), and then v<font style="font-size:9px">i </font>again.</nobr></div>
+<div style="position:absolute;top:11398;left:228"><nobr>else if there is a hole inside C then</nobr></div>
+<div style="position:absolute;top:11427;left:211"><nobr>3.2.1. Let v<font style="font-size:9px">hole </font>be a vertex of one of the <b style="color:black;background-color:#a0ffff">holes</b> inside C. d ← v<font style="font-size:9px">i</font>v<font style="font-size:9px">hole</font>.</nobr></div>
+<div style="position:absolute;top:11452;left:211"><nobr>3.2.2. (d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>,H ) ←DrawTrueDiagonal(d).</nobr></div>
+<div style="position:absolute;top:11477;left:211"><nobr>3.2.3. Absorb the hole H .</nobr></div>
+<div style="position:absolute;top:11506;left:228"><nobr>else LPCP ← LPCP ∪ {C}, Q ← Q \ C.</nobr></div>
+<div style="position:absolute;top:11543;left:167"><nobr>4. LPCP ← LPCP ∪ {Q}.</nobr></div>
+<div style="position:absolute;top:11579;left:171"><nobr>Every time the algorithm draws a diagonal d and generates a <b style="color:black;background-color:#ffff66">polygon</b>, we have to</nobr></div>
+<div style="position:absolute;top:11600;left:145"><nobr>check whether the diagonal is intersected by any of the non-absorbed <b style="color:black;background-color:#a0ffff">holes</b>. To do</nobr></div>
+<div style="position:absolute;top:11622;left:145"><nobr>it, it is not necessary to check all the non-absorbed <b style="color:black;background-color:#a0ffff">holes</b>. Let R<font style="font-size:9px">i </font>denote the smallest</nobr></div>
+<div style="position:absolute;top:11644;left:145"><nobr>rectangle with sides parallel to the axes containing the hole H<font style="font-size:9px">i</font>, i = 1,...,h, and let</nobr></div>
+<div style="position:absolute;top:11666;left:145"><nobr>RD be the smallest rectangle with sides parallel to the axes containing d. Only the</nobr></div>
+<div style="position:absolute;top:11687;left:145"><nobr>non-absorbed <b style="color:black;background-color:#a0ffff">holes</b> H<font style="font-size:9px">i </font>for which RD ∩ R<font style="font-size:9px">i </font>= ∅ can intersect the diagonal. So the</nobr></div>
+<div style="position:absolute;top:11709;left:145"><nobr>checking can be reduced to those <b style="color:black;background-color:#a0ffff">holes</b>.</nobr></div>
+<div style="position:absolute;top:11730;left:171"><nobr>Let us suppose that H<font style="font-size:9px">i </font>is a hole for which RD ∩ R<font style="font-size:9px">i </font>= ∅ holds. To check whether</nobr></div>
+<div style="position:absolute;top:11753;left:145"><nobr>d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>is intersected by H<font style="font-size:9px">i</font>, for each pair of consecutive vertices of H<font style="font-size:9px">i </font>(i.e., for</nobr></div>
+<div style="position:absolute;top:11774;left:145"><nobr>each edge) we study whether one of them lies in one of the semiplanes generated</nobr></div>
+<div style="position:absolute;top:11795;left:145"><nobr>by the line containing d and the next vertex in the other semiplane. If so, the line</nobr></div>
+<div style="position:absolute;top:11817;left:145"><nobr>containing the pair of vertices (and thus the corresponding edge of H<font style="font-size:9px">i</font>) cuts the line</nobr></div>
+<div style="position:absolute;top:11839;left:145"><nobr>containing d. Let p<font style="font-size:9px">c </font>denote the intersection point. If l<font style="font-size:9px">2</font>(p<font style="font-size:9px">c </font>− v<font style="font-size:9px">i</font>) ≤ l<font style="font-size:9px">2</font>(v<font style="font-size:9px">i </font>− v<font style="font-size:9px">f </font>) and</nobr></div>
+<div style="position:absolute;top:11861;left:145"><nobr>l<font style="font-size:9px">2</font>(p<font style="font-size:9px">c </font>−v<font style="font-size:9px">f </font>) ≤ l<font style="font-size:9px">2</font>(v<font style="font-size:9px">i </font>−v<font style="font-size:9px">f </font>) (here l<font style="font-size:9px">2 </font>denotes the Euclidean norm) then p<font style="font-size:9px">c </font>is on the diagonal</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:12055;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="11"><b>Page 11</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:12034;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:12285;left:314"><nobr>Figure 6: Procedure DrawTrueDiagonal.</nobr></div>
+<div style="position:absolute;top:12338;left:145"><nobr>d, that is, d is intersected by the edge of H<font style="font-size:9px">i </font>containing the pair of vertices, and p<font style="font-size:9px">c </font>is</nobr></div>
+<div style="position:absolute;top:12359;left:145"><nobr>the intersection point. With this process, all the intersection points between edges of</nobr></div>
+<div style="position:absolute;top:12381;left:145"><nobr>H<font style="font-size:9px">i </font>and d can be calculated.</nobr></div>
+<div style="position:absolute;top:12402;left:171"><nobr>If d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>is cut by a hole H<font style="font-size:9px">i</font>, then the algorithm must find a true diagonal</nobr></div>
+<div style="position:absolute;top:12424;left:145"><nobr>from v<font style="font-size:9px">i </font>to one of the vertices of a hole. The procedure DrawTrueDiagonal does so</nobr></div>
+<div style="position:absolute;top:12446;left:145"><nobr>as follows. First, all the intersection points between d and the <b style="color:black;background-color:#a0ffff">holes</b> are calculated.</nobr></div>
+<div style="position:absolute;top:12467;left:145"><nobr>From among the edges that cut d, the one whose intersection point is the closest to v<font style="font-size:9px">i</font></nobr></div>
+<div style="position:absolute;top:12489;left:145"><nobr>is chosen, and from its two vertices the one inside the <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> C generated by</nobr></div>
+<div style="position:absolute;top:12511;left:145"><nobr>d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>is considered as new provisional final vertex of the diagonal, v<font style="font-size:9px">f </font>. We choose</nobr></div>
+<div style="position:absolute;top:12532;left:145"><nobr>the vertex inside C since in this way we are sure the new diagonal d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>is not cut</nobr></div>
+<div style="position:absolute;top:12554;left:145"><nobr>by any of the edges of the border <b style="color:black;background-color:#ffff66">polygon</b> Q. Nevertheless, d may be cut by edges</nobr></div>
+<div style="position:absolute;top:12576;left:145"><nobr>of <b style="color:black;background-color:#a0ffff">holes</b> inside C (see Fig.6a), even by edges of the <b style="color:black;background-color:#ffff66">polygon</b> containing v<font style="font-size:9px">f </font>. That is</nobr></div>
+<div style="position:absolute;top:12597;left:145"><nobr>why the process described for d is repeated with the new provisional diagonal until</nobr></div>
+<div style="position:absolute;top:12619;left:145"><nobr>it is not cut by any hole. The only difference is that for the second and successive</nobr></div>
+<div style="position:absolute;top:12641;left:145"><nobr>provisional diagonals the edge whose intersection point with the provisional diagonal</nobr></div>
+<div style="position:absolute;top:12662;left:145"><nobr>is the closest to v<font style="font-size:9px">i </font>may have its two endpoints inside C; if so, the endpoint closest</nobr></div>
+<div style="position:absolute;top:12684;left:145"><nobr>to v<font style="font-size:9px">i </font>is considered as new provisional final vertex v<font style="font-size:9px">f </font>(see Fig.6b); otherwise, the one</nobr></div>
+<div style="position:absolute;top:12706;left:145"><nobr>inside the <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> C is selected.</nobr></div>
+<div style="position:absolute;top:12727;left:171"><nobr>On the other hand, when the diagonal d drawn by the algorithm is not cut by</nobr></div>
+<div style="position:absolute;top:12749;left:145"><nobr>any hole, we have to check whether the <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b> C that it generates contains</nobr></div>
+<div style="position:absolute;top:12771;left:145"><nobr>a hole. To do it, it is not necessary to check all the non-absorbed <b style="color:black;background-color:#a0ffff">holes</b> either. Let</nobr></div>
+<div style="position:absolute;top:12793;left:145"><nobr>RC be the smallest rectangle with sides parallel to the axes containing C. Only the</nobr></div>
+<div style="position:absolute;top:12814;left:145"><nobr>non-absorbed <b style="color:black;background-color:#a0ffff">holes</b> H<font style="font-size:9px">i </font>for which R<font style="font-size:9px">i </font>⊆ RC can be contained in C.</nobr></div>
+<div style="position:absolute;top:12836;left:171"><nobr>Let us suppose that H<font style="font-size:9px">i </font>is a hole for which R<font style="font-size:9px">i </font>⊆ RC. Then, since d is not cut by</nobr></div>
+<div style="position:absolute;top:12857;left:145"><nobr>any hole, R<font style="font-size:9px">i </font>is inside C if and only if one of the vertices of R<font style="font-size:9px">i </font>is inside C. This can</nobr></div>
+<div style="position:absolute;top:12879;left:145"><nobr>be easily examined, just by choosing a vertex of R<font style="font-size:9px">i </font>and checking whether it is on the</nobr></div>
+<div style="position:absolute;top:12901;left:145"><nobr>right of each of the edges of C.</nobr></div>
+<div style="position:absolute;top:12940;left:171"><nobr>Procedure DrawTrueDiagonal (In: d; Out: (d ,H ))</nobr></div>
+<div style="position:absolute;top:12977;left:167"><nobr>1. Read d = v<font style="font-size:9px">i</font>v<font style="font-size:9px">f </font>.</nobr></div>
+<div style="position:absolute;top:13014;left:167"><nobr>2. While d is intersected by the <b style="color:black;background-color:#a0ffff">holes</b> do</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:13243;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="12"><b>Page 12</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:13222;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:13763;left:145"><nobr>Figure 7: Optimal <b style="color:black;background-color:#99ff99">convex</b> decompositions. In a), r = 8 and OPT = ⌈<font style="font-size:9px">r</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:13773;left:680"><nobr>2</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:13762;left:689"><nobr>⌉ + 1 − h = 4.</nobr></div>
+<div style="position:absolute;top:13784;left:145"><nobr>In b), r = 32 and OPT = ⌈<font style="font-size:9px">r</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:13795;left:357"><nobr>2</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:13784;left:365"><nobr>⌉ + 1 − h = 12. In c), r = 4 and OPT = 2r + 1 − h = 8.</nobr></div>
+<div style="position:absolute;top:13806;left:145"><nobr>In d) r = 10 and OPT = 2r + 1 − h = 8.</nobr></div>
+<div style="position:absolute;top:13857;left:192"><nobr>2.1. Find all the edges of <b style="color:black;background-color:#a0ffff">holes</b> which intersect d, and calculate the correspond-</nobr></div>
+<div style="position:absolute;top:13878;left:228"><nobr>ing intersection points.</nobr></div>
+<div style="position:absolute;top:13906;left:192"><nobr>2.2. Find the intersection point p<font style="font-size:9px">c </font>closest to v<font style="font-size:9px">i</font>. Let e denote the edge containing</nobr></div>
+<div style="position:absolute;top:13929;left:228"><nobr>p<font style="font-size:9px">c</font>, and let e<font style="font-size:9px">s </font>denote the endpoint of e that being in C is closest to v<font style="font-size:9px">i</font>.</nobr></div>
+<div style="position:absolute;top:13956;left:192"><nobr>2.3. d ← v<font style="font-size:9px">i</font>e<font style="font-size:9px">s</font>.</nobr></div>
+<div style="position:absolute;top:13992;left:167"><nobr>3. d ← d is a true diagonal. Set H equal to the hole containing e<font style="font-size:9px">s</font>.</nobr></div>
+<div style="position:absolute;top:14026;left:171"><nobr>The algorithm for the decomposition of polygons with <b style="color:black;background-color:#a0ffff">holes</b> we have described</nobr></div>
+<div style="position:absolute;top:14047;left:145"><nobr>may produce partitions with inessential diagonals, since it uses algorithms which in</nobr></div>
+<div style="position:absolute;top:14069;left:145"><nobr>turn may produce inessential diagonals. The merging process described in [7] and</nobr></div>
+<div style="position:absolute;top:14091;left:145"><nobr>mentioned in Section 2 can be used to remove the inessential diagonals of a partition.</nobr></div>
+<div style="position:absolute;top:14112;left:145"><nobr>No modifications are required. Just notice that the external angles of the <b style="color:black;background-color:#a0ffff">holes</b> are</nobr></div>
+<div style="position:absolute;top:14134;left:145"><nobr>the corresponding internal angles of the <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b>, and that we also have to</nobr></div>
+<div style="position:absolute;top:14156;left:145"><nobr>check whether the diagonals drawn with the procedure DrawTrueDiagonal to absorb</nobr></div>
+<div style="position:absolute;top:14177;left:145"><nobr><b style="color:black;background-color:#a0ffff">holes</b> can be removed. The following results about the quality of the partitions after</nobr></div>
+<div style="position:absolute;top:14199;left:145"><nobr>applying the merging process can be obtained.</nobr></div>
+<div style="position:absolute;top:14236;left:145"><nobr>Theorem 7 Let P be a <b style="color:black;background-color:#ffff66">polygon</b> containing h <b style="color:black;background-color:#a0ffff">holes</b>, and let r be its number of concave</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:14431;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="13"><b>Page 13</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:14410;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:14464;left:145"><nobr>vertices (considering vertices of the border <b style="color:black;background-color:#ffff66">polygon</b> as well as vertices of the <b style="color:black;background-color:#a0ffff">holes</b>).</nobr></div>
+<div style="position:absolute;top:14486;left:145"><nobr>Let OPT be the fewest number of <b style="color:black;background-color:#99ff99">convex</b> subpolygons into which such a <b style="color:black;background-color:#ffff66">polygon</b> may</nobr></div>
+<div style="position:absolute;top:14508;left:145"><nobr>be partitioned. Then</nobr></div>
+<div style="position:absolute;top:14532;left:339"><nobr>⌈</nobr></div>
+<div style="position:absolute;top:14521;left:348"><nobr>r</nobr></div>
+<div style="position:absolute;top:14545;left:348"><nobr>2</nobr></div>
+<div style="position:absolute;top:14532;left:359"><nobr>⌉ + 1 − h ≤ OPT ≤ 2r + 1 − h.</nobr></div>
+<div style="position:absolute;top:14576;left:145"><nobr>Proof: We know that the smallest number of diagonals required for resolving the</nobr></div>
+<div style="position:absolute;top:14598;left:145"><nobr>notches is ⌈<font style="font-size:9px">r</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:14608;left:234"><nobr>2</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:14597;left:242"><nobr>⌉, and in the worst case we need at most 2r (see [7]). On the other hand,</nobr></div>
+<div style="position:absolute;top:14619;left:145"><nobr>the first diagonal incident to any of the <b style="color:black;background-color:#a0ffff">holes</b> does not produce any <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b>;</nobr></div>
+<div style="position:absolute;top:14641;left:145"><nobr>it just connects the hole with another hole or with the border <b style="color:black;background-color:#ffff66">polygon</b>. So, h of the</nobr></div>
+<div style="position:absolute;top:14663;left:145"><nobr>diagonals do not produce any <b style="color:black;background-color:#99ff99">convex</b> <b style="color:black;background-color:#ffff66">polygon</b>.</nobr></div>
+<div style="position:absolute;top:14684;left:171"><nobr>As we can see in Fig.7, both bounds can be attained for some polygons.</nobr></div>
+<div style="position:absolute;top:14723;left:145"><nobr>Corollary 8 The number of diagonals of any decomposition without inessential diag-</nobr></div>
+<div style="position:absolute;top:14745;left:145"><nobr>onals is within four times of the number of diagonals of an optimal decomposition. In</nobr></div>
+<div style="position:absolute;top:14766;left:145"><nobr>particular, this holds for any <b style="color:black;background-color:#99ff99">convex</b> decomposition after applying the merging process.</nobr></div>
+<div style="position:absolute;top:14805;left:145"><nobr>Proof: If suffices to make the following observation: to resolve a reflex angle we need at</nobr></div>
+<div style="position:absolute;top:14827;left:145"><nobr>most two diagonals, which would be essential for that vertex (see [7]), so to decompose</nobr></div>
+<div style="position:absolute;top:14849;left:145"><nobr>a <b style="color:black;background-color:#ffff66">polygon</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons we need at most 2r (essential) diagonals; on the other</nobr></div>
+<div style="position:absolute;top:14870;left:145"><nobr>hand, a diagonal can resolve at most two reflex angles, so to decompose a <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:14892;left:145"><nobr>into <b style="color:black;background-color:#99ff99">convex</b> polygons we need at least ⌈<font style="font-size:9px">r</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:14902;left:454"><nobr>2</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:14891;left:462"><nobr>⌉ diagonals. Since 2r ≤ 4⌈<font style="font-size:9px">r</font></nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:14902;left:670"><nobr>2</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:14891;left:678"><nobr>⌉, the assertion</nobr></div>
+<div style="position:absolute;top:14913;left:145"><nobr>follows</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:14967;left:145"><nobr>5 Computational experiments</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:15013;left:145"><nobr>Most of the articles dealing with <b style="color:black;background-color:#99ff99">convex</b> decompositions do not include computational</nobr></div>
+<div style="position:absolute;top:15034;left:145"><nobr>experiments. This is due, in part, to the fact that some of the algorithms proposed</nobr></div>
+<div style="position:absolute;top:15056;left:145"><nobr>in the literature are theoretical, their only purpose being to offer low complexity but</nobr></div>
+<div style="position:absolute;top:15078;left:145"><nobr>that in practice are extremely difficult to implement in any programming language</nobr></div>
+<div style="position:absolute;top:15099;left:145"><nobr>(see [1]). Another reason is that there are no published test problems with which to</nobr></div>
+<div style="position:absolute;top:15121;left:145"><nobr>compare running times and cardinality of the partitions when the algorithms are not</nobr></div>
+<div style="position:absolute;top:15143;left:145"><nobr>exact.</nobr></div>
+<div style="position:absolute;top:15164;left:171"><nobr>To the extent of our knowledge, only two papers do include computational stud-</nobr></div>
+<div style="position:absolute;top:15186;left:145"><nobr>ies. In [10], Held compared four existing algorithms for the triangulation of polygons</nobr></div>
+<div style="position:absolute;top:15208;left:145"><nobr>with his own code, named FIST. Notice that the aim of all the tested algorithms is</nobr></div>
+<div style="position:absolute;top:15229;left:145"><nobr>to decompose the <b style="color:black;background-color:#ffff66">polygon</b> into triangles; furthermore, all of them are designed to</nobr></div>
+<div style="position:absolute;top:15251;left:145"><nobr>handle simple polygons, with the exception of Narkhede and Manocha’s implemen-</nobr></div>
+<div style="position:absolute;top:15273;left:145"><nobr>tation [19] of Seidel’s algorithm [24] (in the actual implementation the algorithm can</nobr></div>
+<div style="position:absolute;top:15294;left:145"><nobr>handle <b style="color:black;background-color:#ffff66">polygon</b> with <b style="color:black;background-color:#a0ffff">holes</b>) and FIST, which can triangulate polygons with <b style="color:black;background-color:#a0ffff">holes</b> and</nobr></div>
+<div style="position:absolute;top:15316;left:145"><nobr>other non-simple polygons. As suggested in the introduction, if we apply to the trian-</nobr></div>
+<div style="position:absolute;top:15338;left:145"><nobr>gulations obtained by these two last algorithms the process for removing inessential</nobr></div>
+<div style="position:absolute;top:15359;left:145"><nobr>diagonals, then we obtain <b style="color:black;background-color:#99ff99">convex</b> decompositions whose bound with regard to the</nobr></div>
+<div style="position:absolute;top:15381;left:145"><nobr>optimum is the same as the one of the algorithms proposed in this paper. However,</nobr></div>
+<div style="position:absolute;top:15403;left:145"><nobr>similarly to what it happened in [7] for the case without <b style="color:black;background-color:#a0ffff">holes</b>, those decompositions</nobr></div>
+<div style="position:absolute;top:15424;left:145"><nobr>will be not only more time-consuming (due to the process for removing inessential</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:15619;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="14"><b>Page 14</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:15598;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:15663;left:145"><nobr>Table 1: Test polygons generated. The numbers in the parenthesis give (min, mean,</nobr></div>
+<div style="position:absolute;top:15684;left:145"><nobr>max, sd) of the ten problems in each type.</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:15705;left:241"><nobr>Vertices of</nobr></div>
+<div style="position:absolute;top:15705;left:336"><nobr><b style="color:black;background-color:#a0ffff">Holes</b> with 5</nobr></div>
+<div style="position:absolute;top:15705;left:433"><nobr><b style="color:black;background-color:#a0ffff">Holes</b> with 10</nobr></div>
+<div style="position:absolute;top:15705;left:557"><nobr>Total number</nobr></div>
+<div style="position:absolute;top:15705;left:705"><nobr>Notches in</nobr></div>
+<div style="position:absolute;top:15720;left:154"><nobr>Type</nobr></div>
+<div style="position:absolute;top:15720;left:228"><nobr>border <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:15720;left:330"><nobr>vertices (aver.)</nobr></div>
+<div style="position:absolute;top:15720;left:430"><nobr>vertices (aver.)</nobr></div>
+<div style="position:absolute;top:15720;left:567"><nobr>of notches</nobr></div>
+<div style="position:absolute;top:15720;left:692"><nobr>border <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:15734;left:154"><nobr>50</nobr></div>
+<div style="position:absolute;top:15734;left:263"><nobr>50</nobr></div>
+<div style="position:absolute;top:15734;left:369"><nobr>-</nobr></div>
+<div style="position:absolute;top:15734;left:469"><nobr>-</nobr></div>
+<div style="position:absolute;top:15734;left:541"><nobr>( 8, 16.40, 20, 3.72)</nobr></div>
+<div style="position:absolute;top:15734;left:681"><nobr>( 8, 16.40, 20, 3.72)</nobr></div>
+<div style="position:absolute;top:15749;left:154"><nobr>50 (5)</nobr></div>
+<div style="position:absolute;top:15749;left:263"><nobr>50</nobr></div>
+<div style="position:absolute;top:15749;left:369"><nobr>-</nobr></div>
+<div style="position:absolute;top:15749;left:468"><nobr>5</nobr></div>
+<div style="position:absolute;top:15749;left:538"><nobr>( 44, 52.40, 56, 3.72)</nobr></div>
+<div style="position:absolute;top:15749;left:681"><nobr>( 8, 16.40, 20, 3.72)</nobr></div>
+<div style="position:absolute;top:15763;left:154"><nobr>50 (10)</nobr></div>
+<div style="position:absolute;top:15763;left:263"><nobr>50</nobr></div>
+<div style="position:absolute;top:15763;left:365"><nobr>10</nobr></div>
+<div style="position:absolute;top:15763;left:469"><nobr>-</nobr></div>
+<div style="position:absolute;top:15763;left:538"><nobr>( 53, 61.00, 65, 3.66)</nobr></div>
+<div style="position:absolute;top:15763;left:681"><nobr>( 8, 16.40, 20, 3.72)</nobr></div>
+<div style="position:absolute;top:15777;left:154"><nobr>50 (5,10)</nobr></div>
+<div style="position:absolute;top:15777;left:263"><nobr>50</nobr></div>
+<div style="position:absolute;top:15777;left:365"><nobr>10</nobr></div>
+<div style="position:absolute;top:15777;left:468"><nobr>5</nobr></div>
+<div style="position:absolute;top:15777;left:534"><nobr>( 89, 97.00, 101, 3.66)</nobr></div>
+<div style="position:absolute;top:15777;left:680"><nobr>( 8, 16.40, 20, 3.72)</nobr></div>
+<div style="position:absolute;top:15791;left:154"><nobr>100</nobr></div>
+<div style="position:absolute;top:15791;left:260"><nobr>100</nobr></div>
+<div style="position:absolute;top:15791;left:369"><nobr>-</nobr></div>
+<div style="position:absolute;top:15791;left:469"><nobr>-</nobr></div>
+<div style="position:absolute;top:15791;left:538"><nobr>( 25, 38.10, 46, 6.88)</nobr></div>
+<div style="position:absolute;top:15791;left:677"><nobr>( 25, 38.10, 46, 6.88)</nobr></div>
+<div style="position:absolute;top:15805;left:154"><nobr>100 (5)</nobr></div>
+<div style="position:absolute;top:15805;left:260"><nobr>100</nobr></div>
+<div style="position:absolute;top:15805;left:369"><nobr>-</nobr></div>
+<div style="position:absolute;top:15805;left:468"><nobr>5</nobr></div>
+<div style="position:absolute;top:15805;left:538"><nobr>( 61, 74.10, 82, 6.88)</nobr></div>
+<div style="position:absolute;top:15805;left:677"><nobr>( 25, 38.10, 46, 6.88)</nobr></div>
+<div style="position:absolute;top:15820;left:154"><nobr>100 (10)</nobr></div>
+<div style="position:absolute;top:15820;left:260"><nobr>100</nobr></div>
+<div style="position:absolute;top:15820;left:365"><nobr>10</nobr></div>
+<div style="position:absolute;top:15820;left:469"><nobr>-</nobr></div>
+<div style="position:absolute;top:15820;left:538"><nobr>( 70, 82.60, 90, 6.70)</nobr></div>
+<div style="position:absolute;top:15820;left:677"><nobr>( 25, 38.10, 46, 6.88)</nobr></div>
+<div style="position:absolute;top:15834;left:154"><nobr>100 (5,10)</nobr></div>
+<div style="position:absolute;top:15834;left:260"><nobr>100</nobr></div>
+<div style="position:absolute;top:15834;left:365"><nobr>10</nobr></div>
+<div style="position:absolute;top:15834;left:468"><nobr>5</nobr></div>
+<div style="position:absolute;top:15834;left:530"><nobr>(106, 118.60, 126, 6.70)</nobr></div>
+<div style="position:absolute;top:15834;left:677"><nobr>( 25, 38.10, 46, 6.88)</nobr></div>
+<div style="position:absolute;top:15848;left:154"><nobr>150</nobr></div>
+<div style="position:absolute;top:15848;left:260"><nobr>150</nobr></div>
+<div style="position:absolute;top:15848;left:369"><nobr>-</nobr></div>
+<div style="position:absolute;top:15848;left:469"><nobr>-</nobr></div>
+<div style="position:absolute;top:15848;left:538"><nobr>( 48, 62.40, 77, 8.74)</nobr></div>
+<div style="position:absolute;top:15848;left:677"><nobr>( 48, 62.40, 77, 8.74)</nobr></div>
+<div style="position:absolute;top:15862;left:154"><nobr>150 (5)</nobr></div>
+<div style="position:absolute;top:15862;left:260"><nobr>150</nobr></div>
+<div style="position:absolute;top:15862;left:369"><nobr>-</nobr></div>
+<div style="position:absolute;top:15862;left:468"><nobr>5</nobr></div>
+<div style="position:absolute;top:15862;left:534"><nobr>( 84, 98.40, 113, 8.74)</nobr></div>
+<div style="position:absolute;top:15862;left:677"><nobr>( 48, 62.40, 77, 8.74)</nobr></div>
+<div style="position:absolute;top:15876;left:154"><nobr>150 (10)</nobr></div>
+<div style="position:absolute;top:15876;left:260"><nobr>150</nobr></div>
+<div style="position:absolute;top:15876;left:365"><nobr>10</nobr></div>
+<div style="position:absolute;top:15876;left:469"><nobr>-</nobr></div>
+<div style="position:absolute;top:15876;left:531"><nobr>( 92, 106.90, 121, 8.89)</nobr></div>
+<div style="position:absolute;top:15876;left:677"><nobr>( 48, 62.40, 77, 8.74)</nobr></div>
+<div style="position:absolute;top:15891;left:154"><nobr>150 (5,10)</nobr></div>
+<div style="position:absolute;top:15891;left:260"><nobr>150</nobr></div>
+<div style="position:absolute;top:15891;left:365"><nobr>10</nobr></div>
+<div style="position:absolute;top:15891;left:468"><nobr>5</nobr></div>
+<div style="position:absolute;top:15891;left:530"><nobr>(128, 142.90, 157, 8.89)</nobr></div>
+<div style="position:absolute;top:15891;left:677"><nobr>( 48, 62.40, 77, 8.74)</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:15940;left:145"><nobr>diagonals, which will have to check much more diagonals than in the decompositions</nobr></div>
+<div style="position:absolute;top:15962;left:145"><nobr>obtained with the algorithms presented in this paper) but also with higher cardinality.</nobr></div>
+<div style="position:absolute;top:15984;left:145"><nobr>This last fact is not surprising: the algorithms presented in this paper try to generate</nobr></div>
+<div style="position:absolute;top:16005;left:145"><nobr><b style="color:black;background-color:#99ff99">convex</b> polygons with as many vertices as possible, and so the partitions they produce</nobr></div>
+<div style="position:absolute;top:16027;left:145"><nobr>have low cardinality; on the other hand, the triangulating algorithms do not follow</nobr></div>
+<div style="position:absolute;top:16049;left:145"><nobr>any strategy with that aim, apart from the one of the merging process (which just</nobr></div>
+<div style="position:absolute;top:16070;left:145"><nobr>tries to remove the inessential diagonals of the triangulation).</nobr></div>
+<div style="position:absolute;top:16092;left:171"><nobr>The other paper which includes computational studies is [7] (see also [5]), and</nobr></div>
+<div style="position:absolute;top:16114;left:145"><nobr>in a sense, the results that we show here can be seen as the continuation of those</nobr></div>
+<div style="position:absolute;top:16135;left:145"><nobr>shown there. To carry out our study, we have generated in all 120 polygons, ten for</nobr></div>
+<div style="position:absolute;top:16157;left:145"><nobr>everyone of the settings described in Table 1, by varying the number of vertices of</nobr></div>
+<div style="position:absolute;top:16179;left:145"><nobr>the border <b style="color:black;background-color:#ffff66">polygon</b> (50, 100 or 150) and the number and type of <b style="color:black;background-color:#a0ffff">holes</b>. The <b style="color:black;background-color:#a0ffff">holes</b></nobr></div>
+<div style="position:absolute;top:16200;left:145"><nobr>may be polygons with 4 to 6 vertices or with 9 to 11 vertices, but for each instance</nobr></div>
+<div style="position:absolute;top:16222;left:145"><nobr>the average of the number of vertices of each type of <b style="color:black;background-color:#a0ffff">holes</b> is 5 and 10, respectively.</nobr></div>
+<div style="position:absolute;top:16244;left:145"><nobr>In Table 1 we can also see the minimum, mean, maximum and standard deviation of</nobr></div>
+<div style="position:absolute;top:16265;left:145"><nobr>the number of notches in the <b style="color:black;background-color:#ffff66">polygon</b>, including the <b style="color:black;background-color:#a0ffff">holes</b> and without considering</nobr></div>
+<div style="position:absolute;top:16287;left:145"><nobr>them. Each group of polygons with the same number of vertices in the border <b style="color:black;background-color:#ffff66">polygon</b></nobr></div>
+<div style="position:absolute;top:16309;left:145"><nobr>was generated by first producing the last setting (the one including <b style="color:black;background-color:#a0ffff">holes</b> with 5 and</nobr></div>
+<div style="position:absolute;top:16330;left:145"><nobr>10 vertices as an average), and then the rest of settings were produced by removing</nobr></div>
+<div style="position:absolute;top:16352;left:145"><nobr><b style="color:black;background-color:#a0ffff">holes</b>. The polygons were generated utilizing a program that allows to draw the</nobr></div>
+<div style="position:absolute;top:16374;left:145"><nobr><b style="color:black;background-color:#ffff66">polygon</b> on the PC screen and store the coordinates of the vertices in an ASCII file.</nobr></div>
+<div style="position:absolute;top:16395;left:145"><nobr>We implemented that program in such a way that a <b style="color:black;background-color:#ffff66">polygon</b> has to fit on a single</nobr></div>
+<div style="position:absolute;top:16417;left:145"><nobr>screen ([0, 700] × [0, 700] pixels). So the polygons have complicated shapes, making</nobr></div>
+<div style="position:absolute;top:16439;left:145"><nobr>them appropriate to test decomposition algorithms. Notice that the complexity of a</nobr></div>
+<div style="position:absolute;top:16460;left:145"><nobr><b style="color:black;background-color:#ffff66">polygon</b> not only depend on its number of notches but also on its shape. This intuitive</nobr></div>
+<div style="position:absolute;top:16482;left:145"><nobr>fact was already corroborated in [7] where, for instance, using the same algorithm a</nobr></div>
+<div style="position:absolute;top:16504;left:145"><nobr><b style="color:black;background-color:#ffff66">polygon</b> (without <b style="color:black;background-color:#a0ffff">holes</b>) with 100 vertices, 43 of them notches, was decomposed into</nobr></div>
+<div style="position:absolute;top:16525;left:145"><nobr>49 polygons while another <b style="color:black;background-color:#ffff66">polygon</b> with the same number of vertices, 47 of them</nobr></div>
+<div style="position:absolute;top:16547;left:145"><nobr>notches, was decomposed into only 31 polygons. These test problems can be obtained</nobr></div>
+<div style="position:absolute;top:16569;left:145"><nobr>under request from the authors [9].</nobr></div>
+<div style="position:absolute;top:16590;left:171"><nobr>We have decomposed the polygons using the six different algorithms obtained by</nobr></div>
+<div style="position:absolute;top:16612;left:145"><nobr>combining the three basic procedures MP3, MP4 and MP5 to generate the polygons</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:16807;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="15"><b>Page 15</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:16786;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:16851;left:145"><nobr>Table 2: Results using MP3. The numbers in the parenthesis means (min, mean,</nobr></div>
+<div style="position:absolute;top:16872;left:145"><nobr>max, sd).</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:16893;left:247"><nobr>Polygons without</nobr></div>
+<div style="position:absolute;top:16893;left:409"><nobr>Polygons with</nobr></div>
+<div style="position:absolute;top:16893;left:555"><nobr>Decomposition</nobr></div>
+<div style="position:absolute;top:16893;left:715"><nobr>Merging</nobr></div>
+<div style="position:absolute;top:16908;left:154"><nobr>Type</nobr></div>
+<div style="position:absolute;top:16908;left:251"><nobr>merging process</nobr></div>
+<div style="position:absolute;top:16908;left:404"><nobr>merging process</nobr></div>
+<div style="position:absolute;top:16908;left:584"><nobr>time</nobr></div>
+<div style="position:absolute;top:16908;left:725"><nobr>time</nobr></div>
+<div style="position:absolute;top:16922;left:154"><nobr>50</nobr></div>
+<div style="position:absolute;top:16922;left:241"><nobr>( 9, 15.20, 20, 3.60)</nobr></div>
+<div style="position:absolute;top:16922;left:395"><nobr>( 8, 13.90, 18, 3.11)</nobr></div>
+<div style="position:absolute;top:16922;left:534"><nobr>(0.02, 0.03, 0.04, 0.01)</nobr></div>
+<div style="position:absolute;top:16922;left:675"><nobr>(0.00, 0.00, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:16937;left:154"><nobr>50 (5)</nobr></div>
+<div style="position:absolute;top:16937;left:238"><nobr>( 43, 50.80, 57, 4.94)</nobr></div>
+<div style="position:absolute;top:16937;left:391"><nobr>( 34, 41.30, 47, 3.69)</nobr></div>
+<div style="position:absolute;top:16937;left:534"><nobr>(0.12, 0.17, 0.24, 0.03)</nobr></div>
+<div style="position:absolute;top:16937;left:675"><nobr>(0.01, 0.01, 0.02, 0.00)</nobr></div>
+<div style="position:absolute;top:16951;left:154"><nobr>50 (10)</nobr></div>
+<div style="position:absolute;top:16951;left:238"><nobr>( 57, 62.10, 66, 2.70)</nobr></div>
+<div style="position:absolute;top:16951;left:391"><nobr>( 43, 49.60, 56, 4.27)</nobr></div>
+<div style="position:absolute;top:16951;left:534"><nobr>(0.20, 0.24, 0.30, 0.03)</nobr></div>
+<div style="position:absolute;top:16951;left:675"><nobr>(0.01, 0.02, 0.02, 0.00)</nobr></div>
+<div style="position:absolute;top:16965;left:154"><nobr>50 (5,10)</nobr></div>
+<div style="position:absolute;top:16965;left:231"><nobr>(100, 105.20, 111, 4.07)</nobr></div>
+<div style="position:absolute;top:16965;left:391"><nobr>( 75, 79.50, 87, 3.93)</nobr></div>
+<div style="position:absolute;top:16965;left:534"><nobr>(0.44, 0.51, 0.58, 0.05)</nobr></div>
+<div style="position:absolute;top:16965;left:675"><nobr>(0.03, 0.04, 0.04, 0.00)</nobr></div>
+<div style="position:absolute;top:16979;left:154"><nobr>100</nobr></div>
+<div style="position:absolute;top:16979;left:238"><nobr>( 24, 38.60, 50, 8.13)</nobr></div>
+<div style="position:absolute;top:16979;left:391"><nobr>( 22, 32.30, 41, 6.13)</nobr></div>
+<div style="position:absolute;top:16979;left:534"><nobr>(0.08, 0.12, 0.17, 0.03)</nobr></div>
+<div style="position:absolute;top:16979;left:675"><nobr>(0.00, 0.00, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:16993;left:154"><nobr>100 (5)</nobr></div>
+<div style="position:absolute;top:16993;left:235"><nobr>( 59, 76.60, 90, 10.94)</nobr></div>
+<div style="position:absolute;top:16993;left:391"><nobr>( 51, 62.30, 73, 7.39)</nobr></div>
+<div style="position:absolute;top:16993;left:534"><nobr>(0.31, 0.36, 0.42, 0.03)</nobr></div>
+<div style="position:absolute;top:16993;left:675"><nobr>(0.02, 0.02, 0.02, 0.00)</nobr></div>
+<div style="position:absolute;top:17008;left:154"><nobr>100 (10)</nobr></div>
+<div style="position:absolute;top:17008;left:232"><nobr>( 70, 89.00, 103, 11.35)</nobr></div>
+<div style="position:absolute;top:17008;left:391"><nobr>( 56, 69.20, 80, 8.80)</nobr></div>
+<div style="position:absolute;top:17008;left:534"><nobr>(0.33, 0.46, 0.61, 0.09)</nobr></div>
+<div style="position:absolute;top:17008;left:675"><nobr>(0.02, 0.02, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:17022;left:154"><nobr>100 (5,10)</nobr></div>
+<div style="position:absolute;top:17022;left:228"><nobr>(111, 131.30, 149, 12.23)</nobr></div>
+<div style="position:absolute;top:17022;left:388"><nobr>( 84, 99.40, 113, 9.24)</nobr></div>
+<div style="position:absolute;top:17022;left:534"><nobr>(0.68, 0.81, 1.03, 0.09)</nobr></div>
+<div style="position:absolute;top:17022;left:675"><nobr>(0.04, 0.05, 0.06, 0.01)</nobr></div>
+<div style="position:absolute;top:17036;left:154"><nobr>150</nobr></div>
+<div style="position:absolute;top:17036;left:235"><nobr>( 44, 61.10, 81, 12.71)</nobr></div>
+<div style="position:absolute;top:17036;left:391"><nobr>( 37, 52.00, 65, 9.69)</nobr></div>
+<div style="position:absolute;top:17036;left:534"><nobr>(0.11, 0.27, 0.39, 0.08)</nobr></div>
+<div style="position:absolute;top:17036;left:675"><nobr>(0.00, 0.00, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:17050;left:154"><nobr>150 (5)</nobr></div>
+<div style="position:absolute;top:17050;left:229"><nobr>( 82, 104.80, 131, 14.29)</nobr></div>
+<div style="position:absolute;top:17050;left:391"><nobr>( 68, 82.80, 95, 9.11)</nobr></div>
+<div style="position:absolute;top:17050;left:534"><nobr>(0.37, 0.60, 0.79, 0.11)</nobr></div>
+<div style="position:absolute;top:17050;left:675"><nobr>(0.02, 0.03, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:17064;left:154"><nobr>150 (10)</nobr></div>
+<div style="position:absolute;top:17064;left:229"><nobr>( 91, 118.90, 146, 16.10)</nobr></div>
+<div style="position:absolute;top:17064;left:385"><nobr>( 75, 91.30, 114, 12.81)</nobr></div>
+<div style="position:absolute;top:17064;left:534"><nobr>(0.48, 0.72, 0.87, 0.13)</nobr></div>
+<div style="position:absolute;top:17064;left:675"><nobr>(0.03, 0.04, 0.04, 0.00)</nobr></div>
+<div style="position:absolute;top:17079;left:154"><nobr>150 (5,10)</nobr></div>
+<div style="position:absolute;top:17079;left:228"><nobr>(129, 157.90, 194, 19.42)</nobr></div>
+<div style="position:absolute;top:17079;left:381"><nobr>(102, 120.40, 143, 14.28)</nobr></div>
+<div style="position:absolute;top:17079;left:534"><nobr>(0.77, 1.12, 1.35, 0.20)</nobr></div>
+<div style="position:absolute;top:17079;left:675"><nobr>(0.06, 0.07, 0.07, 0.00)</nobr></div>
+<div style="position:absolute;top:17093;left:154"><nobr>average</nobr></div>
+<div style="position:absolute;top:17093;left:281"><nobr>84.27</nobr></div>
+<div style="position:absolute;top:17093;left:434"><nobr>66.17</nobr></div>
+<div style="position:absolute;top:17093;left:582"><nobr>0.451</nobr></div>
+<div style="position:absolute;top:17093;left:723"><nobr>0.025</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:17139;left:357"><nobr>Table 3: Results using MP4.</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:17159;left:247"><nobr>Polygons without</nobr></div>
+<div style="position:absolute;top:17159;left:409"><nobr>Polygons with</nobr></div>
+<div style="position:absolute;top:17159;left:555"><nobr>Decomposition</nobr></div>
+<div style="position:absolute;top:17159;left:715"><nobr>Merging</nobr></div>
+<div style="position:absolute;top:17173;left:154"><nobr>Type</nobr></div>
+<div style="position:absolute;top:17173;left:251"><nobr>merging process</nobr></div>
+<div style="position:absolute;top:17173;left:404"><nobr>merging process</nobr></div>
+<div style="position:absolute;top:17173;left:584"><nobr>time</nobr></div>
+<div style="position:absolute;top:17173;left:725"><nobr>time</nobr></div>
+<div style="position:absolute;top:17188;left:154"><nobr>50</nobr></div>
+<div style="position:absolute;top:17188;left:241"><nobr>( 7, 15.00, 22, 4.88)</nobr></div>
+<div style="position:absolute;top:17188;left:395"><nobr>( 7, 13.30, 19, 3.90)</nobr></div>
+<div style="position:absolute;top:17188;left:534"><nobr>(0.01, 0.02, 0.04, 0.01)</nobr></div>
+<div style="position:absolute;top:17188;left:675"><nobr>(0.00, 0.00, 0.00, 0.00)</nobr></div>
+<div style="position:absolute;top:17202;left:154"><nobr>50 (5)</nobr></div>
+<div style="position:absolute;top:17202;left:238"><nobr>( 46, 55.80, 65, 6.11)</nobr></div>
+<div style="position:absolute;top:17202;left:391"><nobr>( 35, 43.40, 53, 4.96)</nobr></div>
+<div style="position:absolute;top:17202;left:534"><nobr>(0.12, 0.15, 0.22, 0.03)</nobr></div>
+<div style="position:absolute;top:17202;left:675"><nobr>(0.01, 0.01, 0.02, 0.00)</nobr></div>
+<div style="position:absolute;top:17216;left:154"><nobr>50 (10)</nobr></div>
+<div style="position:absolute;top:17216;left:238"><nobr>( 58, 63.70, 70, 3.44)</nobr></div>
+<div style="position:absolute;top:17216;left:391"><nobr>( 43, 50.30, 57, 3.93)</nobr></div>
+<div style="position:absolute;top:17216;left:534"><nobr>(0.17, 0.22, 0.30, 0.04)</nobr></div>
+<div style="position:absolute;top:17216;left:675"><nobr>(0.01, 0.02, 0.02, 0.01)</nobr></div>
+<div style="position:absolute;top:17231;left:154"><nobr>50 (5,10)</nobr></div>
+<div style="position:absolute;top:17231;left:232"><nobr>( 96, 106.20, 118, 6.72)</nobr></div>
+<div style="position:absolute;top:17231;left:391"><nobr>( 73, 82.40, 95, 5.99)</nobr></div>
+<div style="position:absolute;top:17231;left:534"><nobr>(0.35, 0.45, 0.66, 0.09)</nobr></div>
+<div style="position:absolute;top:17231;left:675"><nobr>(0.03, 0.04, 0.04, 0.00)</nobr></div>
+<div style="position:absolute;top:17245;left:154"><nobr>100</nobr></div>
+<div style="position:absolute;top:17245;left:238"><nobr>( 20, 35.10, 45, 7.76)</nobr></div>
+<div style="position:absolute;top:17245;left:391"><nobr>( 17, 29.90, 37, 6.20)</nobr></div>
+<div style="position:absolute;top:17245;left:534"><nobr>(0.04, 0.07, 0.10, 0.02)</nobr></div>
+<div style="position:absolute;top:17245;left:675"><nobr>(0.00, 0.00, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:17259;left:154"><nobr>100 (5)</nobr></div>
+<div style="position:absolute;top:17259;left:238"><nobr>( 57, 76.60, 88, 8.95)</nobr></div>
+<div style="position:absolute;top:17259;left:391"><nobr>( 48, 61.10, 69, 7.42)</nobr></div>
+<div style="position:absolute;top:17259;left:534"><nobr>(0.18, 0.26, 0.39, 0.06)</nobr></div>
+<div style="position:absolute;top:17259;left:675"><nobr>(0.02, 0.02, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:17273;left:154"><nobr>100 (10)</nobr></div>
+<div style="position:absolute;top:17273;left:232"><nobr>( 69, 88.90, 104, 10.81)</nobr></div>
+<div style="position:absolute;top:17273;left:391"><nobr>( 58, 69.40, 81, 8.04)</nobr></div>
+<div style="position:absolute;top:17273;left:534"><nobr>(0.25, 0.37, 0.50, 0.09)</nobr></div>
+<div style="position:absolute;top:17273;left:675"><nobr>(0.02, 0.03, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:17287;left:154"><nobr>100 (5,10)</nobr></div>
+<div style="position:absolute;top:17287;left:228"><nobr>(103, 132.60, 149, 13.98)</nobr></div>
+<div style="position:absolute;top:17287;left:385"><nobr>( 84, 101.90, 118, 9.74)</nobr></div>
+<div style="position:absolute;top:17287;left:534"><nobr>(0.44, 0.70, 0.90, 0.16)</nobr></div>
+<div style="position:absolute;top:17287;left:675"><nobr>(0.05, 0.05, 0.06, 0.00)</nobr></div>
+<div style="position:absolute;top:17302;left:154"><nobr>150</nobr></div>
+<div style="position:absolute;top:17302;left:235"><nobr>( 42, 59.30, 84, 13.14)</nobr></div>
+<div style="position:absolute;top:17302;left:391"><nobr>( 36, 49.30, 64, 9.38)</nobr></div>
+<div style="position:absolute;top:17302;left:534"><nobr>(0.09, 0.17, 0.23, 0.05)</nobr></div>
+<div style="position:absolute;top:17302;left:675"><nobr>(0.00, 0.01, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:17316;left:154"><nobr>150 (5)</nobr></div>
+<div style="position:absolute;top:17316;left:229"><nobr>( 81, 101.50, 129, 13.67)</nobr></div>
+<div style="position:absolute;top:17316;left:388"><nobr>( 64, 80.20, 96, 10.05)</nobr></div>
+<div style="position:absolute;top:17316;left:534"><nobr>(0.31, 0.44, 0.66, 0.11)</nobr></div>
+<div style="position:absolute;top:17316;left:675"><nobr>(0.02, 0.03, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:17330;left:154"><nobr>150 (10)</nobr></div>
+<div style="position:absolute;top:17330;left:229"><nobr>( 97, 115.90, 141, 15.45)</nobr></div>
+<div style="position:absolute;top:17330;left:385"><nobr>( 75, 91.10, 112, 11.80)</nobr></div>
+<div style="position:absolute;top:17330;left:534"><nobr>(0.40, 0.57, 0.90, 0.15)</nobr></div>
+<div style="position:absolute;top:17330;left:675"><nobr>(0.03, 0.03, 0.04, 0.01)</nobr></div>
+<div style="position:absolute;top:17344;left:154"><nobr>150 (5,10)</nobr></div>
+<div style="position:absolute;top:17344;left:228"><nobr>(137, 159.80, 189, 17.65)</nobr></div>
+<div style="position:absolute;top:17344;left:381"><nobr>(102, 120.70, 142, 14.44)</nobr></div>
+<div style="position:absolute;top:17344;left:534"><nobr>(0.74, 0.97, 1.48, 0.25)</nobr></div>
+<div style="position:absolute;top:17344;left:675"><nobr>(0.06, 0.07, 0.08, 0.01)</nobr></div>
+<div style="position:absolute;top:17359;left:154"><nobr>average</nobr></div>
+<div style="position:absolute;top:17359;left:281"><nobr>84.20</nobr></div>
+<div style="position:absolute;top:17359;left:434"><nobr>66.08</nobr></div>
+<div style="position:absolute;top:17359;left:582"><nobr>0.411</nobr></div>
+<div style="position:absolute;top:17359;left:723"><nobr>0.026</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:17407;left:145"><nobr>of the partitions and the merging process (we have not used MP1 and MP2 since</nobr></div>
+<div style="position:absolute;top:17429;left:145"><nobr>MP3 is better than them, see [7]). For the sake of brevity, we do not present the</nobr></div>
+<div style="position:absolute;top:17451;left:145"><nobr>results individually for everyone of the 120 polygons but grouped according to the</nobr></div>
+<div style="position:absolute;top:17472;left:145"><nobr>number of vertices of the border <b style="color:black;background-color:#ffff66">polygon</b> and the number and type of <b style="color:black;background-color:#a0ffff">holes</b>. All the</nobr></div>
+<div style="position:absolute;top:17494;left:145"><nobr>computational results have been obtained under Linux on a Pentium IV with 2.4 GHz</nobr></div>
+<div style="position:absolute;top:17516;left:145"><nobr>CPU and 1 GB memory. The codes were implemented in C++, and compiled with</nobr></div>
+<div style="position:absolute;top:17537;left:145"><nobr>GNU’s gcc, using the optimization level “-O0”. For real, vector and some interval</nobr></div>
+<div style="position:absolute;top:17559;left:145"><nobr>operations the PROFIL/BIAS library [15] was used. All the CPU times are given in</nobr></div>
+<div style="position:absolute;top:17581;left:145"><nobr>hundredth seconds.</nobr></div>
+<div style="position:absolute;top:17602;left:171"><nobr>In Tables 2, 3 and 4 are shown the results obtained with the procedures MP3,</nobr></div>
+<div style="position:absolute;top:17624;left:145"><nobr>MP4 and MP5, respectively. For everyone of the groups of polygons the minimum,</nobr></div>
+<div style="position:absolute;top:17646;left:145"><nobr>mean, maximum and standard deviation of the number of polygons of the decomposi-</nobr></div>
+<div style="position:absolute;top:17667;left:145"><nobr>tions without and with the merging process, decomposition process time and merging</nobr></div>
+<div style="position:absolute;top:17689;left:145"><nobr>process time, are given. In the last line of each table we also show the corresponding</nobr></div>
+<div style="position:absolute;top:17711;left:145"><nobr>averages when all the polygons are considered.</nobr></div>
+<div style="position:absolute;top:17732;left:171"><nobr>As we can see, any of the procedures MP3, MP4 and MP5, without or with the</nobr></div>
+<div style="position:absolute;top:17754;left:145"><nobr>merging process, produces decompositions with similar cardinality as compared to</nobr></div>
+<div style="position:absolute;top:17776;left:145"><nobr>the other ones. Without the merging process, the relative improvements are less</nobr></div>
+<div style="position:absolute;top:17797;left:145"><nobr>than 13.21% for each type of polygons, and less that 1.50% when considering all the</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:17995;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="16"><b>Page 16</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:17974;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:18038;left:357"><nobr>Table 4: Results using MP5.</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:18058;left:247"><nobr>Polygons without</nobr></div>
+<div style="position:absolute;top:18058;left:409"><nobr>Polygons with</nobr></div>
+<div style="position:absolute;top:18058;left:555"><nobr>Decomposition</nobr></div>
+<div style="position:absolute;top:18058;left:715"><nobr>Merging</nobr></div>
+<div style="position:absolute;top:18072;left:154"><nobr>Type</nobr></div>
+<div style="position:absolute;top:18072;left:251"><nobr>merging process</nobr></div>
+<div style="position:absolute;top:18072;left:404"><nobr>merging process</nobr></div>
+<div style="position:absolute;top:18072;left:584"><nobr>time</nobr></div>
+<div style="position:absolute;top:18072;left:725"><nobr>time</nobr></div>
+<div style="position:absolute;top:18087;left:154"><nobr>50</nobr></div>
+<div style="position:absolute;top:18087;left:241"><nobr>( 7, 15.30, 22, 4.10)</nobr></div>
+<div style="position:absolute;top:18087;left:395"><nobr>( 7, 13.80, 19, 3.46)</nobr></div>
+<div style="position:absolute;top:18087;left:534"><nobr>(0.00, 0.01, 0.03, 0.01)</nobr></div>
+<div style="position:absolute;top:18087;left:675"><nobr>(0.00, 0.00, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:18101;left:154"><nobr>50 (5)</nobr></div>
+<div style="position:absolute;top:18101;left:238"><nobr>( 49, 53.90, 58, 3.01)</nobr></div>
+<div style="position:absolute;top:18101;left:391"><nobr>( 39, 43.40, 48, 3.20)</nobr></div>
+<div style="position:absolute;top:18101;left:534"><nobr>(0.08, 0.09, 0.12, 0.01)</nobr></div>
+<div style="position:absolute;top:18101;left:675"><nobr>(0.01, 0.01, 0.02, 0.00)</nobr></div>
+<div style="position:absolute;top:18115;left:154"><nobr>50 (10)</nobr></div>
+<div style="position:absolute;top:18115;left:238"><nobr>( 54, 61.50, 71, 4.80)</nobr></div>
+<div style="position:absolute;top:18115;left:391"><nobr>( 45, 48.70, 53, 2.90)</nobr></div>
+<div style="position:absolute;top:18115;left:534"><nobr>(0.11, 0.13, 0.20, 0.03)</nobr></div>
+<div style="position:absolute;top:18115;left:675"><nobr>(0.01, 0.02, 0.02, 0.00)</nobr></div>
+<div style="position:absolute;top:18129;left:154"><nobr>50 (5,10)</nobr></div>
+<div style="position:absolute;top:18129;left:232"><nobr>( 93, 103.20, 116, 6.72)</nobr></div>
+<div style="position:absolute;top:18129;left:391"><nobr>( 73, 80.60, 87, 4.15)</nobr></div>
+<div style="position:absolute;top:18129;left:534"><nobr>(0.21, 0.29, 0.44, 0.08)</nobr></div>
+<div style="position:absolute;top:18129;left:675"><nobr>(0.03, 0.04, 0.04, 0.00)</nobr></div>
+<div style="position:absolute;top:18144;left:154"><nobr>100</nobr></div>
+<div style="position:absolute;top:18144;left:238"><nobr>( 21, 33.50, 44, 6.38)</nobr></div>
+<div style="position:absolute;top:18144;left:391"><nobr>( 18, 28.30, 36, 5.78)</nobr></div>
+<div style="position:absolute;top:18144;left:534"><nobr>(0.02, 0.04, 0.10, 0.02)</nobr></div>
+<div style="position:absolute;top:18144;left:675"><nobr>(0.00, 0.00, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:18158;left:154"><nobr>100 (5)</nobr></div>
+<div style="position:absolute;top:18158;left:238"><nobr>( 65, 78.10, 86, 6.82)</nobr></div>
+<div style="position:absolute;top:18158;left:391"><nobr>( 52, 61.60, 69, 5.24)</nobr></div>
+<div style="position:absolute;top:18158;left:534"><nobr>(0.12, 0.17, 0.39, 0.08)</nobr></div>
+<div style="position:absolute;top:18158;left:675"><nobr>(0.02, 0.02, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:18172;left:154"><nobr>100 (10)</nobr></div>
+<div style="position:absolute;top:18172;left:238"><nobr>( 70, 87.30, 97, 8.74)</nobr></div>
+<div style="position:absolute;top:18172;left:391"><nobr>( 57, 68.60, 80, 7.38)</nobr></div>
+<div style="position:absolute;top:18172;left:534"><nobr>(0.15, 0.21, 0.39, 0.06)</nobr></div>
+<div style="position:absolute;top:18172;left:675"><nobr>(0.02, 0.03, 0.03, 0.00)</nobr></div>
+<div style="position:absolute;top:18186;left:154"><nobr>100 (5,10)</nobr></div>
+<div style="position:absolute;top:18186;left:228"><nobr>(111, 131.80, 147, 12.48)</nobr></div>
+<div style="position:absolute;top:18186;left:385"><nobr>( 89, 102.20, 112, 8.32)</nobr></div>
+<div style="position:absolute;top:18186;left:534"><nobr>(0.27, 0.42, 0.90, 0.17)</nobr></div>
+<div style="position:absolute;top:18186;left:675"><nobr>(0.04, 0.05, 0.06, 0.01)</nobr></div>
+<div style="position:absolute;top:18200;left:154"><nobr>150</nobr></div>
+<div style="position:absolute;top:18200;left:235"><nobr>( 43, 60.90, 89, 15.56)</nobr></div>
+<div style="position:absolute;top:18200;left:388"><nobr>( 38, 49.80, 68, 10.29)</nobr></div>
+<div style="position:absolute;top:18200;left:534"><nobr>(0.04, 0.08, 0.14, 0.03)</nobr></div>
+<div style="position:absolute;top:18200;left:675"><nobr>(0.00, 0.01, 0.01, 0.00)</nobr></div>
+<div style="position:absolute;top:18214;left:154"><nobr>150 (5)</nobr></div>
+<div style="position:absolute;top:18214;left:229"><nobr>( 82, 102.90, 134, 14.65)</nobr></div>
+<div style="position:absolute;top:18214;left:391"><nobr>( 66, 80.40, 98, 9.46)</nobr></div>
+<div style="position:absolute;top:18214;left:534"><nobr>(0.15, 0.23, 0.37, 0.08)</nobr></div>
+<div style="position:absolute;top:18214;left:675"><nobr>(0.03, 0.03, 0.04, 0.00)</nobr></div>
+<div style="position:absolute;top:18229;left:154"><nobr>150 (10)</nobr></div>
+<div style="position:absolute;top:18229;left:229"><nobr>( 94, 112.20, 138, 14.76)</nobr></div>
+<div style="position:absolute;top:18229;left:385"><nobr>( 73, 89.50, 109, 12.56)</nobr></div>
+<div style="position:absolute;top:18229;left:534"><nobr>(0.20, 0.29, 0.48, 0.08)</nobr></div>
+<div style="position:absolute;top:18229;left:675"><nobr>(0.03, 0.04, 0.04, 0.00)</nobr></div>
+<div style="position:absolute;top:18243;left:154"><nobr>150 (5,10)</nobr></div>
+<div style="position:absolute;top:18243;left:228"><nobr>(141, 155.40, 184, 15.01)</nobr></div>
+<div style="position:absolute;top:18243;left:381"><nobr>(102, 119.80, 138, 12.34)</nobr></div>
+<div style="position:absolute;top:18243;left:534"><nobr>(0.37, 0.51, 0.77, 0.14)</nobr></div>
+<div style="position:absolute;top:18243;left:675"><nobr>(0.06, 0.07, 0.08, 0.01)</nobr></div>
+<div style="position:absolute;top:18258;left:154"><nobr>average</nobr></div>
+<div style="position:absolute;top:18258;left:281"><nobr>83.00</nobr></div>
+<div style="position:absolute;top:18258;left:434"><nobr>65.56</nobr></div>
+<div style="position:absolute;top:18258;left:582"><nobr>0.206</nobr></div>
+<div style="position:absolute;top:18258;left:723"><nobr>0.027</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:18306;left:145"><nobr>polygons together. With the merging process, the respective figures are 12.38% and</nobr></div>
+<div style="position:absolute;top:18328;left:145"><nobr>0.91%. Furthermore, depending on the type of polygons, one of the procedures may</nobr></div>
+<div style="position:absolute;top:18349;left:145"><nobr>give slight better results that the other two, with none of the procedures dominating</nobr></div>
+<div style="position:absolute;top:18371;left:145"><nobr>over the other two for all the types of polygons. Thus, considering the cardinality of</nobr></div>
+<div style="position:absolute;top:18393;left:145"><nobr>the partitions, the three procedures are competitive.</nobr></div>
+<div style="position:absolute;top:18414;left:171"><nobr>What we can see clearly from the results is that the merging process is very effective</nobr></div>
+<div style="position:absolute;top:18436;left:145"><nobr>at reducing the cardinality of the partitions produced by any of the procedures. For</nobr></div>
+<div style="position:absolute;top:18458;left:145"><nobr>instance, the improvement when using the merging process in the partitions obtained</nobr></div>
+<div style="position:absolute;top:18479;left:145"><nobr>with MP5 attains a considerable</nobr></div>
+<div style="position:absolute;top:18525;left:182"><nobr>Imp</nobr></div>
+</span></font>
+<font size="2" face="Times"><span style="font-size:9px;font-family:Times">
+<div style="position:absolute;top:18520;left:215"><nobr>150(5,10)</nobr></div>
+<div style="position:absolute;top:18534;left:215"><nobr>MP5,MP5+Merging <font style="font-size:15px">=</font></nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:18512;left:365"><nobr>(No.pol)<font style="font-size:9px">MP5 </font>− (No.pol)<font style="font-size:9px">MP5+Merging</font></nobr></div>
+<div style="position:absolute;top:18537;left:454"><nobr>(No.pol)<font style="font-size:9px">MP5</font></nobr></div>
+<div style="position:absolute;top:18524;left:645"><nobr>· 100 = 22.91%</nobr></div>
+<div style="position:absolute;top:18574;left:145"><nobr>for the polygons of type 150(5,10), and 21.01% when considering all the type of poly-</nobr></div>
+<div style="position:absolute;top:18596;left:145"><nobr>gons. On the other hand, the use of the merging process is not too time-consuming,</nobr></div>
+<div style="position:absolute;top:18617;left:145"><nobr>as can be seen in the last column of Tables 2, 3 and 4. Of course, depending of the</nobr></div>
+<div style="position:absolute;top:18639;left:145"><nobr>future use of the partitions, one can decide whether the use of the merging process is</nobr></div>
+<div style="position:absolute;top:18661;left:145"><nobr>suitable for his/her own purposes.</nobr></div>
+<div style="position:absolute;top:18682;left:171"><nobr>As for the CPU time employed by the algorithms (without including the merging</nobr></div>
+<div style="position:absolute;top:18704;left:145"><nobr>processes), MP5 is the faster procedure, followed by MP4, and this in turn followed</nobr></div>
+<div style="position:absolute;top:18726;left:145"><nobr>by MP3. In this case, for all the type of polygons MP5 gave the best results, followed</nobr></div>
+<div style="position:absolute;top:18747;left:145"><nobr>by MP4, which in turn dominated over MP3. When considering all the polygons, the</nobr></div>
+<div style="position:absolute;top:18769;left:145"><nobr>improvement when using MP5 as contrasted with MP4 attains a considerable 43.73%,</nobr></div>
+<div style="position:absolute;top:18791;left:145"><nobr>and as compared with MP3 a 54.34%; on the other hand, the improvement of MP4 as</nobr></div>
+<div style="position:absolute;top:18812;left:145"><nobr>compared with MP3 is 18.85%. Something similar can be seen when we consider both</nobr></div>
+<div style="position:absolute;top:18834;left:145"><nobr>the time of the decomposition process and the time of the merging process, since the</nobr></div>
+<div style="position:absolute;top:18856;left:145"><nobr>time for the merging process is the same for all the procedures. The reason for which</nobr></div>
+<div style="position:absolute;top:18877;left:145"><nobr>MP5 is faster than MP4, and this in turn faster than MP3 can be found in the way</nobr></div>
+<div style="position:absolute;top:18899;left:145"><nobr>we have done the implementation of the algorithms: changing the orientation from</nobr></div>
+<div style="position:absolute;top:18921;left:145"><nobr>clockwise to counter-clockwise, or viceversa, requires changes in the handling of list,</nobr></div>
+<div style="position:absolute;top:18942;left:145"><nobr>and thus, the less times we change the orientation, the better.</nobr></div>
+<div style="position:absolute;top:18964;left:171"><nobr>Finally, we want to point out that the introduction of <b style="color:black;background-color:#a0ffff">holes</b> does not make the</nobr></div>
+<div style="position:absolute;top:18986;left:145"><nobr>decomposition problem more difficult (more time consuming) for our algorithms. The</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:19183;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="17"><b>Page 17</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:19162;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:19216;left:145"><nobr>key factor is the number of notches in the <b style="color:black;background-color:#ffff66">polygon</b>. A linear regression study reveals</nobr></div>
+<div style="position:absolute;top:19238;left:145"><nobr>that the CPU time employed by the algorithms in the decomposition process depends</nobr></div>
+<div style="position:absolute;top:19260;left:145"><nobr>linearly of the number of notches of the <b style="color:black;background-color:#ffff66">polygon</b>, with a squared correlation coefficient</nobr></div>
+<div style="position:absolute;top:19281;left:145"><nobr>of 0.9374 (for the case of MP5, and with similar figures for the other procedures).</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:19335;left:145"><nobr>6 Conclusions</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:19381;left:145"><nobr>In this paper we have presented two new procedures, MP4 and MP5, for decomposing</nobr></div>
+<div style="position:absolute;top:19402;left:145"><nobr>a <b style="color:black;background-color:#ffff66">polygon</b> without <b style="color:black;background-color:#a0ffff">holes</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons without adding new vertices, which are</nobr></div>
+<div style="position:absolute;top:19424;left:145"><nobr>slight modifications of the procedure MP3 presented in [7]. Furthermore, all those</nobr></div>
+<div style="position:absolute;top:19446;left:145"><nobr>procedures have been modified so that they can decompose quasi-in-simple polygons.</nobr></div>
+<div style="position:absolute;top:19467;left:145"><nobr>Using them, we have presented algorithms for the decomposition of polygons with</nobr></div>
+<div style="position:absolute;top:19489;left:145"><nobr><b style="color:black;background-color:#a0ffff">holes</b> into <b style="color:black;background-color:#99ff99">convex</b> polygons. The idea of the algorithms is to apply any of the mentioned</nobr></div>
+<div style="position:absolute;top:19511;left:145"><nobr>procedures to the border polygon, and if in the process a diagonal is intersected by</nobr></div>
+<div style="position:absolute;top:19532;left:145"><nobr>a hole, then the hole is absorbed by the border polygon, producing a quasi-in-simple</nobr></div>
+<div style="position:absolute;top:19554;left:145"><nobr>polygon. Furthermore, the procedure for removing inessential diagonals described in</nobr></div>
+<div style="position:absolute;top:19576;left:145"><nobr>[7] has also been adapted to handle decompositions of polygons with holes.</nobr></div>
+<div style="position:absolute;top:19597;left:171"><nobr>Computational experiments show that the three procedures produce partitions</nobr></div>
+<div style="position:absolute;top:19619;left:145"><nobr>with similar cardinality, although MP5 is faster than MP4 in our implementation,</nobr></div>
+<div style="position:absolute;top:19641;left:145"><nobr>and this in turn is faster than MP3. It is recommended the use of the merging</nobr></div>
+<div style="position:absolute;top:19662;left:145"><nobr>process since it is a quick process and can reduce the number of polygons in the</nobr></div>
+<div style="position:absolute;top:19684;left:145"><nobr>partitions considerably. Moreover, since after the merging process the partitions do</nobr></div>
+<div style="position:absolute;top:20156;left:330"><nobr>Figure 8: Decomposition of Finland.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:20371;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="18"><b>Page 18</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:20350;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:20404;left:145"><nobr>not contain unnecessary edges it is theoretically guaranteed that they are within four</nobr></div>
+<div style="position:absolute;top:20426;left:145"><nobr>times the optimal solution, although the computational studies carried out show that</nobr></div>
+<div style="position:absolute;top:20448;left:145"><nobr>the performance is in practice much better.</nobr></div>
+<div style="position:absolute;top:20469;left:171"><nobr>For constrained location problems, where using optimization techniques such as</nobr></div>
+<div style="position:absolute;top:20491;left:145"><nobr>branch-and-bound the location problem has then to be solved in some (usually not all)</nobr></div>
+<div style="position:absolute;top:20513;left:145"><nobr>of the subpolygons, we recommend the use of the procedure MP5 with the merging</nobr></div>
+<div style="position:absolute;top:20534;left:145"><nobr>process. As a case study, in Fig.8 it is presented the decomposition given by that</nobr></div>
+<div style="position:absolute;top:20556;left:145"><nobr>algorithm when the polygon considered is a non-convex polygon with 355 vertices,</nobr></div>
+<div style="position:absolute;top:20578;left:145"><nobr>184 of them notches, approximating the shape of Finland, a region known to have</nobr></div>
+<div style="position:absolute;top:20599;left:145"><nobr>many lakes (holes). The number of polygons of the partition is 154 and the CPU time</nobr></div>
+<div style="position:absolute;top:20621;left:145"><nobr>was 7.7 milliseconds.</nobr></div>
+<div style="position:absolute;top:20661;left:145"><nobr>Acknowledgments</nobr></div>
+<div style="position:absolute;top:20691;left:145"><nobr>This work has been supported by the Ministry of Science and Technology of Spain</nobr></div>
+<div style="position:absolute;top:20713;left:145"><nobr>under the research projects BEC2002-01026 (J. Fernández, B. Tóth and B. Pelegrın)</nobr></div>
+<div style="position:absolute;top:20735;left:145"><nobr>and TIC2003-05982-C05-03 (L. Cánovas), in part financed by the European Regional</nobr></div>
+<div style="position:absolute;top:20756;left:145"><nobr>Development Fund (ERDF).</nobr></div>
+</span></font>
+<font size="4" face="Times"><span style="font-size:23px;font-family:Times">
+<div style="position:absolute;top:20810;left:145"><nobr>References</nobr></div>
+</span></font>
+<font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:20855;left:145"><nobr>[1] Chazelle, B. and Dobkin, D.P., “Optimal Convex Decompositions”, in: Computa-</nobr></div>
+<div style="position:absolute;top:20877;left:164"><nobr>tional Geometry, Elsevier Science Publishers, North Holland, 1985, 63–133.</nobr></div>
+<div style="position:absolute;top:20914;left:145"><nobr>[2] Drezner, Z., (Ed.) Facility Location. A Survey of Applications and Methods,</nobr></div>
+<div style="position:absolute;top:20936;left:164"><nobr>Springer Series in Operations Research, Springer, New York, 1995.</nobr></div>
+<div style="position:absolute;top:20972;left:145"><nobr>[3] Drezner, Z. and Hamacher, H. (Eds.), Facility Location: Applications and Theory,</nobr></div>
+<div style="position:absolute;top:20994;left:164"><nobr>Springer Verlag, Berlin, 2002.</nobr></div>
+<div style="position:absolute;top:21030;left:145"><nobr>[4] Feng, H. and Pavlidis, T., “Decomposition of polygons into simpler components:</nobr></div>
+<div style="position:absolute;top:21052;left:164"><nobr>feature generation for syntactic pattern recognition”, IEEE Transactions on Com-</nobr></div>
+<div style="position:absolute;top:21074;left:164"><nobr>puters 24 (1975) 636–650.</nobr></div>
+<div style="position:absolute;top:21110;left:145"><nobr>[5] Fernández, J., Nuevas técnicas para el dise˜no y resolución de problemas de lo-</nobr></div>
+<div style="position:absolute;top:21132;left:164"><nobr>calización continua (New techniques for design and solution of continuous location</nobr></div>
+<div style="position:absolute;top:21154;left:164"><nobr>models, Ph.D. Dissertation Thesis, Dpto. Estadıstica e Investigación Operativa,</nobr></div>
+<div style="position:absolute;top:21175;left:164"><nobr>Universidad de Murcia, Murcia, Spain (in Spanish), 1999.</nobr></div>
+<div style="position:absolute;top:21212;left:145"><nobr>[6] Fernández, J., Cánovas, L. and Pelegrın, B., “Decomposing a polygonal region</nobr></div>
+<div style="position:absolute;top:21234;left:164"><nobr>with holes into convex polygonal subregions”, presented at the X meeting of the</nobr></div>
+<div style="position:absolute;top:21255;left:164"><nobr>Euro Working Group on Locational Analysis (EWGLA10), Murcia, Spain, 1998.</nobr></div>
+<div style="position:absolute;top:21292;left:145"><nobr>[7] Fernández, J., Cánovas, L. and Pelegrın, B., “Algorithms for the decomposition</nobr></div>
+<div style="position:absolute;top:21314;left:164"><nobr>of a polygon into convex polygons”, European Journal of Operational Research 121</nobr></div>
+<div style="position:absolute;top:21335;left:164"><nobr>(2000) 330–342.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:21559;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="19"><b>Page 19</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:21538;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:21592;left:145"><nobr>[8] Fernández, J., Cánovas, L. and Pelegrın, B., “DECOPOL - Codes for decomposing</nobr></div>
+<div style="position:absolute;top:21614;left:164"><nobr>a polygon into convex subpolygons”, European Journal of Operational Research</nobr></div>
+<div style="position:absolute;top:21636;left:164"><nobr>(O.R.S.E.P. section) 102 (1997) 242–243.</nobr></div>
+<div style="position:absolute;top:21672;left:145"><nobr>[9] Fernández, J., Tóth, B., Cánovas, L. and Pelegrın, B., “One hundred and twenty</nobr></div>
+<div style="position:absolute;top:21694;left:164"><nobr>nonconvex polygons with holes and algorithms for decomposing them”, Internal</nobr></div>
+<div style="position:absolute;top:21716;left:164"><nobr>Report (2004).</nobr></div>
+<div style="position:absolute;top:21752;left:145"><nobr>[10] Held, M., “FIST: Fast Industrial-Strength Triangulation of Polygons”, Algorith-</nobr></div>
+<div style="position:absolute;top:21774;left:164"><nobr>mica 30 (2001) 563–596.</nobr></div>
+<div style="position:absolute;top:21811;left:145"><nobr>[11] Hertel, S. and Mehlhorn, K.. “Fast triangulation of simple polygons”, in: Proc.</nobr></div>
+<div style="position:absolute;top:21832;left:164"><nobr>4th Internat. Conf. Found. Comput. Theory, in Lecture Notes in Computer Science,</nobr></div>
+<div style="position:absolute;top:21854;left:164"><nobr>Vol. 158, Springer-Verlag, New York, 1983, 207–218.</nobr></div>
+<div style="position:absolute;top:21890;left:145"><nobr>[12] Keil, J.M., “Decomposing a polygon into simpler components”, SIAM Journal</nobr></div>
+<div style="position:absolute;top:21912;left:164"><nobr>on Computing 14 (1985) 799–817.</nobr></div>
+<div style="position:absolute;top:21949;left:145"><nobr>[13] Keil, J.M., “Polygon decomposition”, in: Handbook of Computational Geometry</nobr></div>
+<div style="position:absolute;top:21970;left:164"><nobr>(Eds. J. R. Sack and J. Urrutia), North-Holland, 2000, 491–518.</nobr></div>
+<div style="position:absolute;top:22007;left:145"><nobr>[14] Keil, J.M. and Snoeyink, J., “On the time bound for convex decomposition of</nobr></div>
+<div style="position:absolute;top:22029;left:164"><nobr>simple polygons”, International Journal of Computational Geometry and Applica-</nobr></div>
+<div style="position:absolute;top:22050;left:164"><nobr>tions 12 (2002) 181–192.</nobr></div>
+<div style="position:absolute;top:22087;left:145"><nobr>[15] Knüppel O., “PROFIL/BIAS - A Fast Interval Library”, Computing 53 (1993)</nobr></div>
+<div style="position:absolute;top:22109;left:164"><nobr>277–287.</nobr></div>
+<div style="position:absolute;top:22145;left:145"><nobr>[16] Lingas, A., “The power of non-rectilinear holes”, in: Automata, Languages and</nobr></div>
+<div style="position:absolute;top:22167;left:164"><nobr>Programming (Aarhus, 1982), Springer, Berlin-New York, 1982, 369–383.</nobr></div>
+<div style="position:absolute;top:22203;left:145"><nobr>[17] Lipski, W., Lodi, E., Luccio, F., Mugnai, C. and Pagli, L., “On two-dimensional</nobr></div>
+<div style="position:absolute;top:22225;left:164"><nobr>data organization II”, Fundamenta Informaticae 2 (1979) 245–260.</nobr></div>
+<div style="position:absolute;top:22262;left:145"><nobr>[18] Love, R.F., Morris, J.G. and Wesolowsky, G.O., Facilities Location: Models and</nobr></div>
+<div style="position:absolute;top:22283;left:164"><nobr>Methods, North Holland, New York, 1988.</nobr></div>
+<div style="position:absolute;top:22320;left:145"><nobr>[19] Narkhede, A. and Manocha D., “Fast polygon triangulation based on Seidel’s</nobr></div>
+<div style="position:absolute;top:22342;left:164"><nobr>Algorithm”, in: Graphics Gems V (Ed. A. W. Paeth), Academic Press, 1995, 394–</nobr></div>
+<div style="position:absolute;top:22363;left:164"><nobr>397. Available at http://www.cs.unc.edu/~dm/CODE/GEM/chapter.html</nobr></div>
+<div style="position:absolute;top:22400;left:145"><nobr>[20] Newman, W. and Sproull, K.J., Principles of interactive computer graphics, 2nd</nobr></div>
+<div style="position:absolute;top:22422;left:164"><nobr>edition, McGraw-Hill, New York, 1979.</nobr></div>
+<div style="position:absolute;top:22458;left:145"><nobr>[21] O’Rourke, J., Art Gallery Theorems and Algorithms, International Series of</nobr></div>
+<div style="position:absolute;top:22480;left:164"><nobr>Monographs on Computes Science, Oxford University Press, New York, 1987.</nobr></div>
+<div style="position:absolute;top:22517;left:145"><nobr>[22] Preparata, F.P. and Shamos, M.I., Computational Geometry: an Introduction,</nobr></div>
+<div style="position:absolute;top:22538;left:164"><nobr>Springer-Verlag, New York, 1985. Corrected and expanded second printing, 1988.</nobr></div>
+</span></font>
+
+<div style="position:absolute;top:22747;left:0"><hr><table border="0" width="100%"><tbody><tr><td bgcolor="eeeeee" align="right"><font face="arial,sans-serif"><a name="20"><b>Page 20</b></a></font></td></tr></tbody></table></div><font size="3" face="Times"><span style="font-size:15px;font-family:Times">
+<div style="position:absolute;top:22726;left:778"><nobr></nobr></div>
+<div style="position:absolute;top:22780;left:145"><nobr>[23] Schachter, B., “Decomposition of polygons into convex sets”, IEEE Transactions</nobr></div>
+<div style="position:absolute;top:22802;left:164"><nobr>on Computers 27 (1978) 1078–1082.</nobr></div>
+<div style="position:absolute;top:22839;left:145"><nobr>[24] Seidel, R., “A simple and fast incremental randomized algorithm for computing</nobr></div>
+<div style="position:absolute;top:22860;left:164"><nobr>trapezoidal decompositions and for triangulating polygons”, Computational Geom-</nobr></div>
+<div style="position:absolute;top:22882;left:164"><nobr>etry: Theory and Applications 1 (1991) 51–64.</nobr></div>
+</span></font>
+
+
+</div></body></html>

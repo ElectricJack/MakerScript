@@ -1,0 +1,27 @@
+
+Build System:
+  - Finish mac osx build
+  - Finish linux build
+  - Refactor build scripts and make less redundant
+
+Framework:
+  - Implement test harness for command system
+  - Implement documentation generation from command definitions
+  - Implement file menu generation from command definitions
+  - Implement context menu generation from command definitions
+
+Build System:
+  - Extend full-build to generate documentation for each platform
+
+Website:
+  - Set up payment system with PayPal
+  
+Framework:  
+  - Add commands for building makerscript's UI and binding to commands/scripts
+  - Keystroke scripting
+  - Resource Database Access:
+    - TypeModel
+    - ScriptModel
+    - ToolModel
+    - PartModel
+    - ProjectModel

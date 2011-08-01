@@ -1,0 +1,13 @@
+Define Material
+
+Define Stock Size
+
+Define Coordinates
+
+Define Tool
+
+Define Feeds and Speeds
+
+Simulate Machining
+
+Post Process

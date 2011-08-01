@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<project name="dist-osx" default="clean_app" basedir="../../">
+
+<!--
+  <property name = "platform"           value    = "osx"                      />  
+  <property name = "lib.platform.dir"   location = "${lib.dir}/${platform}"   />
+  <property name = "dist.platform.dir"  location = "${dist.dir}/${platform}"  />
+-->
+  <property name = "jarbundler.dir"   location = "${tools.dir}/jarbundler-2.2.0" />
+  <property name = "jarbundler.name"  value    = "jarbundler-2.2.0"  />
+
+  
+  <!-- ================================================================================ -->
+  <taskdef name      = "jarbundler"
+           classname = "net.sourceforge.jarbundler.JarBundler"
+           classpath = "${jarbundler.dir}/${jarbundler.name}.jar" />
+  
+  <!-- ================================================================================ -->
+  <target name="link_app" >
+    <jarbundler dir              = "${dist.dir}"
+                name             = "${ant.project.name}"
+                mainclass        = "makerscript.ScriptableMill"
+                bundleid         = "makerscript"
+                workingdirectory = "."
+                jvmversion       = "1.5+" >
+                <!--infostring       = ""
+                icon             = "" -->
+                
+      <jarfileset      dir="${dist.platform.dir}" includes="**/*.jar" />
+      <resourcefileset dir="${dist.platform.dir}" includes="**/*.*" excludes="**/*.jar" />
+
+    </jarbundler>
+  </target>
+  
+  <!-- ================================================================================ -->
+  <target name="finish" depends="link_app">
+    <copy      todir            = "${dist.platform.dir}"
+               includeEmptyDirs = "false" >
+      <fileset dir              = "${res.appfiles.dir}"  />
+    </copy>
+    <delete file = "${dist.platform.dir}/${ant.project.name}.jar" failonerror = "false" />
+    <!--<delete dir  = "${dist.platform.dir}"                         failonerror = "false" />-->
+  </target>
+
+  
+</project>

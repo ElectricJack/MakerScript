@@ -1,0 +1,3 @@
+load "pottery_wheel_layout.dae"
+
+target coord 10 10 0 

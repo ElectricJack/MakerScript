@@ -1,0 +1,56 @@
+
+Features I need to have:
+  - Pocketing
+  
+  - Profiling
+  - Facing
+  - Engraving
+  
+  - Hole Making
+  - Thread Milling 
+
+  - V-Carving (Using a V shaped bit with different depths to cut inverse bevels for shapes)
+  - V-Carve Roughing ???
+  - Chamfering ??
+
+  http://www.youtube.com/watch?v=Ks3j7AArKqg
+    Horizontal Re-Roughing
+    Plunge Roughing
+    Plunge Re-roughing
+    Projection Pocketing
+    3D Offset Profiling
+    3D Offset Pocketing
+    Pencil Tracing
+    Valley Re-Machining
+    Plateau Machining
+    Steep Area Parallel Machining
+    Horizontal Hill Machining
+    Curve Machining
+    Between 2 Curves Machining
+
+  
+  - Re-Machining ??
+
+  - Trochoidal Machining (Almost already implemented)
+      http://en.wikipedia.org/wiki/Trochoid
+  
+  
+===============================================================
+Maybees:
+
+  - Backlash Compensation? Seems like a feature for the controller
+  - Feed rate accel/decel clamp? Seems like a feature for the controller
+  
+===============================================================
+  - Visual Mill
+      Attractive looking
+  - Vetric
+      Looks like a bunch of producs, from 
+  - Surf cam 2-axis
+      Pocket and finish cavities with multiple island heights and tapered sidewalls.
+      Advanced strategies for face milling, groove, corner round, and chamfering.
+      Support for 4- and 5-Axis rotary indexing and high speed machining.
+      Rest machining detects and machines areas left by previous cutting tool.
+      Advanced multi-tool hole processing with intelligent pattern sorting
+      Tapered thread milling with helical entry/exit.
+      Associative toolpath updates the toolpath of modified part geometry.

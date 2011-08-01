@@ -1,0 +1,36 @@
+
+  - Export top and bottom layers to bitmap at 600 dpi
+  - Send each layer through protrace:
+      potrace.exe -s -n layer_name.bmp
+  - Open each layer in inkscape (with each layer):
+    - Select All (Ctrl-A)
+    - Object -> Ungroup (CTRL-SHIFT-G)
+    - Delete outer boarder
+    
+    - Select All (Ctrl-A)
+    
+    - Left click red x in bottom left corner to set fill to none
+    - Right click on black and select "Set stroke" to set stroke to black
+    - Double click on the black stroke box in bottom left to open Fill and stroke pane on right
+    - Select the stroke style tab
+    - Set stoke width to 0.5
+    
+    - Layer -> Add Layer (CTRL-SHIFT-N)
+      - Layer name: drill holes
+    - Path -> Break Apart (CTRL-SHIFT-K)
+    
+    - Now we need to move all the drill holes to the "drill holes" layer, to do so:
+      - Manually select all the internal drill holes ( I generally do this in steps so I don't lose my selection )
+      - With each set of holes selected:
+        - Move the selection to the "drill holes" layer (SHIFT-Page Down) to move to layer below
+        - Deselect
+        - Select All
+        - Change fill to black and stroke to none (Or set the "drill holes" layer to invisible)
+        - Good idea to save your changes as you go!
+      - Keep doing this until all holes are black, and on the "drill holes" layer
+    
+    - Save (CTRL-S)
+    - Save as (CTRL-SHIFT-S)
+      - Select "desktop cutting plotter (R13) (*.dxf)" for the file type
+    
+    

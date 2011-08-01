@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project name="MakerScript" default="build_win64" basedir="../../">
+  <description>MakerScript: Digital to analog and back, maker-style!</description>
+  
+
+  <property name = "src.dir"            location = "src"                      />
+  <property name = "build.dir"          location = "build"                    />
+  <property name = "lib.dir"            location = "libs"                     />
+  <property name = "jar.dir"            location = "jar"                      />
+  <property name = "dist.dir"           location = "app"                      />
+  <property name = "res.dir"            location = "res"                      /> 
+  <property name = "tools.dir"          location = "tools"                    />
+  
+  <property name = "res.appfiles.dir"   location = "${res.dir}/files/app"     /> 
+  <property name = "res.usrfiles.dir"   location = "${res.dir}/files/usr"     />
+  <property name = "res.java.dir"       location = "${res.dir}/java"          />
+  <property name = "launch4j.dir"       location = "tools/launch4j"           />
+  <property name = "manifest.file"      location = "${res.dir}/build/manifest.mf"   />
+  
+  
+  <!-- ================================================================================ -->  
+  <import file="ant-build-compile.xml" as="compile" />
+  <import file="ant-build-win32.xml"   as="dist-win32" />
+  <import file="ant-build-win64.xml"   as="dist-win64" />
+  <import file="ant-build-osx.xml"     as="dist-osx" />
+
+  <!-- ================================================================================ -->
+  <target name="build_win32" depends="compile.win32,dist-win32.finish">
+  </target>
+  
+  <target name="build_win64" depends="compile.win64,dist-win64.finish">
+  </target>
+  
+  <target name="build_osx" depends="compile.win32,dist-osx.finish">
+  </target>
+  
+  <target name="build_all" depends="build_win32,build_win64,build_osx">
+  </target>
+  
+</project>

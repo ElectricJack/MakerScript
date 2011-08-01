@@ -1,0 +1,99 @@
+<html>
+	<head>
+		<title>ScriptableMill - A solution for processing a variety of .dxf files into 3 axis milling machine-specific GCode</title>
+		<style>
+		body {
+			font-family: sans-serif;
+		}
+		table {
+			font-family: sans-serif;
+			font-size: 12px;
+		}
+		td {
+			padding: 5px;
+		}
+		#content {
+			width: 1020px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		</style>
+	</head>
+	<body>
+	<div id="content">
+		<h1>ScriptableMill</h1>
+		<h3>A solution for processing a variety of .dxf files into 3 axis milling machine-specific GCode</h3>
+		<p>ScriptableMill was written to fulfill a variety of needs I had for a CAM program that could turn dxf files I crafted in Inkscape, into runnable g-code for my 3 axis CNC mill. Originally I had design the system around a GUI like many other CAM programs out there, but being a programmer (and a stickler for good UI) it was quickly becoming too much work to maintain, and didn't provide precise enough control. Additionally, I found it diffcult to determine where problems were occuring in the process of converting my cad files into runnable g-code. 
+		</p>
+		<p>Since I rewrote the program to use a command-based interface, it removed the requirement to write complicated user interface code. Additionally, the intermediate text file format and the coresponding command file is much easier to follow and debug, and g-code can be regenerated on the fly for use by <a href="http://www.machsupport.com/">Mach3</a> and <a href="http://www.linuxcnc.org/">EMC2</a>.</p>
+		
+		<table>
+			<colgroup>
+			<col width=100px />
+			<col width=120px />
+			<col width=250px />
+			<col width=200px />
+			<col width=350px />
+			</colgroup>
+			<tr><td><h3>Command</h3></td><td><h3>Sub-command</h3></td><td><h3>Optional parameters</h3></td><td><h3>Example</h3></td><td><h3>Description</h3></td></tr>
+			
+			<tr><td><strong>save</strong></td><td>&nbsp;</td><td>[filename without spaces]</td><td><pre>importDXF myFile.dxf<br />clean<br />save myProcessedFile.txt</pre></td><td>This command saves the currently working layer to disk for later use. The format is a simple text based format containing collections of 3D points. It's designed to be as simple as possible for easy debugging.</td></tr>
+			
+			<tr><td><strong>load</strong></td><td>&nbsp;</td><td>[filename without spaces]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />set feedRate 400<br />cutAlongPaths<br />display</pre></td><td>This command loads the path file into a new layer and sets it as the currently working layer.</td></tr>
+			
+			<tr><td><strong>importDXF</strong></td><td>&nbsp;</td><td>[filename without spaces]</td><td><pre>importDXF myFile.dxf<br />select path 0<br />set feedRate 400<br />cutAlongPaths<br />display</pre></td><td>This command loads a dxf file and converts it into the program's internal path format.</td></tr>
+			
+			<tr><td><strong>clean</strong></td><td>&nbsp;</td><td>&nbsp;</td><td><pre>importDXF myFile.dxf<br />clean<br />select path 0<br />set feedRate 400<br />cutAlongPaths<br />display</pre></td><td>This command cleans the loaded path file by merging as many line segments as possible into paths. It removes duplicate points and empty paths. In most cases you will want to clean your DXF files after import, before saving them to the simple path format.</td></tr>
+			
+			<tr><td><strong>select</strong></td><td><strong>path</strong></td><td>[0 to layer's path count-1]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />select path 1<br />display</pre></td><td>This program adds a path from the current working layer into the selection. You can add as many paths from any layers into the selection. Many commands only operate on what's currently selected, providing a system for selectively batching operations. This is one of the most commonly used commands.</td></tr>
+			
+			<tr><td><strong>select</strong></td><td><strong>layer</strong></td><td>[0 to loaded layer count-1]</td><td><pre>load myProcessedFile00.txt<br />select path 0<br />load myProcessedFile01.txt<br />select path 0<br />select layer 0<br />select path 1<br />display</pre></td><td>This command sets the active working layer. A new layer is created each time the <strong>load</strong> command or <strong>importDXF</strong> command is called. This makes it possible to run commands on paths from different layers. To do so you would select some paths from the active layer, then switch to a different layer with this command and selection some additional paths. It is important to note that paths are indexed from 0 to the number of paths - 1 in EACH layer. So duplicate indexes are valid between separate layers.</td></tr>
+			
+			<tr><td><strong>select</strong></td><td><strong>all</strong></td><td>&nbsp;</td><td><pre>importDXF myFile.dxf<br />clean<br />select all<br />offset x 10<br />offset y 10<br />save myProcessedFile.txt<br />display</pre></td><td>Select all will add all paths from the current working layer into the selection. This is useful for quickly applying commands to all paths in a layer.</td></tr>
+			
+			<tr><td><strong>select</strong></td><td><strong>none</strong></td><td>&nbsp;</td><td><pre>load myProcessedFile.txt<br \>select all<br \>resize x 100.0<br \>resize y 100.0<br \>select none<br /><br \>select layer 0<br />mirror x<br />display</pre></td><td>This command clears the current selection. In this example it is used to clear the selection after resizing everything in the current working layer to 10cm by 10cm, and then selecting the first layer and mirroring it along the x axis. (across the y/z plane)</td></tr>
+			
+			<tr><td><strong>combine</strong></td><td><strong>layers</strong></td><td>[first layer index] [second layer index]</td><td><pre>load myProcessedFile00.txt<br />load myProcessedFile01.txt<br />combine layers 0 1<br />save myCombinedFile.txt</pre></td><td>This command adds all the paths from the second layer onto the end of first layer. It then proceeds to remove the second layer, and set the first layer as the active working layer. Both indices should be provided as an integer ranging from 0 to the total number of layers - 1.</td></tr>
+			
+			<tr><td><strong>set</strong></td><td><strong>feedRate</strong></td><td>[speed in milimeters per minute]</td><td><pre>set feedRate 400</pre></td><td>This command sets the speed the machine should travel when performing cuts. This is only applied to the currently selected paths. To apply it to all paths in a layer, first select all, then set the feed rate.</td></tr>
+			
+			<tr><td><strong>set</strong></td><td><strong>x</strong></td><td>[x value in milimeters]</td><td><pre>load myProcessedFile.txt<br \>select all<br \>set x 10.5<br \>display</pre></td><td>This command sets the x value for all paths in the selection. This is equivalent to an orthogonal projection along the x axis to the value provided.</td></tr>
+			<tr><td><strong>set</strong></td><td><strong>y</strong></td><td>[y value in milimeters]</td><td><pre>load myProcessedFile.txt<br \>select all<br \>set y -2.5<br \>display</pre></td><td>This command sets the y value for all paths in the selection. This is equivalent to an orthogonal projection along the y axis to the value provided.</td></tr>
+			<tr><td><strong>set</strong></td><td><strong>z</strong></td><td>[z value in milimeters]</td><td><pre>load myProcessedFile.txt<br \>select all<br \>set z 20.5<br \>display</pre></td><td>This command sets the z value for all paths in the selection. This is equivalent to an orthogonal projection along the z axis to the value provided.</td></tr>
+			
+			<tr><td><strong>set</strong></td><td><strong>jogRate</strong></td><td>[speed in milimeters per minute]</td><td><pre>set jogRate 1200</pre></td><td><p>This command sets the speed the machine should travel at when jogging between cuts. This only applies if syncronized jogging is enabled. Otherwise the machine will travel at it's default maximum speed along each axis until it reaches the destination.</p></td></tr>
+
+			<tr><td><strong>offset</strong></td><td><strong>x</strong></td><td>[value in milimeters]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />offset x 100<br />display</pre></td><td>Offsets a selection along the x axis by the specified amount</td></tr>
+			
+			<tr><td><strong>offset</strong></td><td><strong>y</strong></td><td>[value in milimeters]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />offset y 100<br />display</pre></td><td>Offsets a selection along the y axis by the specified amount</td></tr>
+			
+			<tr><td><strong>offset</strong></td><td><strong>z</strong></td><td>[value in milimeters]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />offset z -10<br />display</pre></td><td>Offsets a selection along the z axis by the specified amount</td></tr>
+			
+			<tr><td><strong>resize</strong></td><td><strong>x</strong></td><td>[New size of the selection along x axis]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />resize x 100<br />display</pre></td><td>Resize a selection along the x axis to the specified value. This command calculates the original size along the x axis and scales up the entire selection to fit the new size. You do not need to worry about the selections location, it will maintain it's position along the x axis. The size should be specified as a real value in milimeters.</td></tr>
+			
+			<tr><td><strong>resize</strong></td><td><strong>y</strong></td><td>[New size of the selection along y axis]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />resize y 100<br />display</pre></td><td>Resize a selection along the y axis to the specified value. This command calculates the original size along the y axis and scales up the entire selection to fit the new size. You do not need to worry about the selections location, it will maintain it's position along the y axis. The size should be specified as a real value in milimeters.</td></tr>
+			
+			<tr><td><strong>resize</strong></td><td><strong>z</strong></td><td>[New size of the selection along z axis]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />resize z 20<br />display</pre></td><td>Resize a selection along the z axis to the specified value. This command calculates the original size along the z axis and scales up the entire selection to fit the new size. You do not need to worry about the selections location, it will maintain it's position along the z axis. The size should be specified as a real value in milimeters.</td></tr>
+			
+			<tr><td><strong>mirror</strong></td><td><strong>x</strong></td><td>&nbsp;</td><td><pre>load myProcessedFile.txt<br />select all<br />mirror x<br />display</pre></td><td>Flips an entire selection along the x axis around the center of the selection. (To maintain the selection's position.) This is useful if you want to cut the inverse of a group of paths, or in situations where the machine's coordinate system is different than the modeling program's</td></tr>
+			
+			<tr><td><strong>mirror</strong></td><td><strong>y</strong></td><td>&nbsp;</td><td><pre>load myProcessedFile.txt<br />select all<br />mirror y<br />display</pre></td><td>Flips an entire selection along the y axis around the center of the selection. (To maintain the selection's position.) This is useful if you want to cut the inverse of a group of paths, or in situations where the machine's coordinate system is different than the modeling program's</td></tr>
+			
+			<tr><td><strong>mirror</strong></td><td><strong>z</strong></td><td>&nbsp;</td><td><pre>load myProcessedFile.txt<br />select all<br />mirror z<br />display</pre></td><td>Flips an entire selection along the z axis around the center of the selection. (To maintain the selection's position.) This is useful if you want to cut the inverse of a group of paths, or in situations where the machine's coordinate system is different than the modeling program's</td></tr>
+
+			<tr><td><strong>flip</strong></td><td>&nbsp;</td><td>&nbsp;</td><td><pre>load myProcessedFile.txt<br />select path 0<br />flip<br />cutAroundPaths 2.0<br />display</pre></td><td>Flips the normals of any selected paths. Normals are denoted by little red lines perpendicular to the path. (You can think of normals as arrows pointing to the side of the path you wish to cut) This sometimes needs to be used if a cad program exports a path in the wrong order.</td></tr>
+			
+			<tr><td><strong>jogToPath</strong></td><td>&nbsp;</td><td>[index of the path to jog to]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />cutAroundPaths 2.0<br />select none<br />jogToPath 1<br />select path 1<br />select path 2<br />cutAlongPaths<br />display</pre></td><td><strong>jogToPath</strong> takes care of generating a safe movement path between cuts. It always moves the tool to the origin along the z axis first, then interpolates to the first point in the path specified. This is only required between cuts of different selections. When more than one path is selected and cut using either the <strong>cutAroundPaths</strong> command or the <strong>cutAlongPaths</strong> command, jogToPath will automatically be performed between cuts.</td></tr>
+			
+			<tr><td><strong>cutAroundPaths</strong></td><td>&nbsp;</td><td>[distance from path along normal]</td><td><pre>load myProcessedFile.txt<br />select path 0<br />cutAroundPaths 2.0<br />display</pre></td><td>This is currently one of the most useful commands in this suite. <strong>cutAlongPaths</strong> will generate a cutting path that is offset along the normal of the path over all of the selected paths by a specified amount.<br />If you have a tool with a radius of  2 milimeters, you can cut around the path 2 milimeters away and know that you're final shape will be exactly the path described in the cad file. Additionally, you can provide sequential offsets to pocket convex paths. (Concave paths still work however intersections are not resolved on non-adjacent overlapping paths so care must be taken by the user to verify acurate pathing.) If a selected path's normals are facing the wrong direction for this command, just call the <strong>flip</strong> command first to change their orientation.</td></tr>
+			
+			<tr><td><strong>cutAlongPaths</strong></td><td>&nbsp;</td><td>&nbsp;</td><td><pre>load myProcessedFile.txt<br />select all<br />cutAlongPaths<br />display</pre></td><td><strong>cutAlongPaths</strong> does exactly that... it follows the exact points as described in the cad file. This is useful for engraving and requires less calculations than it's <strong>cutAroundPaths</strong> counterpart. If more than one path is selected, <strong>jogToPath</strong> will automatically be called between cuts.</td></tr>
+			
+			<tr><td><strong>build</strong></td><td>&nbsp;</td><td>[gcode filename without spaces]</td><td><pre>load myProcessedFile.txt<br />select all<br />cutAlongPaths<br />build gcode.txt<br />display</pre></td><td>Turns all of the cutting paths generated by the script into runnable gcode, and saves it to disk. This is usually the final step in any script, other than possibly the display command.</td></tr>
+			
+			<tr><td><strong>display</strong></td><td>&nbsp;</td><td>&nbsp;</td><td><pre>See above... =)</pre></td><td>Informs the application that you wish to view the paths in the currently active layer, along with all selections and cutting paths. This command is a must while developing scripts, but is unneccisary once a script is complete. If a script does not contain this command the app will exit automatically after processing the command file.</td></tr>
+			
+		</table>
+		</div>
+	</body>
+<html>

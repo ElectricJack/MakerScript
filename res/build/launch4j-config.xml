@@ -1,0 +1,80 @@
+<launch4jConfig>
+  <headerType>console</headerType>
+  
+  <outfile>MakerScript.exe</outfile>
+  <jar>MakerScript</jar>
+  <dontWrapJar>false</dontWrapJar>
+  
+  <errTitle>There was an error!</errTitle>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl>http://www.makerscript.com</supportUrl>
+  
+  <cmdLine></cmdLine>
+  <chdir>path</chdir>
+  
+  <!--<priority>high</priority>-->
+  <priority>normal</priority>
+  
+  <customProcName>true</customProcName>
+  <stayAlive>false</stayAlive>
+  <icon>res/mscript.ico</icon>
+  
+  <!--<obj>header object file</obj>
+  ...
+  <lib>w32api lib</lib>
+  ...
+  <var>var=text</var>
+  ...
+  -->
+  
+  <classPath>
+    <mainClass>MakerScript</mainClass>
+    <cp>classpath</cp>
+  </classPath>
+  
+  <singleInstance>
+    <mutexName>MakerScriptMutex</mutexName>
+    <windowTitle>MakerScript - 001 - Digital to analog and back, maker-style!</windowTitle>
+  </singleInstance>
+  
+  <jre>
+    <!-- Specify one of the following or both -->
+    <path>bundled JRE path</path>
+    <minVersion>x.x.x[_xx]</minVersion>
+    <maxVersion>x.x.x[_xx]</maxVersion>
+    <jdkPreference>jreOnly|preferJre|preferJdk|jdkOnly</jdkPreference>
+    <!-- Heap sizes in MB and % of free memory -->
+    <initialHeapSize>256</initialHeapSize>
+    <initialHeapPercent>50</initialHeapPercent>
+    <maxHeapSize>1024</maxHeapSize>
+    <maxHeapPercent>75</maxHeapPercent>
+    <!--<opt>text</opt>-->
+  </jre>
+  
+  <splash>
+    <file>res</file>
+    <waitForWindow>true</waitForWindow>
+    <timeout>60</timeout>
+    <timeoutErr>true</timeoutErr>
+  </splash>
+  
+  <versionInfo>
+    <fileVersion>0.0.1</fileVersion>
+    <txtFileVersion>Alpha Build</txtFileVersion>
+    <fileDescription>Alpha Build</fileDescription>
+    <copyright>Copyright (C) 2011 - Jack W. Kern</copyright>
+    <productVersion>0.0.1</productVersion>
+    <!--<txtProductVersion>text</txtProductVersion>-->
+    <productName>MakerScript</productName>
+    <!--<companyName></companyName>
+    <internalName></internalName>-->
+    <originalFilename>MakerScript.exe</originalFilename>
+  </versionInfo>
+  
+  <messages>
+    <startupErr>Problem starting MakerScript!</startupErr>
+    <bundledJreErr>Problem with bundled JRE!</bundledJreErr>
+    <jreVersionErr>Problem with JRE version</jreVersionErr>
+    <launcherErr>Problem launching MakerScript!</launcherErr>
+  </messages>
+</launch4jConfig>
