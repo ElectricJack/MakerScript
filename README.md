@@ -1,22 +1,9 @@
 MakerScript
 =============
 
-introduction goes here.
-
-Section heading?
--------
-
-paragraph paragraph paragraph...
+<img src="http://dl.dropbox.com/u/2742959/screenshot03.jpg" />
 
 * [makerscript's home](http://www.makerscript.com)
 * [my website](http://www.jackkern.com)
 
 
-Another section heading?
-------------
-
-Yadda yadda yadda....
-
-### Something
-
-Ok?
