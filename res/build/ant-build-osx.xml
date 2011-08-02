@@ -36,10 +36,10 @@
   
   <!-- ================================================================================ -->
   <target name="finish" depends="link_app">
-    <!-- Copy any needed runtime files -->
+    <!-- Copy any needed runtime files 
     <copy      todir  = "${dist.platform.dir}"  includeEmptyDirs = "false" >
       <fileset dir    = "${res.appfiles.dir}"  />
-    </copy>
+    </copy>-->
     
     <mkdir     dir              = "${dist.platform.dir}/projects" />
     <copy      file             = "setup.txt"

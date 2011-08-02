@@ -61,6 +61,7 @@ def main():
     java_home_file = get_abs_user_path('java_home.txt')
     java_home      = ''
     if os.path.isfile(java_home_file):
+      print 'Loading settings from: ' + java_home_file
       with open(java_home_file,'r') as file:
         java_home = file.readline().strip();
     else:
