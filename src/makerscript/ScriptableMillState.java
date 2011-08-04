@@ -11,19 +11,18 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-//import javax.swing.tree.DefaultMutableTreeNode;
 
 import makerscript.geom.AABB;
 import makerscript.geom.Poly2;
 import makerscript.geom.Vector2;
 import makerscript.geom.Vector3;
-import makerscript.geom.mesh.Mesh;
+//import makerscript.geom.mesh.Mesh;
 import makerscript.geom.mesh.PolyLine;
 import makerscript.geom.mesh.Vertex;
 import makerscript.gfx.GfxMath;
 import makerscript.gfx.GfxFrustum;
 import makerscript.gfx.GfxViewMatrices;
-import makerscript.gfx.GfxDynamicMesh;
+//import makerscript.gfx.GfxDynamicMesh;
 import makerscript.math.Mathematical;
 import makerscript.util.Selectable;
 
@@ -54,9 +53,8 @@ public class ScriptableMillState extends Mathematical {
   
   public  float                        nearPlane =    0.5f;
   public  float                        farPlane  = 2000.0f;
-  
     
-  public List<Selectable>        	   selected;
+  public List<Selectable>        	     selected;
   public List<PolyLine>                cncToolPath;
   
   public List<Layer>                   layers;
@@ -86,20 +84,15 @@ public class ScriptableMillState extends Mathematical {
     
     app.setState( this );
   }
-  
   // ------------------------------------------------------------------------ //
   public void reset() {
     activeLayer    = null;
     layers         = new ArrayList<Layer>();
     selected       = new ArrayList<Selectable>();
     cncToolPath    = new ArrayList<PolyLine>();
-
-    //targetFeedRate = 300.f;
   }
-  
   //------------------------------------------------------------------------ //
-  public AABB<Vector3> getSelectionBounds()
-  {
+  public AABB<Vector3> getSelectionBounds() {
     if( selected == null ||
         selected.size() == 0 || 
         selected.get(0).getVerts() == null ||
@@ -117,11 +110,10 @@ public class ScriptableMillState extends Mathematical {
    
     return bounds;
   }
-  
   // ------------------------------------------------------------------------ //
   public void selectRegion( float minx, float miny, float maxx, float maxy ) {
-  //gl  = g.beginGL();
-	if( activeLayer != null ) {
+    //gl  = g.beginGL();
+    if( activeLayer != null ) {
       float[] plane = new float[] {0.f,0.f,1.f,0.f};
       v0 = GfxMath.calculateIntersect( glu, matrices, minx, miny, app.width, app.height, plane );
       v1 = GfxMath.calculateIntersect( glu, matrices, maxx, miny, app.width, app.height, plane );
@@ -137,22 +129,21 @@ public class ScriptableMillState extends Mathematical {
 
         selected.clear();
         for( PolyLine poly : activeLayer.getPolys() ) {
-    	  boolean contained = true;
-		  for( Vertex v : poly.getVerts() ) {
-	        if( p.contains( new Vector2(v.x,v.y) ) ) {
-	    	  contained = false;
-	    	  break;
-	        }
-		  }
-		  if( contained )
-	  	    selected.add( poly );
+          boolean contained = true;
+          for( Vertex v : poly.getVerts() ) {
+            if( p.contains( new Vector2(v.x,v.y) ) ) {
+              contained = false;
+              break;
+            }
+          }
+          if( contained )
+            selected.add( poly );
+          }
         }
-      }
-	}
+    }
   }
   // ------------------------------------------------------------------------ //
-  public boolean setProjectPath( String pathValue )
-  {
+  public boolean setProjectPath( String pathValue ) {
     projectPath = "";
     
     // First clean the path of common problems
@@ -165,8 +156,7 @@ public class ScriptableMillState extends Mathematical {
     // Check to see if the file exists, if it does we're done here.
     commandsFilePath = pathValue;
     File commandsFile = new File( commandsFilePath );
-    if( commandsFile.exists() )
-    {
+    if( commandsFile.exists() ) {
       projectPath = commandsFilePath.substring(0,commandsFilePath.lastIndexOf("/"));
       return true;
     }
@@ -174,8 +164,7 @@ public class ScriptableMillState extends Mathematical {
     // Otherwise check if the default commands file exists
     commandsFilePath = app.sketchPath("commands.txt");
     commandsFile     = new File( commandsFilePath );
-    if( commandsFile.exists() )
-    {
+    if( commandsFile.exists() ) {
       projectPath = commandsFilePath.substring(0,commandsFilePath.lastIndexOf("/"));
       return true;
     }
@@ -186,6 +175,7 @@ public class ScriptableMillState extends Mathematical {
   
   Vector3 v0,v1,v2,v3;
   Vector3 worldMouse;
+  
   //------------------------------------------------------------------------ //
   public void updateGL() {
     gl  = g.beginGL();
@@ -202,7 +192,7 @@ public class ScriptableMillState extends Mathematical {
     
     g.endGL();
   }
-
+  
   // ------------------------------------------------------------------------ //
   public void draw () {
     if( g == null ) return;
@@ -210,11 +200,11 @@ public class ScriptableMillState extends Mathematical {
     g.background  ( 255 );
     g.noFill      ( );
     
-	gl = g.beginGL();
-	gl.glEnable( GL.GL_DEPTH_TEST );
-	g.endGL();
+    gl = g.beginGL();
+    gl.glEnable( GL.GL_DEPTH_TEST );
+    g.endGL();
 
-    
+  
     if( worldMouse != null ) {
         g.stroke(0);
         g.pushMatrix();
@@ -225,11 +215,11 @@ public class ScriptableMillState extends Mathematical {
 
     if( v0 != null && v1 != null && v2 != null && v3 != null ) {
       g.beginShape();
-      	g.vertex(v0.x,v0.y,v0.z);
-      	g.vertex(v1.x,v1.y,v1.z);
-      	g.vertex(v2.x,v2.y,v2.z);
-      	g.vertex(v3.x,v3.y,v3.z);
-      	g.vertex(v0.x,v0.y,v0.z);
+        g.vertex(v0.x,v0.y,v0.z);
+        g.vertex(v1.x,v1.y,v1.z);
+        g.vertex(v2.x,v2.y,v2.z);
+        g.vertex(v3.x,v3.y,v3.z);
+        g.vertex(v0.x,v0.y,v0.z);
       g.endShape();
     }
     
@@ -243,13 +233,17 @@ public class ScriptableMillState extends Mathematical {
 
   }
   
+  public void clearSelection() {
+    v0 = v1 = v2 = v3 = null;
+  }
+  
   public void drawGUI() {
-	  
+    
   }
   
   //------------------------------------------------------------------------ //
   protected void drawInactiveLayers() {
-	  
+    
   }
   // ------------------------------------------------------------------------ //
   protected void drawActiveLayer() {
@@ -270,8 +264,7 @@ public class ScriptableMillState extends Mathematical {
     }
   }
   // ------------------------------------------------------------------------ //
-  protected void drawSelections()
-  {
+  protected void drawSelections() {
 	  
 	gl = g.beginGL();
 	gl.glDisable( GL.GL_DEPTH_TEST );
@@ -305,8 +298,7 @@ public class ScriptableMillState extends Mathematical {
     g.popMatrix();
   }
   // ------------------------------------------------------------------------ //
-  protected void drawTargets()
-  {
+  protected void drawTargets() {
     if( activeLayer == null || activeLayer.targets == null || activeLayer.targets.size() == 0 ) return;
     
     float s2 = (float)Math.sqrt(1.f) / 2.f;
@@ -331,8 +323,7 @@ public class ScriptableMillState extends Mathematical {
     }
   }
   // ------------------------------------------------------------------------ //
-  protected void drawToolPath()
-  {
+  protected void drawToolPath() {
     //System.out.println( cncToolPath.size() );
     for( PolyLine l : cncToolPath ) {
       setStyle_ToolPath();
@@ -347,8 +338,7 @@ public class ScriptableMillState extends Mathematical {
     }
   }
   // ------------------------------------------------------------------------ //
-  protected void drawGrid()
-  {
+  protected void drawGrid() {
     float y0   = 0;
     float y1   = 600;
     float x0   = 0;

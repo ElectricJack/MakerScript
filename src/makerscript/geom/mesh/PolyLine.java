@@ -20,17 +20,39 @@ import processing.core.PGraphics;
 public class PolyLine extends SelectableBase implements Convertible, Nameable
 {
   protected List< Vertex >  verts  = new ArrayList< Vertex >();
-  protected List< Edge >    edges  = null;
+  protected List< Edge >    edges  = new ArrayList< Edge >();
   protected String          name   = "";
+  public    int             index  = 0;
   
   public              PolyLine ( )              { }
   public              PolyLine ( String name )  { this.name = name; }
   
+  public              PolyLine ( PolyLine other ) {
+	this.name  = other.name;
+	this.index = other.index;
+  }
+  
   public    String    getName  ( )              { return name; }
   public    void      setName  ( String name )  { this.name = name; }
-
+  public 	String    getType  ( )              { return "path"; }
+  public 	int       getIndex ( )              { return index; }
+  
   public    void      add      ( Vector3 v )    { this.add( new Vertex(v) ); }
-  public    void      add      ( Vertex  v )    { verts.add(v);  }
+  public    void      add      ( Vertex  v )    {
+	int index = verts.size() - 1;
+	if( index >= 0 ) {
+	  Vertex     first = verts.get( index ); 
+	  
+	  Edge       e        = new Edge();
+	             e.index  = index;
+	             e.first  = first; 
+	             e.second = v;
+	           //e.previous
+	           //e.next
+	  edges.add( e );  
+	}
+    verts.add(v);
+  }
   public    void      clear    ( )              { verts.clear(); }
  
   
@@ -124,8 +146,7 @@ public class PolyLine extends SelectableBase implements Convertible, Nameable
   }*/
 
   // ------------------------------------------------------------------------------------------------------------- //
-  public void flip()
-  {
+  public void flip() {
     List<Vertex> flipped = new ArrayList<Vertex>();
     for( Vertex v : verts )
       flipped.add(0, v);
@@ -166,33 +187,4 @@ public class PolyLine extends SelectableBase implements Convertible, Nameable
     
     return totalLength;
   }
-
-/*
-  // ------------------------------------------------------------------------------------------------------------- //
-  public Vector3 getMin( Vector3 minimum )
-  {
-    if( points.size() == 0 ) return minimum;
-    minimum.set( points.get(0) );
-    
-    for( Vector3 v : points )
-      minimum.set( ( v.x < minimum.x ? v.x : minimum.x ),
-                   ( v.y < minimum.y ? v.y : minimum.y ),
-                   ( v.z < minimum.z ? v.z : minimum.z ) );    
-                   
-    return minimum;
-  }
-  
-  // ------------------------------------------------------------------------------------------------------------- //
-  public Vector3 getMax( Vector3 maximum )
-  {
-    if( points.size() == 0 ) return maximum;
-    maximum.set( points.get(0) );
-    
-    for( Vector3 v : points )
-      maximum.set( ( v.x > maximum.x ? v.x : maximum.x ),
-                   ( v.y > maximum.y ? v.y : maximum.y ),
-                   ( v.z > maximum.z ? v.z : maximum.z ) );
-                   
-    return maximum;
-  }*/
 }

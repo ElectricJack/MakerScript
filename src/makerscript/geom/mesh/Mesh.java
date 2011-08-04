@@ -32,41 +32,39 @@ import java.util.List;
 
 public class Mesh extends SelectableBase implements Convertible, Nameable {
 	
-  protected List          < Vertex   > verts   = new ArrayList     < Vertex   >();
-  protected List          < Edge     > edges   = new ArrayList     < Edge     >();
-  protected NamedMultiMap < PolyLine > polys   = new NamedMultiMap < PolyLine >();
-  protected NamedMultiMap < Face     > faces   = new NamedMultiMap < Face     >();
-  protected String                     name    = "";
-
+  //protected NamedMultiMap < PolyLine > polys   = new NamedMultiMap < PolyLine >();
+  private NamedMultiMap < Face     > faces   = new NamedMultiMap < Face     >();
+  private String                     name    = "";
+  private int                        index   = 0;
+  
+  public 	String    getType  ( )              { return "mesh"; }
+  public 	int       getIndex ( )              { return index; }
+  public    void      setIndex ( int index )    { this.index = index; }
   // ------------------------------------------------------------------------------------------------------------- //
-  public void add( Face face ) {
-    this.add((PolyLine)face);
+  public void add( Face face ) {  
     faces.add(face);
   }
   // ------------------------------------------------------------------------------------------------------------- //
-  public void add( PolyLine polyLine ) {
-    List< Vertex > polyVerts = polyLine.getVerts();
-    if( polyVerts != null ) verts.addAll ( polyVerts );
-    
-    List< Edge   > polyEdges = polyLine.getEdges();
-    if( polyEdges != null ) edges.addAll ( polyEdges );
-    
-    polys.add    ( polyLine );
-  }
-  // ------------------------------------------------------------------------------------------------------------- //
-  public void clear( ) { polys.clear(); }
-
+  //public void add( PolyLine polyLine ) {
+    //polys.add( polyLine );
+  //}
   
+  
+  public Vertex getVertex( int index ) {
+	return null;
+  }
+  
+  // ------------------------------------------------------------------------------------------------------------- //
+  public void clear( ) { faces.clear(); }
   // ------------------------------------------------------------------------------------------------------------- //
   // Convertible Methods:
   public void convert( MeshBuilder builder ) {
-      for( PolyLine poly : polys ) {
+      for( PolyLine poly : faces ) {
         builder.beginPoly();
           poly.convert( builder );
         builder.endPoly();
       }
   }
-  
   // ------------------------------------------------------------------------------------------------------------- //
   // Nameable Methods:
   public String getName ( )                { return name; }
@@ -74,31 +72,31 @@ public class Mesh extends SelectableBase implements Convertible, Nameable {
   
   // ------------------------------------------------------------------------------------------------------------- //
   public Vector3 getMin() {
-    if( polys.size() == 0 || polys.get(0).getVerts().size() == 0 )
+    if( faces.size() == 0 || faces.get(0).getVerts().size() == 0 )
       return null;
     
-    Vector3 minimum = polys.get(0).getVerts().get(0).get();
-    for( PolyLine poly : polys )
+    Vector3 minimum = faces.get(0).getVerts().get(0).get();
+    for( PolyLine poly : faces )
       poly.getMin( minimum );
     
     return minimum;       
   }
   public Vector3 getMax() {
-    if( polys.size() == 0 || polys.get(0).getVerts().size() == 0 ) return null;
+    if( faces.size() == 0 || faces.get(0).getVerts().size() == 0 ) return null;
     
-    Vector3 maximum = polys.get(0).getVerts().get(0).get();
-    for( PolyLine poly : polys )
+    Vector3 maximum = faces.get(0).getVerts().get(0).get();
+    for( PolyLine poly : faces )
       poly.getMax(maximum);
 
     return maximum;       
   }
   public Vector3 getMin( Vector3 min ) {
-    for( PolyLine poly : polys )
+    for( PolyLine poly : faces )
       min = poly.getMin( min );
     return min;
   }
   public Vector3 getMax( Vector3 max ) {
-    for( PolyLine poly : polys )
+    for( PolyLine poly : faces )
       max = poly.getMax( max );
     return max;
   }
@@ -106,11 +104,11 @@ public class Mesh extends SelectableBase implements Convertible, Nameable {
   // ------------------------------------------------------------------------------------------------------------- //
   public ArrayList<Vertex> getVerts() {
     ArrayList<Vertex> verts = new ArrayList<Vertex>();
-    for( PolyLine poly : polys ) verts.addAll( poly.getVerts() );
+    for( PolyLine poly : faces ) verts.addAll( poly.getVerts() );
     return verts;
   }
   // ------------------------------------------------------------------------------------------------------------- //
-  public NamedMultiMap<PolyLine> getPolys()   { return polys; }
+  //public NamedMultiMap<PolyLine> getPolys()   { return faces.getPolys(); }
   public NamedMultiMap<Face>     getFaces()   { return faces; }
 
   
@@ -125,43 +123,43 @@ public class Mesh extends SelectableBase implements Convertible, Nameable {
     while( connectAdjacentPaths() );
 
     // Remove any adjacent duplicates from the list, until none are found]
-    List<PolyLine> cleanedPolyLines = new ArrayList<PolyLine>();
-    for( PolyLine poly : polys ) {
+    List<Face> cleanedPolyLines = new ArrayList<Face>();
+    for( Face poly : faces ) {
       while( removeAdjacentDuplicates(poly) );
       if( poly.getVerts().size() > 1 ) cleanedPolyLines.add(poly);
     }
     
-    polys.clear();
-    polys.addAll( cleanedPolyLines );
+    faces.clear();
+    faces.addAll( cleanedPolyLines );
   }
   private boolean connectAdjacentPaths()
   {
-    NamedMultiMap<PolyLine>  joinedLines = new NamedMultiMap<PolyLine>();
+    NamedMultiMap<Face>  joinedLines = new NamedMultiMap<Face>();
 
-    if( polys.size() < 1 ) return false;
+    if( faces.size() < 1 ) return false;
 
     // Add our first line list    
-    joinedLines.add( polys.get(0) );
-    polys.remove(0);
+    joinedLines.add( faces.get(0) );
+    faces.remove(0);
     
     // Now check every one in the source list
     boolean merged = false;
-    for( PolyLine src : polys )
+    for( Face src : faces )
     {
       FindResults results = new FindResults();
       if( findAdjacentPath( src, joinedLines, results ) ) {
                  merged = true;
-        PolyLine dest   = joinedLines.get( results.index );
+        Face dest   = joinedLines.get( results.index );
         combinePaths( dest, src, results );
       }
       else joinedLines.add( src );      
     }
     
-    polys = joinedLines;
+    faces = joinedLines;
     
     return merged;
   }
-  private boolean removeAdjacentDuplicates( PolyLine testPoly )
+  private boolean removeAdjacentDuplicates( Face testPoly )
   {
     float             threshold = 0.01f;
     boolean           found     = false;
@@ -183,7 +181,7 @@ public class Mesh extends SelectableBase implements Convertible, Nameable {
     
     return found;
   }
-  private boolean findAdjacentPath( PolyLine test, NamedMultiMap<PolyLine> from, FindResults out )
+  private boolean findAdjacentPath( Face test, NamedMultiMap<Face> from, FindResults out )
   {
     float threshold = 0.01f;
     
@@ -198,7 +196,7 @@ public class Mesh extends SelectableBase implements Convertible, Nameable {
     out.before = false;
     out.flip   = false;       
     
-    for( PolyLine l : from )
+    for( Face l : from )
     {
       if( l == test ) continue;
       
@@ -215,7 +213,7 @@ public class Mesh extends SelectableBase implements Convertible, Nameable {
     
     return found;
   }
-  private void combinePaths( PolyLine dest, PolyLine src, FindResults how )
+  private void combinePaths( Face dest, Face src, FindResults how )
   {
     if( how.flip )
       src.flip();

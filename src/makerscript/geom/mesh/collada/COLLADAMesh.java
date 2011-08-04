@@ -6,8 +6,9 @@ import makerscript.geom.mesh.Vertex;
 import processing.xml.XMLElement;
 
 public class COLLADAMesh extends Mesh {
-  public String materialName;
-  public String id;
+  public  String materialName;
+  public  String id;
+  private int    poly_index = 0;
   
   // ------------------------------------------------------------------------ //
   public COLLADAMesh( XMLElement mesh, String id ) {
@@ -80,9 +81,9 @@ public class COLLADAMesh extends Mesh {
       int c = data[n+2];
       
       Face p = new Face();
-              p.add( verts.get(a) );
-              p.add( verts.get(b) );
-              p.add( verts.get(c) );
+           p.add( verts.get(a) );
+           p.add( verts.get(b) );
+           p.add( verts.get(c) );
       
       polys.add( p );
     }
@@ -102,23 +103,22 @@ public class COLLADAMesh extends Mesh {
     for( int polyIndex=0; polyIndex<polyPointCounts.length; ++polyIndex ) {
       
       // Get the number of points in the polygon, and create our polygon object
-      int     points = polyPointCounts[polyIndex];
+      int  points = polyPointCounts[polyIndex];
       Face poly   = new Face();
       
-      // Add the coresponding number of points into the polygon
+      // Add the corresponding number of points into the polygon
       for( int i=0; i<points && pointIndex<pointIndicies.length; ++i, ++pointIndex ) {
-        Vertex vert = verts.get( pointIndicies[pointIndex] );
+        Vertex vert = this.getVertex( pointIndicies[pointIndex] );
         poly.add( vert );
       }
       
       // Finally, add the new polygon
-      polys.add( poly );
+      this.add( poly );
     }
   }
 
   // ------------------------------------------------------------------------ //
   private void loadPolygons( XMLElement polygons ) {
-    //int count = polygons.getInt("count");
     for( XMLElement child : polygons.getChildren() ) {
       if( COLLADAHelpers.isNameOf( child, "ph" ) ) {
 
@@ -129,7 +129,7 @@ public class COLLADAMesh extends Mesh {
         }
         
         // Finally, add the new polygon
-        polys.add( poly );
+        this.add( poly );
       }
     }
   }
@@ -139,12 +139,13 @@ public class COLLADAMesh extends Mesh {
     if( !COLLADAHelpers.isNameOf( polygon, "p" ) 
      && !COLLADAHelpers.isNameOf( polygon, "h" ) ) return null;
     
-    Face poly          = new Face();
-    int[]   pointIndicies = COLLADAHelpers.getIntArray( polygon );
+    Face  poly          = new Face();
+    	  poly.index    = poly_index++;
+    int[] pointIndicies = COLLADAHelpers.getIntArray( polygon );
     
     for( int i=0; i<pointIndicies.length; ++i )
-      poly.add( verts.get( pointIndicies[i] ) );
+    	poly.add( this.getVertex( pointIndicies[i] ) );
     
-    return  poly;
+    return poly;
   }
 }

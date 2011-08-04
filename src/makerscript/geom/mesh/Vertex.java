@@ -29,13 +29,17 @@ import makerscript.util.Selectable;
 public class Vertex extends Vector3 implements Selectable {
   //public float x,  y,  z;
   //public float nx, ny, nz;
-  public Normal n = null;
+  public  Normal n    = null;
   
+  private int    index = 0;
+  
+  public  String                  getType   ( ) { return "vertex"; }
+  public  int                     getIndex  ( ) { return index; }
   
   // ----------------------------------------------------------------- //
   public Vertex( float x, float y, float z ) { super(x,y,z); n = new Normal(0.f, 0.f, 1.f); }
   public Vertex( Vector3 v )                 { super(v);     n = new Normal(0.f, 0.f, 1.f); }
-  public Vertex( )                           {               n = new Normal(0.f, 0.f, 1.f); }
+  public Vertex( )                           { n = new Normal(0.f, 0.f, 1.f); }
   // ----------------------------------------------------------------- //  
   public ArrayList<Vertex> getVerts() {
     ArrayList<Vertex> verts = new ArrayList<Vertex>();

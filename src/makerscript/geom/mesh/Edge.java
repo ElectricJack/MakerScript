@@ -15,7 +15,10 @@ public class Edge extends SelectableBase {
   protected Face    inside   = null;
   protected Face    outside  = null;
   protected float   bulge    = 0;
-
+  protected int     index    = 0;
+  
+  public String getType()  { return "edge"; }
+  public int    getIndex() { return index; }
   
   public ArrayList<Vertex> getVerts() {
     ArrayList<Vertex> verts = new ArrayList<Vertex>();

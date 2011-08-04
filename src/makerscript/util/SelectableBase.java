@@ -16,6 +16,8 @@ public abstract class SelectableBase implements Selectable {
   public          NamedMultiMap<PolyLine> getPolys  ( ) { return null; }
   public          NamedMultiMap<Face>     getFaces  ( ) { return null; }
 
+  public abstract String                  getType   ( );
+  public abstract int                     getIndex  ( );
   public abstract Vector3                 getMin    ( Vector3 min );
   public abstract Vector3                 getMax    ( Vector3 max );
 }

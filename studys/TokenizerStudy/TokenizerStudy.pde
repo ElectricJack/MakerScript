@@ -5,7 +5,13 @@ void setup() {
   noLoop();
   
   println("Running tokenizer...");
-  toker = new Tokenizer( new String[] { ",;" }, new String[][] { new String[] { "{", "}" } } );
+  // new String[] { ",;" }, new String[][] { new String[] { "{", "}" } } 
+  toker = new Tokenizer();
+  toker.addTokens    ( "" );
+  toker.addTokenPair (  "{", "}" );
+
+  String[] file = loadStrings( "makerscript_example.mkrs" );
+  
   
   exit();
 }

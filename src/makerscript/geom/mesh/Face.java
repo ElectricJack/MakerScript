@@ -31,7 +31,11 @@ public class Face extends PolyLine implements Convertible, Nameable {
   
   protected ArrayList< PolyLine > holes  = null;
   protected Vector3               normal = null;
-
+  public    int                   index  = 0;
+  
+  public 	String    getType  ( )              { return "face"; }
+  public 	int       getIndex ( )              { return index; }
+  
   public void addHole( PolyLine hole ) {
     if( hole  == null ) return;
     if( holes == null ) holes = new ArrayList< PolyLine >();

@@ -6,13 +6,15 @@
 package makerscript;
 
 
-//import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.*;
 
 import makerscript.geom.Vector2;
 import makerscript.gfx.GfxMath;
+import makerscript.util.Selectable;
 
 import processing.core.*;
 import processing.opengl.PGraphicsOpenGL;
@@ -81,13 +83,13 @@ public class ScriptableMill extends PApplet {
   
   // ------------------------------------------------------------------------ //
   public void draw () {
-	  
-	//For one reason or another, calling perspective breaks screen ray / world mouse pos generation.
-	//perspective( PI/3.0f, (float)width / (float)height, state.nearPlane, state.farPlane );
-	
-	state.cam.setMinimumDistance(state.nearPlane);
-	state.cam.setMaximumDistance(state.farPlane);
-	state.cam.feed();
+      
+    //For one reason or another, calling perspective breaks screen ray / world mouse pos generation.
+    //perspective( PI/3.0f, (float)width / (float)height, state.nearPlane, state.farPlane );
+    
+    state.cam.setMinimumDistance(state.nearPlane);
+    state.cam.setMaximumDistance(state.farPlane);
+    state.cam.feed();
     state.updateGL();
     
     if( state != null ) {
@@ -163,23 +165,61 @@ public class ScriptableMill extends PApplet {
   // ------------------------------------------------------------------------ //
   public void mousePressed() {
     if( mouseButton == RIGHT ) shouldRebuild = true;
-    if( !keyPressed ) beginDrag.set( mouseX, mouseY );
+    if( keyPressed && keyCode == SHIFT ) beginDrag = new Vector2( mouseX, mouseY );
   }
   
-  private Vector2 beginDrag = new Vector2();
+  private Vector2 beginDrag = null;
   private Vector2 endDrag   = new Vector2();
   //------------------------------------------------------------------------ //
   public void mouseReleased() {
-	if( !keyPressed ) { 
-	  float minx = min( beginDrag.x, endDrag.x );
-	  float maxx = max( beginDrag.x, endDrag.x );
-	  float miny = min( beginDrag.y, endDrag.y );
-	  float maxy = max( beginDrag.y, endDrag.y );
-	  state.selectRegion( minx, miny, maxx, maxy );
-	}
+    if( beginDrag != null ) { 
+      float minx = min( beginDrag.x, endDrag.x );
+      float maxx = max( beginDrag.x, endDrag.x );
+      float miny = min( beginDrag.y, endDrag.y );
+      float maxy = max( beginDrag.y, endDrag.y );
+      state.selectRegion( minx, miny, maxx, maxy );
+      
+      
+      java.util.PriorityQueue<Integer> selected_paths = new java.util.PriorityQueue<Integer>();
+      for( Selectable sel : state.selected ) {
+        if( sel.getType().equals("path") ) {
+          selected_paths.add( sel.getIndex() );
+        }
+      }
+      
+      if( selected_paths.size() > 0 ) {
+		  List<String> select_lines = new ArrayList<String>();
+		  int cur  = selected_paths.peek();
+		  int from = cur;
+		  for( int pathIndex : selected_paths ){
+			System.out.println(pathIndex);
+		    if( pathIndex - cur != 1 ) {
+		      if( cur - from > 0 ) select_lines.add( "select paths " + from + " " + cur );
+		      else 				   select_lines.add( "select path " + from );
+		    }
+		    cur = pathIndex;
+		  }
+		  saveStrings( "selection.txt", (String[])select_lines.toArray( new String[select_lines.size()]) );
+      }
+      
+      
+      
+      state.clearSelection();
+      shouldRebuild = true;
+      beginDrag = null;
+    }
   }
   public void mouseMoved()    {}
-  public void mouseDragged()  { endDrag.set( mouseX, mouseY ); }
+  public void mouseDragged()  { 
+	if( keyPressed && keyCode == SHIFT && beginDrag != null ) {
+	  endDrag.set( mouseX, mouseY );
+      float minx = min( beginDrag.x, endDrag.x );
+      float maxx = max( beginDrag.x, endDrag.x );
+      float miny = min( beginDrag.y, endDrag.y );
+      float maxy = max( beginDrag.y, endDrag.y );
+      state.selectRegion( minx, miny, maxx, maxy );
+	}
+  }
   //------------------------------------------------------------------------ //
   public void keyPressed() {
     if( keyCode == ALT ) {

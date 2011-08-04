@@ -16,8 +16,8 @@ def win32():
   print 'Building for windows...'
   #os.environ['JAVA_HOME'] = 'D:\Java\jdk1.6.0_23'
   
-  buildfile_path          = '\"' + os.path.abspath( 'res/build/ant-build.xml' ) +'\"'
-  
+  buildfile_path          = '\"' + os.path.abspath( 'res/build/ant-build.xml' ) + '\"'
+  runant_path             =  os.path.abspath( 'tools/apache-ant-1.8.2/bin/runant.py' )
   if sixty_four_bit : 
     print '(64 bit)\n\n'
     build_target = 'build_win64'
@@ -25,7 +25,7 @@ def win32():
     print '(32 bit)\n\n'
     build_target = 'build_win32'
   
-  subprocess.call( ['python','tools/apache-ant-1.8.2/bin/runant.py'
+  subprocess.call( ['python',runant_path
                    ,'-buildfile', buildfile_path, build_target] )
 
 def osx():

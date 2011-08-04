@@ -14,11 +14,13 @@ import makerscript.geom.mesh.Vertex;
 
 
 public interface Selectable {
-  public          List<Vertex>            getVerts  ( );
-  public          List<Edge>              getEdges  ( );
-  public          NamedMultiMap<PolyLine> getPolys  ( );
-  public          NamedMultiMap<Face>     getFaces  ( );
+  public  List<Vertex>            getVerts  ( );
+  public  List<Edge>              getEdges  ( );
+  public  NamedMultiMap<PolyLine> getPolys  ( );
+  public  NamedMultiMap<Face>     getFaces  ( );
 
-  public abstract Vector3                 getMin    ( Vector3 min );
-  public abstract Vector3                 getMax    ( Vector3 max );
+  public  String                  getType   ( );
+  public  int                     getIndex  ( );
+  public  Vector3                 getMin    ( Vector3 min );
+  public  Vector3                 getMax    ( Vector3 max );
 }
