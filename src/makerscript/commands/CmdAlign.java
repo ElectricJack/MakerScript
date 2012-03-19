@@ -21,15 +21,17 @@ package makerscript.commands;
 
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.AABB;
-import makerscript.geom.Vector3;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
-import makerscript.util.Selectable;
+import makerscript.MakerScriptState;
+
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.AABounds;
+import com.fieldfx.math.Vector3;
+import com.fieldfx.util.Selectable;
+
 
 
 
@@ -40,10 +42,10 @@ public class CmdAlign extends Command {
   public Command clone    ( )                 { return new CmdAlign(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
     if( userState.selected == null )         return state.nextCommand();
@@ -66,10 +68,10 @@ public class CmdAlign extends Command {
   }  
   
   //------------------------------------------------------------------------ //
-  public void alignX( ScriptableMillState userState, float x )
+  public void alignX( MakerScriptState userState, float x )
   {
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds = userState.getSelectionBounds();
+    AABounds<Vector3> bounds = userState.getSelectionBounds();
     
     // Now align the selection to its new minimum value
     for( Selectable item : userState.selected )
@@ -79,10 +81,10 @@ public class CmdAlign extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void alignY( ScriptableMillState userState, float y )
+  public void alignY( MakerScriptState userState, float y )
   {
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds = userState.getSelectionBounds();
+    AABounds<Vector3> bounds = userState.getSelectionBounds();
     
     // Now align the selection to its new minimum value
     for( Selectable item : userState.selected )
@@ -92,10 +94,10 @@ public class CmdAlign extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void alignZ( ScriptableMillState userState, float z )
+  public void alignZ( MakerScriptState userState, float z )
   {    
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds = userState.getSelectionBounds();
+    AABounds<Vector3> bounds = userState.getSelectionBounds();
 
     // Now align the selection to its new minimum value
     for( Selectable item : userState.selected )
@@ -104,10 +106,10 @@ public class CmdAlign extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void alignXY( ScriptableMillState userState, float x, float y )
+  public void alignXY( MakerScriptState userState, float x, float y )
   {
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds = userState.getSelectionBounds();
+    AABounds<Vector3> bounds = userState.getSelectionBounds();
 
     // Now align the selection to its new minimum value
     for( Selectable item : userState.selected )
@@ -118,10 +120,10 @@ public class CmdAlign extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void alignXYZ( ScriptableMillState userState, float x, float y, float z )
+  public void alignXYZ( MakerScriptState userState, float x, float y, float z )
   {
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds = userState.getSelectionBounds();
+    AABounds<Vector3> bounds = userState.getSelectionBounds();
 
     // Now align the selection to its new minimum value
     for( Selectable item : userState.selected )

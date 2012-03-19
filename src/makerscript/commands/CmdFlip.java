@@ -22,15 +22,16 @@ package makerscript.commands;
 
 import java.util.Queue;
 
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.util.Selectable;
+
 import makerscript.Layer;
-import makerscript.ScriptableMillState;
-import makerscript.geom.mesh.PolyLine;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
-import makerscript.util.Selectable;
+import makerscript.MakerScriptState;
 
 
 
@@ -41,7 +42,7 @@ public class CmdFlip extends Command {
   public Command clone   ( )                 { return new CmdFlip(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
     
@@ -55,9 +56,9 @@ public class CmdFlip extends Command {
   } 
   
   //---------------------------------------------------------------------------------
-  private int flipPolyLines( LScriptState state, Queue<ExpressionElement> params ) {
+  private int flipPolyLines( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( userState.selected == null ) return state.nextCommand();
     for( Selectable item : userState.selected )
@@ -70,9 +71,9 @@ public class CmdFlip extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int flipStockX( LScriptState state, Queue<ExpressionElement> params ) {
+  private int flipStockX( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     for( Layer layer : userState.layers ) {
       for( Vertex v : layer.getVerts() ) {
@@ -85,9 +86,9 @@ public class CmdFlip extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int flipStockY( LScriptState state, Queue<ExpressionElement> params ) {
+  private int flipStockY( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     for( Layer layer : userState.layers ) {
       for( Vertex v : layer.getVerts() ) {

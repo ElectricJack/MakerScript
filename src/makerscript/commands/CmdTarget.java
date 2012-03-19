@@ -7,27 +7,30 @@ package makerscript.commands;
 import java.util.ArrayList;
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.Vector3;
-import makerscript.geom.mesh.PathPoint;
-import makerscript.geom.mesh.PolyLine;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
-import makerscript.util.Selectable;
+import makerscript.MakerScriptState;
+
+import com.fieldfx.geom.mesh.PathPoint;
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.Vector3;
+import com.fieldfx.util.MathHelper;
+import com.fieldfx.util.Selectable;
+
 
 
 
 public class CmdTarget extends Command {
   //---------------------------------------------------------------------------------
-  public         CmdTarget ( CommandStore cs ) { super( cs, "target polyline +int | target center | target centers | target coord +float +float +float | clear target | clear targets" ); }
+  public         CmdTarget ( CommandStore cs ) { super( cs, "target polyline +float +float | target center | target centers | target coord +float +float +float | clear target | clear targets" ); }
   public         CmdTarget ( Command copy    ) { super( copy ); }
   public Command clone     ( )                 { return new CmdTarget(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     // Get the current scriptable mill state from the lscript state
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
@@ -45,10 +48,10 @@ public class CmdTarget extends Command {
   }  
   
   // ------------------------------------------------------------------------ //
-  public int targetPolyLine( LScriptState state, Queue<ExpressionElement> params )
+  public int targetPolyLine( ScriptState state, Queue<ExpressionElement> params )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     if( userState.selected    == null ) return state.nextCommand();
     // We need an active layer to add the targets to
     if( userState.activeLayer == null ) return state.nextCommand();
@@ -77,9 +80,9 @@ public class CmdTarget extends Command {
     {
         Vertex  v0       = poly.getVerts().get( where.index );
         Vertex  v1       = poly.getVerts().get( where.index+1 );
-        Vector3 vPoint   = new Vector3( lerp( v0.x, v1.x, where.t )
-                                      , lerp( v0.y, v1.y, where.t )
-                                      , lerp( v0.z, v1.z, where.t ) );            
+        Vector3 vPoint   = new Vector3( MathHelper.lerp( v0.x, v1.x, where.t )
+                                      , MathHelper.lerp( v0.y, v1.y, where.t )
+                                      , MathHelper.lerp( v0.z, v1.z, where.t ) );            
         Vector3 vTangent = v1.sub(v0);
         Vector3 vNormal  = new Vector3( vTangent.y, -vTangent.x, 0 );
                 vNormal.nrmeq();
@@ -93,10 +96,10 @@ public class CmdTarget extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public int targetCenters( LScriptState state )
+  public int targetCenters( ScriptState state )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     if( userState.activeLayer == null ) return state.nextCommand();
     if( userState.selected    == null ) return state.nextCommand();
     
@@ -119,9 +122,9 @@ public class CmdTarget extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public int targetCoord( LScriptState state, Queue<ExpressionElement> params ) {
+  public int targetCoord( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( userState.activeLayer == null )
       return state.nextCommand();
@@ -136,9 +139,9 @@ public class CmdTarget extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public int clear( LScriptState state ) {
+  public int clear( ScriptState state ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( userState.activeLayer == null )
       return state.nextCommand();

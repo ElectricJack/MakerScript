@@ -3,6 +3,7 @@
 	<name>MakerScript</name>
 	<comment></comment>
 	<projects>
+		<project>FieldFXLibs</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

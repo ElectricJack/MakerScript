@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.Vector3;
-import makerscript.geom.mesh.PolyLine;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
+import makerscript.MakerScriptState;
+
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.Vector3;
 
 
 //import scriptcam.geom.mesh.PathBridge;
@@ -28,7 +29,7 @@ public class CmdDrill extends Command {
   public Command clone   ( )                 { return new CmdDrill(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
 
@@ -41,10 +42,10 @@ public class CmdDrill extends Command {
 
   
   //------------------------------------------------------------------------ //
-  public int drillTargets( LScriptState state, Queue<ExpressionElement> params )
+  public int drillTargets( ScriptState state, Queue<ExpressionElement> params )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     if( userState.activeLayer == null ) return state.nextCommand();
       
     float drillDepth      = -userState.stockSize.z;

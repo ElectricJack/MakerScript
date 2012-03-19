@@ -12,14 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.Vector3;
-import makerscript.geom.mesh.PolyLine;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
+import makerscript.MakerScriptState;
+
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.Vector3;
 
 
 public class CmdExport extends Command {
@@ -29,10 +30,10 @@ public class CmdExport extends Command {
   public Command clone     ( )                 { return new CmdExport(this); }
   
   // --------------------------------------------------------------------------------- //
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
     if( userState.selected == null )         return state.nextCommand();
@@ -45,9 +46,9 @@ public class CmdExport extends Command {
   } 
   
   // --------------------------------------------------------------------------------- //
-  int exportGCode( LScriptState state, Queue<ExpressionElement> params ) {
+  int exportGCode( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     float epsilon = 0.001f;
     

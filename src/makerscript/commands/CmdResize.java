@@ -21,15 +21,18 @@ package makerscript.commands;
 
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.AABB;
-import makerscript.geom.Vector3;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
-import makerscript.util.Selectable;
+import makerscript.MakerScriptState;
+
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.AABounds;
+import com.fieldfx.math.Vector3;
+import com.fieldfx.util.MathHelper;
+import com.fieldfx.util.Selectable;
+
 
 
 public class CmdResize extends Command {
@@ -40,10 +43,10 @@ public class CmdResize extends Command {
   public Command clone     ( )                 { return new CmdResize(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     if( state.jumpElse || state.jumpEndIf ) return state.nextCommand();
     if( userState.selected == null )        return state.nextCommand();
     
@@ -62,10 +65,10 @@ public class CmdResize extends Command {
   }  
   
   // ------------------------------------------------------------------------ //
-  public int resize( LScriptState state, Queue<ExpressionElement> params, boolean x, boolean y, boolean z )
+  public int resize( ScriptState state, Queue<ExpressionElement> params, boolean x, boolean y, boolean z )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     Vector3             newSize   = new Vector3();
     
     if( x ) newSize.x = popFloat(params);
@@ -73,24 +76,24 @@ public class CmdResize extends Command {
     if( z ) newSize.z = popFloat(params);
     
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds = userState.getSelectionBounds();
+    AABounds<Vector3> bounds = userState.getSelectionBounds();
 
     for( Selectable item : userState.selected )
       for( Vertex v : item.getVerts() )
       {
-        if( x ) v.x = map( v.x, bounds.vMin.x, bounds.vMax.x, bounds.vMin.x, bounds.vMin.x + newSize.x );
-        if( y ) v.y = map( v.y, bounds.vMin.y, bounds.vMax.y, bounds.vMin.y, bounds.vMin.y + newSize.y );
-        if( z ) v.z = map( v.z, bounds.vMin.z, bounds.vMax.z, bounds.vMin.z, bounds.vMin.z + newSize.z );
+        if( x ) v.x = MathHelper.map( v.x, bounds.vMin.x, bounds.vMax.x, bounds.vMin.x, bounds.vMin.x + newSize.x );
+        if( y ) v.y = MathHelper.map( v.y, bounds.vMin.y, bounds.vMax.y, bounds.vMin.y, bounds.vMin.y + newSize.y );
+        if( z ) v.z = MathHelper.map( v.z, bounds.vMin.z, bounds.vMax.z, bounds.vMin.z, bounds.vMin.z + newSize.z );
       }
     
     return state.nextCommand();
   }
   
   // ------------------------------------------------------------------------ //
-  public int scale( LScriptState state, Queue<ExpressionElement> params, boolean x, boolean y, boolean z  )
+  public int scale( ScriptState state, Queue<ExpressionElement> params, boolean x, boolean y, boolean z  )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     Vector3             scalar    = new Vector3();
     
     if( x ) scalar.x = popFloat(params);
@@ -98,14 +101,14 @@ public class CmdResize extends Command {
     if( z ) scalar.z = popFloat(params);
     
     // First calculate/retrieve the bounds of the selection
-    AABB<Vector3> bounds   = userState.getSelectionBounds();
+    AABounds<Vector3> bounds   = userState.getSelectionBounds();
     Vector3       old_size = bounds.vMax.sub( bounds.vMin );
     for( Selectable item : userState.selected )
       for( Vertex v : item.getVerts() )
       {
-        if( x ) v.x = map( v.x, bounds.vMin.x, bounds.vMax.x, bounds.vMin.x, bounds.vMin.x + old_size.x*scalar.x );
-        if( y ) v.y = map( v.y, bounds.vMin.y, bounds.vMax.y, bounds.vMin.y, bounds.vMin.y + old_size.y*scalar.y );
-        if( z ) v.z = map( v.z, bounds.vMin.z, bounds.vMax.z, bounds.vMin.z, bounds.vMin.z + old_size.z*scalar.z );
+        if( x ) v.x = MathHelper.map( v.x, bounds.vMin.x, bounds.vMax.x, bounds.vMin.x, bounds.vMin.x + old_size.x*scalar.x );
+        if( y ) v.y = MathHelper.map( v.y, bounds.vMin.y, bounds.vMax.y, bounds.vMin.y, bounds.vMin.y + old_size.y*scalar.y );
+        if( z ) v.z = MathHelper.map( v.z, bounds.vMin.z, bounds.vMax.z, bounds.vMin.z, bounds.vMin.z + old_size.z*scalar.z );
       }
     
     return state.nextCommand();

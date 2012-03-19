@@ -21,11 +21,12 @@ package makerscript.commands;
 
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+
+import makerscript.MakerScriptState;
 
 
 public class CmdClean extends Command {
@@ -35,10 +36,10 @@ public class CmdClean extends Command {
   public Command clone    ( )                 { return new CmdClean(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
     if( userState.selected == null )         return state.nextCommand();
@@ -51,10 +52,10 @@ public class CmdClean extends Command {
   }  
   
   //------------------------------------------------------------------------ //
-  public int clean(  LScriptState state, Queue<ExpressionElement> params  )
+  public int clean(  ScriptState state, Queue<ExpressionElement> params  )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( userState.activeLayer != null ) {
       userState.activeLayer.clean();

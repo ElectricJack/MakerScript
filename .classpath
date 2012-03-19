@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry combineaccessrules="false" kind="src" path="/FieldFXLibs"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry exported="true" kind="lib" path="libs/codethread.jar"/>
@@ -26,5 +27,8 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="MakerScript/libs/win64"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="libs/postgresql-8.3-604.jdbc3.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/sqlitejdbc-v053-pure.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/fieldfx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

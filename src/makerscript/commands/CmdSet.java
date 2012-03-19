@@ -21,13 +21,14 @@ package makerscript.commands;
 
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
-import makerscript.util.Selectable;
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.util.Selectable;
+
+import makerscript.MakerScriptState;
 
 //import scriptcam.geom.Vector3;
 
@@ -40,7 +41,7 @@ public class CmdSet extends Command {
   public Command clone  ( )                 { return new CmdSet(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     if( state.jumpElse || state.jumpEndIf )
       return state.nextCommand();
@@ -60,9 +61,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setX( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setX( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     float value = popFloat( params );
     
@@ -75,9 +76,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setY( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setY( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     float value = popFloat( params );
     
@@ -90,9 +91,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setZ( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setZ( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     float value = popFloat( params );
     
@@ -105,9 +106,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setTargetX( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setTargetX( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     int   targetIndex = popInt   ( params );
     float value       = popFloat ( params );
@@ -119,9 +120,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setTargetY( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setTargetY( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     int   targetIndex = popInt   ( params );
     float value       = popFloat ( params );
@@ -133,9 +134,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setTargetZ( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setTargetZ( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     int   targetIndex = popInt   ( params );
     float value       = popFloat ( params );
@@ -147,9 +148,9 @@ public class CmdSet extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private int setStockSize ( LScriptState state, Queue<ExpressionElement> params ) {
+  private int setStockSize ( ScriptState state, Queue<ExpressionElement> params ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     float x = popFloat( params );
     float y = popFloat( params );

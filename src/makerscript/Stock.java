@@ -1,6 +1,6 @@
 package makerscript;
 
-import makerscript.geom.Vector3;
+import com.fieldfx.math.Vector3;
 
 public class Stock {
   public Material material;

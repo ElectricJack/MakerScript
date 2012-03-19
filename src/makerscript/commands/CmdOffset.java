@@ -21,13 +21,14 @@ package makerscript.commands;
 
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.mesh.Vertex;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
-import makerscript.util.Selectable;
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.util.Selectable;
+
+import makerscript.MakerScriptState;
 
 
 public class CmdOffset extends Command {
@@ -37,10 +38,10 @@ public class CmdOffset extends Command {
   public Command clone     ( )                 { return new CmdOffset(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     if( state.jumpElse || state.jumpEndIf ) return state.nextCommand();
     if( userState.selected == null )        return state.nextCommand();
     
@@ -54,10 +55,10 @@ public class CmdOffset extends Command {
   }  
   
   // ------------------------------------------------------------------------ //
-  public int offsetX( LScriptState state, Queue<ExpressionElement> params )
+  public int offsetX( ScriptState state, Queue<ExpressionElement> params )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     float               offset    = popFloat(params);
     
     for( Selectable item : userState.selected )
@@ -67,10 +68,10 @@ public class CmdOffset extends Command {
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
-  public int offsetY( LScriptState state, Queue<ExpressionElement> params )
+  public int offsetY( ScriptState state, Queue<ExpressionElement> params )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     float               offset    = popFloat(params);
     
     for( Selectable item : userState.selected )
@@ -80,10 +81,10 @@ public class CmdOffset extends Command {
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
-  public int offsetZ( LScriptState state, Queue<ExpressionElement> params )
+  public int offsetZ( ScriptState state, Queue<ExpressionElement> params )
   {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     float               offset    = popFloat(params);
     
     for( Selectable item : userState.selected )

@@ -30,6 +30,10 @@
           <cp>libs/opengl.jar</cp>
           <cp>libs/jogl.jar</cp>
           <cp>libs/gluegen-rt.jar</cp>
+          <cp>libs/mysql-connector-java-3.1.14-bin.jar</cp>
+          <cp>libs/postgresql-8.3-604.jdbc3.jar</cp>
+          <cp>libs/SQLibrary.jar</cp>
+          <cp>libs/sqlitejdbc-v053-pure.jar</cp>
         </classPath>
         
         <splash file          ="${res.dir}/images/${ant.project.name}.bmp"

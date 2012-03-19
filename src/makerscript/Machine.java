@@ -2,7 +2,7 @@ package makerscript;
 
 import java.util.ArrayList;
 
-import makerscript.geom.Vector3;
+import com.fieldfx.math.Vector3;
 
 public class Machine {
   public String          name;

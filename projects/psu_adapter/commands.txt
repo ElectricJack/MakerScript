@@ -1,0 +1,44 @@
+float size_x = 190
+float size_y = 120
+set stock size size_x size_y 0.5
+add layer
+load "psuAdapter.dxf" 
+clean
+select paths 2 12
+offset x 10
+offset y 10
+select none
+select path 1
+flip
+select none
+select paths 3 11
+flip
+select none
+select path 12
+flip
+select none
+loop i from 3 to 12
+select path i
+loop 5 times
+interpolate depth from 0 to -3
+set z depth
+mill offset paths 1.75
+mill offset paths 1.22
+end loop
+set z -3.33
+mill offset paths 1.75
+mill offset paths 1.22
+select none
+end loop
+select path 2
+loop 5 times
+interpolate depth from 0 to -3
+set z depth
+mill offset paths 1.75
+mill offset paths 1.22
+end loop
+set z -3.33
+mill offset paths 1.75
+mill offset paths 1.22
+select none
+export gcode "adapter.nc"

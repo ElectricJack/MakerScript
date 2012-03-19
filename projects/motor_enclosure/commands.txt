@@ -1,0 +1,6 @@
+
+load "motor_box_layout_outlines.dae"
+
+select all
+
+cut offset paths 

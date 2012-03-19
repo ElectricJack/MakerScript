@@ -23,13 +23,14 @@ package makerscript.commands;
 import java.util.ArrayList;
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.mesh.PathPoint;
-import makerscript.geom.mesh.PolyLine;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
+import com.fieldfx.geom.mesh.PathPoint;
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+
+import makerscript.MakerScriptState;
 
 
 public class CmdSelect extends Command {
@@ -39,7 +40,7 @@ public class CmdSelect extends Command {
   public Command clone     ( )                 { return new CmdSelect(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     if( state.jumpElse || state.jumpEndIf )
       return state.nextCommand();
@@ -56,60 +57,60 @@ public class CmdSelect extends Command {
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
-  private int selectAll( LScriptState state ) {
+  private int selectAll( ScriptState state ) {
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( userState.activeLayer != null )
-      userState.selected.addAll( userState.activeLayer.getPolys() );
+      userState.selected.addAll( userState.activeLayer.getFaces() );
     
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
-  private int selectNone( LScriptState state ) {
+  private int selectNone( ScriptState state ) {
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
                         userState.selected.clear();
     
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
-  private int selectPath( LScriptState state, Queue<ExpressionElement> params ) {
+  private int selectPath( ScriptState state, Queue<ExpressionElement> params ) {
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     int                 pathIndex = popInt(params);
     
-    if( userState.activeLayer != null && pathIndex >= 0 && pathIndex < userState.activeLayer.getPolys().size() )
-      userState.selected.add( userState.activeLayer.getPolys().get( pathIndex ) );
+    if( userState.activeLayer != null && pathIndex >= 0 && pathIndex < userState.activeLayer.getFaces().size() )
+      userState.selected.add( userState.activeLayer.getFaces().get( pathIndex ) );
     
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
-  private int selectPaths( LScriptState state, Queue<ExpressionElement> params ) {
+  private int selectPaths( ScriptState state, Queue<ExpressionElement> params ) {
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState      = (ScriptableMillState)state.userState;
+    MakerScriptState userState      = (MakerScriptState)state.userState;
     int                 pathIndexStart = popInt( params );
     int                 pathIndexEnd   = popInt( params );
     
     if( userState.activeLayer != null && 
         pathIndexStart >= 0 &&
-        pathIndexEnd   <  userState.activeLayer.getPolys().size() &&
+        pathIndexEnd   <  userState.activeLayer.getFaces().size() &&
         pathIndexStart <= pathIndexEnd )
     {
       for( int i = pathIndexStart; i <= pathIndexEnd; ++i )
-        userState.selected.add( userState.activeLayer.getPolys().get( i ) );
+        userState.selected.add( userState.activeLayer.getFaces().get( i ) );
     }
     
     return state.nextCommand();
   }
   
-  private int selectLayer( LScriptState state, Queue<ExpressionElement> params ) {
+  private int selectLayer( ScriptState state, Queue<ExpressionElement> params ) {
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState  = (ScriptableMillState)state.userState;
+    MakerScriptState userState  = (MakerScriptState)state.userState;
     int                 layerIndex = popInt( params );
     
     if( layerIndex >= 0 && layerIndex < userState.layers.size() )
@@ -118,17 +119,17 @@ public class CmdSelect extends Command {
     return state.nextCommand();
   }
   
-  private int selectPathSection( LScriptState state, Queue<ExpressionElement> params ) {
+  private int selectPathSection( ScriptState state, Queue<ExpressionElement> params ) {
 
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     int                 pathIndex = popInt   ( params );
     float               start     = popFloat ( params );
     float               distance  = popFloat ( params );
     
-    if( userState.activeLayer != null && pathIndex >= 0 && pathIndex < userState.activeLayer.getPolys().size() )
+    if( userState.activeLayer != null && pathIndex >= 0 && pathIndex < userState.activeLayer.getFaces().size() )
     {
-      PolyLine path = userState.activeLayer.getPolys().get( pathIndex );
+      PolyLine path = userState.activeLayer.getFaces().get( pathIndex );
       
       ArrayList<Float> pathSegmentLengths = new ArrayList<Float>();
       path.length( pathSegmentLengths, true );

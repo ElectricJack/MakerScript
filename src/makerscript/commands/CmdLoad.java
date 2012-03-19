@@ -23,22 +23,22 @@ import java.util.Queue;
 import java.util.ArrayList;
 
 import makerscript.Layer;
-import makerscript.ScriptableMillState;
+import makerscript.MakerScriptState;
 
-import makerscript.geom.mesh.MeshBuilderBase;
-import makerscript.geom.mesh.collada.COLLADAReader;
-import makerscript.geom.mesh.dxf.DXFReader;
-import makerscript.geom.mesh.Mesh;
 
-import makerscript.geom.Vector2;
-import makerscript.geom.Vector3;
-import makerscript.geom.Poly2;
-import makerscript.geom.mesh.PolyLine;
+import com.fieldfx.geom.mesh.Mesh;
+import com.fieldfx.geom.mesh.MeshBuilderBase;
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.geom.mesh.collada.COLLADAReader;
+import com.fieldfx.geom.mesh.dxf.DXFReader;
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.Vector2;
+import com.fieldfx.math.Vector3;
+import com.fieldfx.math.Poly2;
 
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
 
 //import makerscript.util.Serializable;
 //import makerscript.util.Serializer;
@@ -51,13 +51,13 @@ public class CmdLoad extends Command {
   public Command clone   ( )                 { return new CmdLoad(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     if( state.jumpElse || state.jumpEndIf )
       return state.nextCommand();
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     String              fileName  = popString(params); 
 
     if      ( fileExtensionIs( fileName, "txt" ) ) loadPaths   ( userState.projectPath + "/" + fileName, userState );
@@ -75,12 +75,12 @@ public class CmdLoad extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void loadPaths( String fileName, ScriptableMillState userState ) {
+  public void loadPaths( String fileName, MakerScriptState userState ) {
     //userState.load(fileName);
   }
 
   // ------------------------------------------------------------------------ //
-  public void loadDXF( String fileName, ScriptableMillState userState )
+  public void loadDXF( String fileName, MakerScriptState userState )
   {
     MeshBuilderBase builder = new MeshBuilderBase( userState.app );
     DXFReader dxf = new DXFReader( fileName );
@@ -92,7 +92,7 @@ public class CmdLoad extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void loadCOLLADA( String fileName, ScriptableMillState userState )
+  public void loadCOLLADA( String fileName, MakerScriptState userState )
   {
     MeshBuilderBase builder = new MeshBuilderBase( userState.app );
     COLLADAReader   collada = new COLLADAReader(userState.app, fileName);
@@ -103,12 +103,12 @@ public class CmdLoad extends Command {
   }
   
   // ------------------------------------------------------------------------ //
-  public void loadSTL( String fileName, ScriptableMillState userState )
+  public void loadSTL( String fileName, MakerScriptState userState )
   {
   }
   
   // ------------------------------------------------------------------------ //
-  public void loadXML( String fileName, ScriptableMillState userState ) 
+  public void loadXML( String fileName, MakerScriptState userState ) 
   {/*
     class XMLTarget extends Vector2 implements Serializable {
       public String    getType ( ) { return "Target"; }
@@ -198,7 +198,7 @@ public class CmdLoad extends Command {
   }
 
 
-  protected void makeActiveLayer( ScriptableMillState userState ) {
+  protected void makeActiveLayer( MakerScriptState userState ) {
     if( userState.activeLayer == null ) {
         userState.activeLayer = new Layer();
         userState.layers.add(userState.activeLayer);

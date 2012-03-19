@@ -7,15 +7,16 @@ package makerscript;
 import java.util.ArrayList;
 import java.util.List;
 
-import makerscript.geom.Vector3;
-import makerscript.geom.mesh.DrawWriter;
-import makerscript.geom.mesh.Edge;
-import makerscript.geom.mesh.Face;
-import makerscript.geom.mesh.Mesh;
-import makerscript.geom.mesh.PolyLine;
-import makerscript.geom.mesh.Vertex;
-import makerscript.util.NamedMultiMap;
-import makerscript.util.SelectableBase;
+import com.fieldfx.geom.mesh.DrawWriter;
+import com.fieldfx.geom.mesh.Edge;
+import com.fieldfx.geom.mesh.Face;
+import com.fieldfx.geom.mesh.Mesh;
+import com.fieldfx.geom.mesh.PolyLine;
+import com.fieldfx.geom.mesh.Vertex;
+import com.fieldfx.math.Vector3;
+
+import com.fieldfx.util.SelectableBase;
+import com.fieldfx.util.NamedMultiMap;
 
 import processing.core.PGraphics;
 
@@ -54,12 +55,6 @@ public class Layer extends SelectableBase {
     for( Mesh m : meshes ) verts.addAll( m.getVerts() );
     return                 verts;
   }
-  public NamedMultiMap<PolyLine> getPolys()
-  {
-    NamedMultiMap<PolyLine> polys = new NamedMultiMap<PolyLine>();
-    for( Mesh m : meshes )  polys.addAll( m.getPolys() );
-    return                  polys;
-  }
   public NamedMultiMap<Face> 	   getFaces( ) {
     NamedMultiMap<Face>    faces = new NamedMultiMap<Face>();
     for( Mesh m : meshes ) faces.addAll( m.getFaces() );
@@ -79,8 +74,9 @@ public class Layer extends SelectableBase {
   public void draw(  PGraphics g  ) { 
     DrawWriter meshDrawer = new DrawWriter( g );
     g.pushMatrix();
-      g.scale(1.f,1.f,-1.f);
-      g.fill(0.f,64.f);
+      //g.scale(1.f,1.f,-1.f);
+      g.noFill();
+      //g.fill(0.f,16.f);
       for( Mesh mesh : meshes )
         meshDrawer.write( mesh );
     g.popMatrix();

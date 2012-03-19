@@ -2,13 +2,14 @@ package makerscript.commands;
 
 import java.util.Queue;
 
-import makerscript.ScriptableMillState;
-import makerscript.geom.AABB;
-import makerscript.geom.Vector3;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
+import makerscript.MakerScriptState;
+
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+import com.fieldfx.math.AABounds;
+import com.fieldfx.math.Vector3;
 
 
 
@@ -19,12 +20,12 @@ public class CmdView extends Command {
   public Command clone   ( )                 { return new CmdView(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {   
     if( state.jumpElse || state.jumpEndIf )  return state.nextCommand();
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     switch( callIndex ) {
       case 0: viewTop      ( userState );          break;
@@ -41,29 +42,29 @@ public class CmdView extends Command {
   }
   
   //---------------------------------------------------------------------------------  
-  public void viewTop( ScriptableMillState userState ) {
+  public void viewTop( MakerScriptState userState ) {
     //userState.cam.setRotations(0,0,0);
   }
   //---------------------------------------------------------------------------------  
-  public void viewFront( ScriptableMillState userState ) {
+  public void viewFront( MakerScriptState userState ) {
     //userState.cam.setRotations(PI/2,0,0);
   }
   //---------------------------------------------------------------------------------  
-  public void viewRight( ScriptableMillState userState ) {
+  public void viewRight( MakerScriptState userState ) {
     //userState.cam.setRotations(0,PI/2,0);
   }
   //---------------------------------------------------------------------------------  
-  public void viewLock( ScriptableMillState userState ) {
+  public void viewLock( MakerScriptState userState ) {
     //userState.cam.setActive(false);
   }
   //---------------------------------------------------------------------------------  
-  public void viewUnlock( ScriptableMillState userState ) {
+  public void viewUnlock( MakerScriptState userState ) {
     //userState.cam.setActive(true);
   }
   //---------------------------------------------------------------------------------  
-  public void viewSelected( ScriptableMillState userState ) {
+  public void viewSelected( MakerScriptState userState ) {
     
-    AABB<Vector3> bounds   = userState.getSelectionBounds();
+    AABounds<Vector3> bounds   = userState.getSelectionBounds();
     if( bounds == null ) return;
     
     Vector3       center   = bounds.vMax.add( bounds.vMin ).mul( 0.5f );
@@ -71,7 +72,7 @@ public class CmdView extends Command {
     userState.cam.lookAt( center.x, center.y, center.z, distance );
   }
   //---------------------------------------------------------------------------------  
-  public void viewPosition( ScriptableMillState userState, Queue<ExpressionElement> params ) {
+  public void viewPosition( MakerScriptState userState, Queue<ExpressionElement> params ) {
     
     float x = popFloat(params);
     float y = popFloat(params);
@@ -80,7 +81,7 @@ public class CmdView extends Command {
     userState.cam.lookAt( x, y, z );
   }
   //---------------------------------------------------------------------------------  
-  public void viewDistance( ScriptableMillState userState, Queue<ExpressionElement> params ) {    
+  public void viewDistance( MakerScriptState userState, Queue<ExpressionElement> params ) {    
     userState.cam.setDistance( popFloat(params) );
   }
 }

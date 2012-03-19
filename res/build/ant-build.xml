@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="MakerScript" default="build_win64" basedir="../../">
+<project name="MakerScript" default="build_win32" basedir="../../">
   <description>MakerScript: Digital to analog and back, maker-style!</description>
   
 

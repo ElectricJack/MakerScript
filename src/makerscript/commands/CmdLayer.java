@@ -21,12 +21,13 @@ package makerscript.commands;
 
 import java.util.Queue;
 
+import com.fieldfx.lang.Command;
+import com.fieldfx.lang.CommandStore;
+import com.fieldfx.lang.ExpressionElement;
+import com.fieldfx.lang.ScriptState;
+
 import makerscript.Layer;
-import makerscript.ScriptableMillState;
-import makerscript.lang.Command;
-import makerscript.lang.CommandStore;
-import makerscript.lang.ExpressionElement;
-import makerscript.lang.LScriptState;
+import makerscript.MakerScriptState;
 
 
 
@@ -37,13 +38,13 @@ public class CmdLayer extends Command {
   public Command clone      ( )                 { return new CmdLayer(this); }
   
   //---------------------------------------------------------------------------------
-  public int call( LScriptState state, Queue<ExpressionElement> params, int callIndex )
+  public int call( ScriptState state, Queue<ExpressionElement> params, int callIndex )
   {
     if( state.jumpElse || state.jumpEndIf )
       return state.nextCommand();
     
     // Get the current scriptable mill state from the lscript state
-    ScriptableMillState userState = (ScriptableMillState)state.userState;
+    MakerScriptState userState = (MakerScriptState)state.userState;
     
     if      ( callIndex == 0 ) addLayer( userState );
     else if ( callIndex == 1 ) {
@@ -60,12 +61,12 @@ public class CmdLayer extends Command {
   }
 
   //---------------------------------------------------------------------------------  
-  private void addLayer( ScriptableMillState userState ) {
+  private void addLayer( MakerScriptState userState ) {
     userState.layers.add( new Layer() );
   }
 
   //---------------------------------------------------------------------------------  
-  private void removeLayer( ScriptableMillState userState, int layerIndex ) {
+  private void removeLayer( MakerScriptState userState, int layerIndex ) {
     if( layerIndexIsValidRange(userState, layerIndex) ) {
       Layer toRemove = userState.layers.get( layerIndex );
       
@@ -85,7 +86,7 @@ public class CmdLayer extends Command {
   }
   
   //---------------------------------------------------------------------------------
-  private void mergeLayers( ScriptableMillState userState, int firstLayerIndex, int secondLayerIndex ) {
+  private void mergeLayers( MakerScriptState userState, int firstLayerIndex, int secondLayerIndex ) {
     
     // First make sure we received valid indices
     if( layerIndexIsValidRange(userState, firstLayerIndex) &&
@@ -103,7 +104,7 @@ public class CmdLayer extends Command {
     }
   }
   
-  private boolean layerIndexIsValidRange( ScriptableMillState userState, int layer ) {
+  private boolean layerIndexIsValidRange( MakerScriptState userState, int layer ) {
     return ( layer >= 0 && layer < userState.layers.size() );
   }
   
