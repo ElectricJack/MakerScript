@@ -1,7 +1,7 @@
 MakerScript
 =============
 
-<img src="http://dl.dropbox.com/u/2742959/screenshot03.jpg" />
+<img src="http://www.jackkern.com/wp-content/uploads/2011/03/MakerScript21.jpg" />
 
 * [makerscript's home](http://www.makerscript.com)
 * [my website](http://www.jackkern.com)
