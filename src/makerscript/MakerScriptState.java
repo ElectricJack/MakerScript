@@ -20,6 +20,7 @@ import com.fieldfx.util.MathHelper;
 import com.fieldfx.util.Selectable;
 //import makerscript.geom.mesh.Mesh;
 
+import com.fieldfx.geom.mesh.Face;
 import com.fieldfx.geom.mesh.PolyLine;
 import com.fieldfx.geom.mesh.Vertex;
 import com.fieldfx.gfx.GfxMath;
@@ -179,6 +180,18 @@ public class MakerScriptState {
   Vector3 worldMouse;
   
   //------------------------------------------------------------------------ //
+  public void  select ( List< Selectable > selectables ) {
+    for( Selectable s : selectables ) {
+      select(s);     
+    }
+  }
+  //------------------------------------------------------------------------ //
+  public void select( Selectable selectable ) {
+    if( !selected.contains( selectable ) ) {
+      selected.add( selectable );
+    } 
+  }
+  //------------------------------------------------------------------------ //
   public void updateGL() {
     gl  = g.beginGL();
     glu = g.glu;
@@ -238,6 +251,7 @@ public class MakerScriptState {
   }
   
   public void clearSelection() {
+    selected.clear();
     v0 = v1 = v2 = v3 = null;
   }
   

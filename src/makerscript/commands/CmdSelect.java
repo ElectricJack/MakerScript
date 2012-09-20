@@ -23,6 +23,7 @@ package makerscript.commands;
 import java.util.ArrayList;
 import java.util.Queue;
 
+import com.fieldfx.geom.mesh.Face;
 import com.fieldfx.geom.mesh.PathPoint;
 import com.fieldfx.geom.mesh.PolyLine;
 import com.fieldfx.lang.Command;
@@ -62,8 +63,10 @@ public class CmdSelect extends Command {
     MakerScriptState userState = (MakerScriptState)state.userState;
     
     if( userState.activeLayer != null )
-      userState.selected.addAll( userState.activeLayer.getFaces() );
+      for( Face s : userState.activeLayer.getFaces().getAll() )
+        userState.select( s );
     
+    System.out.println( "Selected " + userState.selected.size() + " paths." );
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
@@ -71,7 +74,7 @@ public class CmdSelect extends Command {
     
     // Get the current scriptable mill state from the lscript state
     MakerScriptState userState = (MakerScriptState)state.userState;
-                        userState.selected.clear();
+                     userState.clearSelection();
     
     return state.nextCommand();
   }
@@ -83,8 +86,9 @@ public class CmdSelect extends Command {
     int                 pathIndex = popInt(params);
     
     if( userState.activeLayer != null && pathIndex >= 0 && pathIndex < userState.activeLayer.getFaces().size() )
-      userState.selected.add( userState.activeLayer.getFaces().get( pathIndex ) );
+      userState.select( userState.activeLayer.getFaces().get( pathIndex ) );
     
+    System.out.println( "Selected " + userState.selected.size() + " paths." );
     return state.nextCommand();
   }
   // ------------------------------------------------------------------------ //
@@ -101,9 +105,10 @@ public class CmdSelect extends Command {
         pathIndexStart <= pathIndexEnd )
     {
       for( int i = pathIndexStart; i <= pathIndexEnd; ++i )
-        userState.selected.add( userState.activeLayer.getFaces().get( i ) );
+        userState.select( userState.activeLayer.getFaces().get( i ) );
     }
     
+    System.out.println( "Selected " + userState.selected.size() + " paths." );
     return state.nextCommand();
   }
   
@@ -143,9 +148,10 @@ public class CmdSelect extends Command {
            subPath.add( path.get(i) );
            subPath.add( pathEnd.get(path) );
       
-      userState.selected.add( subPath );
+      userState.select( subPath );
     }
     
+    System.out.println( "Selected " + userState.selected.size() + " paths." );
     return state.nextCommand();
   }
   
