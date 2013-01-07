@@ -1,0 +1,19 @@
+
+
+
+Button      Event
+
+Component  ModelInterface
+---------  --------------
+List       Listable
+Tree       Treeable
+Text       String
+TextArea   Listable<String>
+World      Treeable<Spatial>
+
+MenuView   Treeable< Pair<String, Event> >
+
+XMLDoc
+  Treeable
+  Listable
+

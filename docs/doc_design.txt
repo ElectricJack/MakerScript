@@ -1,0 +1,37 @@
+
+  DocState
+    - 
+
+  GeomState
+    - List of Layers
+    - List of Objects
+    - List of Meshes
+    - List of Faces
+    - List of Targets
+  
+  Layer
+    - Name
+    - List of Objects
+    - List of Object Instances
+  
+  Object Instance
+    - ID
+    - Transform
+  
+  Object
+    - ID
+    - Name
+    - List of Meshes
+    - List of Mesh Instances
+ 
+  Mesh Instance
+    - ID
+    - Transform
+
+  Mesh
+    - List of faces
+    - List of vertices
+
+  Face
+    - List of vertices
+

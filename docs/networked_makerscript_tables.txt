@@ -1,0 +1,159 @@
+/{Server Tables}\
+[dbo.tblUsers]
+ID	Name		Description	ServiceType(Freeware, Contributor, etc.)
+
+[dbo.tblProjects]
+ID	Name		Description
+
+[dbo.tblUserSessions]
+ID	userID		projectID	AccessType(ReadOnly, AllAccess, etc.)
+
+[dbo.tblUserActions]
+ID	userSessionID	CommandString	TimeStamp
+
+
+//create users
+USE mysql
+INSERT INTO user VALUES('localhost','Joe',PASSWORD('joejoe'),'Y','Y', 
+       'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y');
+
+GRANT ALL ON *.* TO Joe@'%' IDENTIFIED BY "Joe552";
+
+//create tables in order
+CREATE TABLE tblUsers (
+	ID SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Name VARCHAR(50), 
+	Description VARCHAR(127),
+	ServiceType SMALLINT(4) UNSIGNED ZEROFILL,
+	UNIQUE (Name)
+);
+
+CREATE TABLE tblProjects (
+	ID SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	Name VARCHAR(50), 
+	Description VARCHAR(127),
+	UNIQUE (Name)
+);
+
+CREATE TABLE tblUserSessions (
+	ID SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	userID SMALLINT, 
+	projectID SMALLINT,
+	AccessType SMALLINT(4) UNSIGNED ZEROFILL,
+	UNIQUE (userID,projectID),
+FOREIGN KEY (userID) REFERENCES tblUsers (ID),
+FOREIGN KEY (projectID) REFERENCES tblProjects (ID)
+);
+
+CREATE TABLE tblUserActions (
+	ID SMALLINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	userSessionID SMALLINT, 
+	CommandString VARCHAR(128), 
+	TimeStamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+FOREIGN KEY (userSessionID) REFERENCES tblUserSessions (ID)
+);
+
+
+//ALTER TABLE `tblUserActions`
+//  CHANGE COLUMN 'TimeStamp' 'TimeStamp' TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+//insert test data
+INSERT INTO tblUsers
+	(Name, Description, ServiceType)
+VALUES	
+	("test1", "a tester", 0),
+	("dev1", "a developer", 1);
+
+
+INSERT INTO tblProjects
+	(Name, Description)
+VALUES
+	("Rollercoaster", "a hair-raising thrill-ride"),
+	("Bucket", "a fairly decent bucket");
+
+
+INSERT INTO tblUserSessions
+	(userID, projectID, AccessType)
+VALUES
+	(1, 1, 1),
+	(2, 1, 1);
+
+
+INSERT INTO tblUserActions
+	(userSessionID, CommandString, TimeStamp)
+VALUES
+	(1, "some command", NOW()),
+
+	(2, "another command", NOW());
+
+
+
+
+//drop tables in order
+DROP TABLE tblUserActions;
+DROP TABLE tblUserSessions;
+DROP TABLE tblProjects;
+DROP TABLE tblUsers;
+\{Server Tables}/
+
+
+
+/{Stored Procs}\
+
+create procedure SubmitCommand
+(in_sessionID int, in_commandString VARCHAR(256))
+BEGIN
+	DECLARE user_access_rights SMALLINT(4);
+	DECLARE lock_cursor CURSOR FOR
+		SELECT ID
+		FROM tblSessions
+		WHERE ID=in_sessionID
+		ORDER BY ID
+		FOR UPDATE;
+	START TRANSACTION;
+
+	OPEN lock_cursor;
+	FETCH lock_cursor INTO local_account_id;
+
+	UPDATE employee
+		SET salary=salary-tfer_amount
+		WHERE id=from_account;
+
+	UPDATE employee
+		SET salary=salary+tfer_amount
+		WHERE id=to_account;
+
+	CLOSE lock_cursor;
+
+	COMMIT;
+END
+
+SubmitCommand(in_sessionID, in_commandString)
+{
+	//check access type on User's Session
+	//update/create command record in tblUserActions with TimeStamp from Server
+}
+\{Stored Procs}/
+
+
+
+/{Client Data Structures}\
+program.CurrentSessionID
+char[][] Commands
+\{Client Data Structures}/
+
+
+
+/{Client Funcs}\
+void SubmitCommand(in_sessionID, CommandString)
+{
+	//check access type on User's Session
+	//update/create command record in tblUserActions
+}
+
+char[][] RefreshCommands(in_sessionID)
+{
+	select CommandString from tblUserActions where tblUserSessions.ID = program.CurrentSessionID
+}
+\{Client Funcs}/

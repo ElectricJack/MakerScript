@@ -1,0 +1,52 @@
+
+
+
+
+  Meshes:
+    // A vertex is a position along with other information such as color, normal vector and texture coordinates.
+    
+    // An edge is a connection between two vertices.
+    
+    // A loop is a closed set of edges
+    
+    // A face is one outer loop and potentially one or more inner loops all on the same plane,
+       on the surface of the mesh with a normal pointing to the outside of the face
+    
+    // Can have child mesh objects
+    
+    // Can have instances of child mesh objects with transform (VQS?)
+
+
+  
+
+
+============================================================================
+Features / Additions:
+  - Figure out best method for updating script from user input in-app
+  - Context menu user-interface for commands?
+  - Render current script in-app
+  
+  - Support for switching active unit modes: mm / inches
+  
+  Refactor model structure:
+    
+  
+  Improve parser / language features:
+    - Single & Multiline Comments
+    
+  Save various settings in XML files:
+    - CNC milling area dimentions
+    - Default units: Inches/MM
+    - Rendering styles
+  
+  Optimizations:  
+    - Render to GfxDynamicMesh
+  
+  
+  - Support model instances in gcode with subroutines
+  
+  - Render models as solid/translucent poly's
+  
+  
+Bugs:
+  - Grid resolution should match active units
