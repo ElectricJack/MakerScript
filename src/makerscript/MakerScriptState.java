@@ -41,34 +41,34 @@ public class MakerScriptState {
   private void setStyle_SelectedPathNormal () { g.strokeWeight(1); g.stroke(255,0,0);     }
   private void setStyle_Targets            () { g.strokeWeight(2); g.stroke(0,200,0);     }
   private void setStyle_ToolPath           () { g.strokeWeight(1); g.stroke(50,100,255);  }
-  private void setStyle_GridMinor          () { g.strokeWeight(1); g.stroke(200);         }
-  private void setStyle_GridMajor          () { g.strokeWeight(2); g.stroke(150);         }
 
-  public  PGraphicsOpenGL              g;
-  public  GL                           gl;
-  public  GLU                          glu;
+  public  PGraphicsOpenGL   g;
+  public  GL                gl;
+  public  GLU               glu;
   
-  public  PApplet                      app;
+  public  PApplet           app;
   
-  public  PeasyCam                     cam;
-  public  GfxFrustum                   frustum;
-  public  GfxViewMatrices              matrices;
+  public  PeasyCam          cam;
+  public  GfxFrustum        frustum;
+  public  GfxViewMatrices   matrices;
   
-  public  float                        nearPlane =    0.1f;
-  public  float                        farPlane  = 1000.0f;
+  public  float             nearPlane =    0.1f;
+  public  float             farPlane  = 1000.0f;
     
-  public List<Selectable>        	     selected;
-  public List<PolyLine>                cncToolPath;
+  public List<Selectable>   selected;
+  public List<PolyLine>     cncToolPath;
   
-  public List<Layer>                   layers;
-  public Layer                         activeLayer;
+  public List<Layer>        layers;
+  public Layer              activeLayer;
   
-  public Vector3                       stockSize = new Vector3();
+  public Vector3            stockSize = new Vector3();
     
-  public String                        projectPath;
-  public String                        commandsFilePath;
+  public String             projectPath;
+  public String             commandsFilePath;
   
-  
+  Vector3    v0,v1,v2,v3;
+  Vector3    worldMouse;
+
   
   protected boolean gridVisible           = true;
   protected boolean inactiveLayersVisible = true;
@@ -94,6 +94,7 @@ public class MakerScriptState {
     selected       = new ArrayList<Selectable>();
     cncToolPath    = new ArrayList<PolyLine>();
   }
+
   //------------------------------------------------------------------------ //
   public AABounds<Vector3> getSelectionBounds() {
     if( selected == null ||
@@ -105,14 +106,14 @@ public class MakerScriptState {
 
     bounds.vMin = selected.get(0).getVerts().get(0).get();
     bounds.vMax = bounds.vMin.get();
-    for( Selectable item : selected )
-    {
+    for( Selectable item : selected ) {
       bounds.vMin = item.getMin( bounds.vMin );
       bounds.vMax = item.getMax( bounds.vMax );
     }
    
     return bounds;
   }
+
   // ------------------------------------------------------------------------ //
   public void selectRegion( float minx, float miny, float maxx, float maxy ) {
     //gl  = g.beginGL();
@@ -145,6 +146,7 @@ public class MakerScriptState {
         }
     }
   }
+
   // ------------------------------------------------------------------------ //
   public boolean setProjectPath( String pathValue ) {
     projectPath = "";
@@ -176,8 +178,7 @@ public class MakerScriptState {
     return false;
   }
   
-  Vector3 v0,v1,v2,v3;
-  Vector3 worldMouse;
+
   
   //------------------------------------------------------------------------ //
   public void  select ( List< Selectable > selectables ) {
@@ -283,14 +284,13 @@ public class MakerScriptState {
   }
   // ------------------------------------------------------------------------ //
   protected void drawSelections() {
-	  
-	gl = g.beginGL();
-	gl.glDisable( GL.GL_DEPTH_TEST );
-	g.endGL();
-	  
-	g.noFill();
-	g.pushMatrix();
-	g.scale( 1.f, 1.f, -1.f );
+    gl = g.beginGL();
+    gl.glDisable( GL.GL_DEPTH_TEST );
+    g.endGL();
+      
+    g.noFill();
+    g.pushMatrix();
+    g.scale( 1.f, 1.f, -1.f );
     for( Selectable item : selected )
     {
       // Draw any selected line lists with a thicker red border
@@ -315,6 +315,7 @@ public class MakerScriptState {
     }
     g.popMatrix();
   }
+
   // ------------------------------------------------------------------------ //
   protected void drawTargets() {
     if( activeLayer == null || activeLayer.targets == null || activeLayer.targets.size() == 0 ) return;
@@ -340,6 +341,7 @@ public class MakerScriptState {
       g.popMatrix();
     }
   }
+
   // ------------------------------------------------------------------------ //
   protected void drawToolPath() {
     //System.out.println( cncToolPath.size() );
@@ -347,49 +349,15 @@ public class MakerScriptState {
       setStyle_ToolPath();
       g.noFill();
       g.beginShape();
-        //System.out.println( l.getVerts().size() );
         for( Vector3 v : l.getVerts() ) {
-          //System.out.println( v.toString() );
           g.vertex( v.x, v.y, v.z ); 
         }
       g.endShape();
     }
   }
+
   // ------------------------------------------------------------------------ //
   protected void drawGrid() {
-    float y0   = 0;
-    float y1   = 600;
-    float x0   = 0;
-    float x1   = 800;
-    float step = 10; 
-    
-    int cols       = (int)((x1-x0) / step);
-    int rows       = (int)((y1-y0) / step);
-    int majorCount = 10;
-    
-    g.pushStyle();  
-      g.pushMatrix();
-        g.translate( 0,0,-stockSize.z );
-        setStyle_GridMinor();
-        for( int ix=0; ix<=cols; ++ix )
-          if( ix % majorCount != 0 ) 
-          {
-            float x = x0 + ix*step;
-            g.line( x, y0, x, y1 );
-          }
-      
-        for( int iy=0; iy<=rows; ++iy )
-          if( iy % majorCount != 0 ) 
-          {
-            float y = y0 + iy*step;
-            g.line( x0, y, x1, y );
-          }
-        
-        setStyle_GridMajor();
-        for( int ix=0; ix<=cols; ix += majorCount ) { float x = x0 + ix*step;  g.line( x, y0, x, y1 ); }
-        for( int iy=0; iy<=rows; iy += majorCount ) { float y = y0 + iy*step;  g.line( x0, y, x1, y ); }
-        
-      g.popMatrix();
-    g.popStyle();
+
   }
 }

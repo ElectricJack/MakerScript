@@ -62,8 +62,7 @@ public class MakerScriptCommands extends ScriptInstance {
   }
   
   // ----------------------------------------------------------------- //
-  public MakerScriptCommands( ListDoc<String> codeState, UIManager mgr, UIWindow cmdbox )
-  {
+  public MakerScriptCommands( ListDoc<String> codeState, UIManager mgr, UIWindow cmdbox ) {
     super(codeState);
     
     new CmdAlign   ( compiler );   addCommandButton("Align",mgr,cmdbox);
