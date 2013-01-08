@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project name="dist-osx" default="clean_app" basedir="../../">
+
+  <property name = "jarbundler.dir"   location = "${tools.dir}/jarbundler-2.2.0" />
+  <property name = "jarbundler.name"  value    = "jarbundler-2.2.0"  />
+
+  <!-- ================================================================================ -->
+  <taskdef name      = "jarbundler"
+           classname = "net.sourceforge.jarbundler.JarBundler"
+           classpath = "${jarbundler.dir}/${jarbundler.name}.jar" />
+  
+  <!-- ================================================================================ -->
+  <target name="link_app" >
+    <!-- Bundle the app! -->
+    <jarbundler dir              = "${dist.platform.dir}"
+                name             = "${ant.project.name}"
+                mainclass        = "makerscript.ScriptableMill"
+                bundleid         = "makerscript"
+                jvmversion       = "1.5+" >
+                <!--infostring       = ""
+                icon             = "" -->
+      
+      <javaproperty name="apple.laf.useScreenMenuBar" value="true"/>
+      <javaproperty name="apple.awt.brushMetal" value="true"/>
+      <javaproperty name="apple.awt.showGrowBox" value="false"/>
+      
+      <jarfileset      dir="${dist.platform.dir}" includes="*.jar" />
+      <jarfileset      dir="${dist.platform.dir}/libs" includes="*.jar" />
+      <jarfileset      dir="${dist.platform.dir}/libs" includes="*.jnilib" />
+      <resourcefileset dir="${dist.platform.dir}" includes="**/*.*" >
+        <exclude name="**/*.jar"/>
+        <exclude name="**/*.jnilib"/>
+      </resourcefileset>
+    </jarbundler>
+  </target>
+  
+  <!-- ================================================================================ -->
+  <target name="finish" depends="link_app">
+    <!-- Copy any needed runtime files 
+    <copy      todir  = "${dist.platform.dir}"  includeEmptyDirs = "false" >
+      <fileset dir    = "${res.appfiles.dir}"  />
+    </copy>-->
+
+    <!--
+    <mkdir dir = "${dist.platform.dir}/${ant.project.name}.app" />
+    <copy todir = "${dist.platform.dir}/${ant.project.name}.app">
+      <fileset dir = "${dist.dir}/${ant.project.name}.app" />
+    </copy>
+    <delete dir  = "${dist.dir}/${ant.project.name}.app"          failonerror = "false" />
+    -->
+    
+    <delete file = "${dist.platform.dir}/${ant.project.name}.jar" failonerror = "false" />
+    <delete dir  = "${dist.platform.dir}/libs"                    failonerror = "false" />
+    
+  </target>
+
+  
+</project>

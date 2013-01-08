@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project name="dist-win32" default="nsis" basedir="../../">
+
+<!--
+  <property name = "platform"           value    = "win32"                    />  
+  <property name = "lib.platform.dir"   location = "${lib.dir}/${platform}"   />
+  <property name = "dist.platform.dir"  location = "${dist.dir}/${platform}"  />
+-->
+
+  <!-- ================================================================================ -->
+  <taskdef name      = "launch4j"
+           classname = "net.sf.launch4j.ant.Launch4jTask"
+           classpath = "${launch4j.dir}/launch4j.jar:${launch4j.dir}/lib/xstream.jar" />
+  
+  <!-- ================================================================================ -->
+  <target name="launch4j" >
+    <launch4j>
+      <config headerType  = "gui"
+              outfile     = "${dist.platform.dir}/${ant.project.name}.exe"
+              dontWrapJar = "false"
+              jarPath     = "${dist.platform.dir}/${ant.project.name}.jar"
+              icon        = "${res.dir}/images/${ant.project.name}.ico"
+              supportUrl  = "http://www.makerscript.com"
+              downloadURL = "http://www.oracle.com/technetwork/java/javase/downloads/jre-6u25-download-346243.html"
+              chdir       = ".">
+              
+        <classPath mainClass="makerscript.ScriptableMill" >
+          <cp>libs/core.jar</cp>
+          <cp>libs/PeasyCam.jar</cp>
+          <cp>libs/opengl.jar</cp>
+          <cp>libs/jogl.jar</cp>
+          <cp>libs/gluegen-rt.jar</cp>
+          <cp>libs/mysql-connector-java-3.1.14-bin.jar</cp>
+          <cp>libs/postgresql-8.3-604.jdbc3.jar</cp>
+          <cp>libs/SQLibrary.jar</cp>
+          <cp>libs/sqlitejdbc-v053-pure.jar</cp>
+        </classPath>
+        
+        <splash file          ="${res.dir}/images/${ant.project.name}.bmp"
+                waitForWindow ="true" />
+        
+        <jre path            = "java"
+             minVersion      = "1.5.0"
+             jdkPreference   = "preferJre"
+             initialHeapSize = "256"
+             maxHeapSize     = "1024" />
+      </config>
+    </launch4j>
+  </target>
+  
+  <!-- ================================================================================ -->
+  <target name="clean_dist" depends="launch4j">
+    <!-- Copy any needed runtime files -->
+    <copy      todir  = "${dist.platform.dir}"  includeEmptyDirs = "false" >
+      <fileset dir    = "${res.appfiles.dir}"  />
+    </copy>
+    
+    <!-- Copy java runtime files -->
+    <unzip src="${res.java.dir}/java-${platform}.zip" dest="${dist.platform.dir}"/>
+    
+    <delete file        = "${dist.platform.dir}/${ant.project.name}.jar"
+            failonerror = "false" />
+  </target>
+  
+  <!-- ================================================================================ -->
+  <target name="finish" depends="clean_dist">
+    <exec executable="cmd">
+      <arg value="/c" />
+      <arg value="makensis" />
+      <arg value="res\scripts\makerscript_install_${platform}.nsi" />
+    </exec>
+    <!--<delete dir="${dist.platform.dir}" failonerror = "false" />-->
+  </target>
+  
+</project>
