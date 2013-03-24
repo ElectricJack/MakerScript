@@ -41,38 +41,23 @@ import makerscript.commands.CmdTarget;
 import makerscript.commands.CmdView;
 
 import com.fieldfx.math.Vector2;
-import com.fieldfx.ui.UIWindow;
-import com.fieldfx.ui.UIManager;
-import com.fieldfx.ui.UIButton;
 
 
-
-public class MakerScriptCommands extends ScriptInstance {
-  
+public class MakerScriptInterpretor extends ScriptInstance {
   Vector2 buttonPos = new Vector2(5,5);
   
-  private void addCommandButton( String name, UIManager mgr, UIWindow cmdbox ) {
-    //UIButton         cmdButton = mgr.getUIFactory().newButton();
-    //                 cmdButton.setPos( buttonPos );
-    //                 cmdButton.setSize( 150, 35 );
-    //                 cmdButton.setCaption( name );
-    //cmdbox.addChild( cmdButton );
-    
-    buttonPos.y += 40;
-  }
-  
   // ----------------------------------------------------------------- //
-  public MakerScriptCommands( ListDoc<String> codeState, UIManager mgr, UIWindow cmdbox ) {
-    super(codeState);
+  public MakerScriptInterpretor( ListDoc<String> code ) {
+    super(code);
     
-    new CmdAlign   ( compiler );   addCommandButton("Align",mgr,cmdbox);
+    new CmdAlign   ( compiler );   //addCommandButton("Align",mgr,cmdbox);
     //new CmdBridge  ( commands );
     
-    new CmdClean   ( compiler );   addCommandButton("Clean",mgr,cmdbox);
-    new CmdDrill   ( compiler );   addCommandButton("Drill",mgr,cmdbox);
-    new CmdExport  ( compiler );   addCommandButton("Export",mgr,cmdbox);
-    new CmdFlip    ( compiler );   addCommandButton("Flip",mgr,cmdbox);
-    new CmdLayer   ( compiler );   addCommandButton("Layer",mgr,cmdbox);
+    new CmdClean   ( compiler );   //addCommandButton("Clean",mgr,cmdbox);
+    new CmdDrill   ( compiler );   //addCommandButton("Drill",mgr,cmdbox);
+    new CmdExport  ( compiler );   //addCommandButton("Export",mgr,cmdbox);
+    new CmdFlip    ( compiler );   //addCommandButton("Flip",mgr,cmdbox);
+    new CmdLayer   ( compiler );   //addCommandButton("Layer",mgr,cmdbox);
     new CmdLoad    ( compiler );
     new CmdMill    ( compiler );
     new CmdMirror  ( compiler );

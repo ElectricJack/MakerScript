@@ -47,11 +47,11 @@
       <fileset dir = "${dist.dir}/${ant.project.name}.app" />
     </copy>
     <delete dir  = "${dist.dir}/${ant.project.name}.app"          failonerror = "false" />
-    -->
+    
     
     <delete file = "${dist.platform.dir}/${ant.project.name}.jar" failonerror = "false" />
     <delete dir  = "${dist.platform.dir}/libs"                    failonerror = "false" />
-    
+    -->
   </target>
 
   

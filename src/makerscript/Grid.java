@@ -5,46 +5,64 @@
 
 package makerscript;
 
+import com.fieldfx.math.Vector2;
+import processing.opengl.PGraphicsOpenGL;
+
 public class Grid {
-  private void setStyle_GridMinor() { g.strokeWeight(1); g.stroke(200); }
-  private void setStyle_GridMajor() { g.strokeWeight(2); g.stroke(150); }
+
+  Vector2 vMin = new Vector2();
+  Vector2 vMax = new Vector2(800,600);
+  float   step = 10;
 
   public Grid() {
-
   }
 
-  public void draw() {
-    float y0   = 0;
-    float y1   = 600;
-    float x0   = 0;
-    float x1   = 800;
-    float step = 10; 
+  public void draw(PGraphicsOpenGL g) {
     
-    int cols       = (int)((x1-x0) / step);
-    int rows       = (int)((y1-y0) / step);
+    int cols       = (int)((vMax.x-vMin.x) / step);
+    int rows       = (int)((vMax.y-vMin.y) / step);
     int majorCount = 10;
     
-    g.pushStyle();  
+    g.pushStyle();
       g.pushMatrix();
-        g.translate( 0,0,-stockSize.z );
-        setStyle_GridMinor();
-        for( int ix=0; ix<=cols; ++ix )
-          if( ix % majorCount != 0 ) {
-            float x = x0 + ix*step;
-            g.line( x, y0, x, y1 );
-          }
-      
-        for( int iy=0; iy<=rows; ++iy )
-          if( iy % majorCount != 0 ) {
-            float y = y0 + iy*step;
-            g.line( x0, y, x1, y );
-          }
         
-        setStyle_GridMajor();
-        for( int ix=0; ix<=cols; ix += majorCount ) { float x = x0 + ix*step;  g.line( x, y0, x, y1 ); }
-        for( int iy=0; iy<=rows; iy += majorCount ) { float y = y0 + iy*step;  g.line( x0, y, x1, y ); }
+        //@Todo handle this in a non-hacky way
+        //g.translate( 0,0,-stockSize.z );
+
+        setStyle_GridMinor(g);
+        for( int ix=0; ix<=cols; ++ix ) {
+          if( ix % majorCount != 0 ) {
+            float x = vMin.x + ix*step;
+            g.line( x, vMin.y, x, vMax.y );
+          }
+        }
+        for( int iy=0; iy<=rows; ++iy ) {
+          if( iy % majorCount != 0 ) {
+            float y = vMin.y + iy*step;
+            g.line( vMin.x, y, vMax.x, y );
+          }
+        }
+        
+        setStyle_GridMajor(g);
+        for( int ix=0; ix<=cols; ix += majorCount ) {
+          float x = vMin.x + ix*step;
+          g.line( x, vMin.y, x, vMax.y );
+        }
+        for( int iy=0; iy<=rows; iy += majorCount ) {
+          float y = vMin.y + iy*step;
+          g.line( vMin.x, y, vMax.x, y );
+        }
         
       g.popMatrix();
     g.popStyle();
   }
+  private void setStyle_GridMinor( PGraphicsOpenGL g ) {
+    g.strokeWeight(1);
+    g.stroke(200);
+  }
+  private void setStyle_GridMajor( PGraphicsOpenGL g ) {
+    g.strokeWeight(2);
+    g.stroke(150);
+  }
+
 }

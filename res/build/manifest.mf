@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 Sealed: false
-Class-Path: core.jar PeasyCam.jar opengl.jar jogl.jar gluegen-rt.jar
-Main-Class: makerscript.ScriptableMill
+Class-Path: libs/core.jar libs/PeasyCam.jar libs/opengl.jar libs/jogl.jar libs/gluegen-rt.jar libs/fieldfx.jar
+Main-Class: makerscript.MakerScript

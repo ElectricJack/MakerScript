@@ -47,52 +47,139 @@ public class MakerScriptState {
   public  GLU               glu;
   
   public  PApplet           app;
-  
+
   public  PeasyCam          cam;
   public  GfxFrustum        frustum;
   public  GfxViewMatrices   matrices;
-  
+
   public  float             nearPlane =    0.1f;
   public  float             farPlane  = 1000.0f;
-    
+
   public List<Selectable>   selected;
   public List<PolyLine>     cncToolPath;
   
   public List<Layer>        layers;
   public Layer              activeLayer;
+
+  public List<Grid>         grids;
   
   public Vector3            stockSize = new Vector3();
-    
-  public String             projectPath;
-  public String             commandsFilePath;
-  
-  Vector3    v0,v1,v2,v3;
-  Vector3    worldMouse;
+
+  // Selection variables
+  Vector3                   v0,v1,v2,v3;
+  Vector3                   worldMouse;
 
   
-  protected boolean gridVisible           = true;
-  protected boolean inactiveLayersVisible = true;
-  protected boolean targetsVisible        = true;
-  protected boolean toolPathsVisible      = true;
-  protected boolean stockVisible          = true;
-  
+  // Visibility
+  protected boolean         gridVisible           = true;
+  protected boolean         inactiveLayersVisible = true;
+  protected boolean         targetsVisible        = true;
+  protected boolean         toolPathsVisible      = true;
+  protected boolean         stockVisible          = true;
+
+
+  public String             projectPath;
+
   // ------------------------------------------------------------------------ //
   public MakerScriptState( MakerScript app ) {
     this.g        = (PGraphicsOpenGL)app.g;
     this.app      = app;
     this.frustum  = new GfxFrustum();
     this.matrices = new GfxViewMatrices();
+    this.cam      = new PeasyCam( app, 300.f );
     //g.hint(PApplet.ENABLE_OPENGL_4X_SMOOTH);
     reset();
-    
-    app.setState( this );
   }
+
   // ------------------------------------------------------------------------ //
   public void reset() {
     activeLayer    = null;
     layers         = new ArrayList<Layer>();
+    grids          = new ArrayList<Grid>();
     selected       = new ArrayList<Selectable>();
     cncToolPath    = new ArrayList<PolyLine>();
+  }
+
+  //------------------------------------------------------------------------ //
+  public void updateGL() {
+    gl  = g.beginGL();
+    glu = g.glu;
+    
+    GfxMath.updateMatrices         ( gl, matrices );
+    GfxMath.calculateFrustumPlanes ( frustum );
+    
+    //gl.glEnable                    ( GL.GL_CULL_FACE );
+    //gl.glDisable                   ( GL.GL_MULTISAMPLE );
+    
+    float[] plane = new float[] { 0.f, 0.f, 1.f, 0.f };
+    worldMouse = GfxMath.calculateIntersect( glu, matrices, app.mouseX, app.mouseY, app.width, app.height, plane );
+    
+    g.endGL();
+  }
+  
+  // ------------------------------------------------------------------------ //
+  public void draw () {
+    if( g == null ) return;
+
+    g.background  ( 255 );
+    g.noFill      ( );
+    g.smooth();
+    
+    
+    gl = g.beginGL();
+    gl.glEnable( GL.GL_DEPTH_TEST );
+    g.endGL();
+
+  
+    if( worldMouse != null ) {
+        g.stroke(0);
+        g.pushMatrix();
+          g.translate(worldMouse.x, worldMouse.y, worldMouse.z);
+          g.box(10);
+        g.popMatrix();    	
+    }
+
+    if( v0 != null && v1 != null && v2 != null && v3 != null ) {
+      g.beginShape();
+        g.vertex(v0.x,v0.y,v0.z);
+        g.vertex(v1.x,v1.y,v1.z);
+        g.vertex(v2.x,v2.y,v2.z);
+        g.vertex(v3.x,v3.y,v3.z);
+        g.vertex(v0.x,v0.y,v0.z);
+      g.endShape();
+    }
+    
+    drawGrids();
+
+    if( inactiveLayersVisible ) drawInactiveLayers();
+                                drawActiveLayer();
+    if( targetsVisible        ) drawTargets();
+    if( toolPathsVisible      ) drawToolPath();
+    if( stockVisible          ) drawStock();
+                                drawSelections();
+
+  }
+  
+  public void clearSelection() {
+    selected.clear();
+    v0 = v1 = v2 = v3 = null;
+  }
+  
+  public void drawGUI() {
+    
+  }
+
+  //------------------------------------------------------------------------ //
+  public void  select ( List< Selectable > selectables ) {
+    for( Selectable s : selectables ) {
+      select(s);     
+    }
+  }
+  //------------------------------------------------------------------------ //
+  public void select( Selectable selectable ) {
+    if( !selected.contains( selectable ) ) {
+      selected.add( selectable );
+    } 
   }
 
   //------------------------------------------------------------------------ //
@@ -140,124 +227,12 @@ public class MakerScriptState {
               break;
             }
           }
-          if( contained )
+          if( contained ) {
             selected.add( poly );
           }
         }
+      }
     }
-  }
-
-  // ------------------------------------------------------------------------ //
-  public boolean setProjectPath( String pathValue ) {
-    projectPath = "";
-    
-    // First clean the path of common problems
-    if( pathValue.contains("\\")                        ) pathValue = pathValue.replaceAll( "\\\\", "/" );
-    if( pathValue.charAt( pathValue.length()-1 ) != '/' ) pathValue += "/";  
-    if( pathValue.charAt( 0 ) != '/'                    ) pathValue = "/" + pathValue;  
-    pathValue = app.sketchPath( "projects" + pathValue + "commands.txt" );
-    if( pathValue.contains("\\")                        ) pathValue = pathValue.replaceAll( "\\\\", "/" );
-
-    // Check to see if the file exists, if it does we're done here.
-    commandsFilePath = pathValue;
-    File commandsFile = new File( commandsFilePath );
-    if( commandsFile.exists() ) {
-      projectPath = commandsFilePath.substring(0,commandsFilePath.lastIndexOf("/"));
-      return true;
-    }
-
-    // Otherwise check if the default commands file exists
-    commandsFilePath = app.sketchPath("commands.txt");
-    commandsFile     = new File( commandsFilePath );
-    if( commandsFile.exists() ) {
-      projectPath = commandsFilePath.substring(0,commandsFilePath.lastIndexOf("/"));
-      return true;
-    }
-      
-    // If not, then we can't continue; return false.
-    return false;
-  }
-  
-
-  
-  //------------------------------------------------------------------------ //
-  public void  select ( List< Selectable > selectables ) {
-    for( Selectable s : selectables ) {
-      select(s);     
-    }
-  }
-  //------------------------------------------------------------------------ //
-  public void select( Selectable selectable ) {
-    if( !selected.contains( selectable ) ) {
-      selected.add( selectable );
-    } 
-  }
-  //------------------------------------------------------------------------ //
-  public void updateGL() {
-    gl  = g.beginGL();
-    glu = g.glu;
-    
-    GfxMath.updateMatrices         ( gl, matrices );
-    GfxMath.calculateFrustumPlanes ( frustum );
-    
-    //gl.glEnable                    ( GL.GL_CULL_FACE );
-    //gl.glDisable                   ( GL.GL_MULTISAMPLE );
-    
-    float[] plane = new float[] {0.f,0.f,1.f,0.f};
-    worldMouse = GfxMath.calculateIntersect( glu, matrices, app.mouseX, app.mouseY, app.width, app.height, plane );
-    
-    g.endGL();
-  }
-  
-  // ------------------------------------------------------------------------ //
-  public void draw () {
-    if( g == null ) return;
-
-    g.background  ( 255 );
-    g.noFill      ( );
-    g.smooth();
-    
-    
-    gl = g.beginGL();
-    gl.glEnable( GL.GL_DEPTH_TEST );
-    g.endGL();
-
-  
-    if( worldMouse != null ) {
-        g.stroke(0);
-        g.pushMatrix();
-          g.translate(worldMouse.x, worldMouse.y, worldMouse.z);
-          g.box(10);
-        g.popMatrix();    	
-    }
-
-    if( v0 != null && v1 != null && v2 != null && v3 != null ) {
-      g.beginShape();
-        g.vertex(v0.x,v0.y,v0.z);
-        g.vertex(v1.x,v1.y,v1.z);
-        g.vertex(v2.x,v2.y,v2.z);
-        g.vertex(v3.x,v3.y,v3.z);
-        g.vertex(v0.x,v0.y,v0.z);
-      g.endShape();
-    }
-    
-    if( gridVisible           ) drawGrid();
-    if( inactiveLayersVisible ) drawInactiveLayers();
-                                drawActiveLayer();
-    if( targetsVisible        ) drawTargets();
-    if( toolPathsVisible      ) drawToolPath();
-    if( stockVisible          ) drawStock();
-                                drawSelections();
-
-  }
-  
-  public void clearSelection() {
-    selected.clear();
-    v0 = v1 = v2 = v3 = null;
-  }
-  
-  public void drawGUI() {
-    
   }
   
   //------------------------------------------------------------------------ //
@@ -323,8 +298,7 @@ public class MakerScriptState {
     float s2 = (float)Math.sqrt(1.f) / 2.f;
       
     setStyle_Targets();
-    for( Vector3 target : activeLayer.targets )
-    {
+    for( Vector3 target : activeLayer.targets ) {
       g.pushMatrix();
         g.translate(target.x, target.y, target.z);
         
@@ -345,11 +319,11 @@ public class MakerScriptState {
   // ------------------------------------------------------------------------ //
   protected void drawToolPath() {
     //System.out.println( cncToolPath.size() );
-    for( PolyLine l : cncToolPath ) {
+    for( PolyLine polyline : cncToolPath ) {
       setStyle_ToolPath();
       g.noFill();
       g.beginShape();
-        for( Vector3 v : l.getVerts() ) {
+        for( Vector3 v : polyline.getVerts() ) {
           g.vertex( v.x, v.y, v.z ); 
         }
       g.endShape();
@@ -357,7 +331,9 @@ public class MakerScriptState {
   }
 
   // ------------------------------------------------------------------------ //
-  protected void drawGrid() {
-
+  protected void drawGrids() {
+    for( Grid grid : grids ) {
+      grid.draw(g);
+    }
   }
 }

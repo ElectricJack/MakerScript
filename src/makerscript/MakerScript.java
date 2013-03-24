@@ -14,17 +14,20 @@ import java.util.List;
 
 import com.fieldfx.math.Vector2;
 import com.fieldfx.util.Selectable;
-import com.fieldfx.doc.ListDoc;
+
 
 import com.fieldfx.ui.UIManager;
 import com.fieldfx.ui.UIButton;
 import com.fieldfx.ui.UIWindow;
 //import com.fieldfx.gfx.GfxMath;
+import com.fieldfx.doc.StringDoc;
 
 import processing.core.*;
 import processing.opengl.PGraphicsOpenGL;
 import peasy.CameraState;
 import peasy.PeasyCam;
+
+
 
 
 public class MakerScript extends PApplet {
@@ -35,22 +38,28 @@ public class MakerScript extends PApplet {
   public  static final int        LOOP_EDIT_MODE    = 0x03;
   public  static final int        FACE_EDIT_MODE    = 0x04;
   public  static final int        SOLID_EDIT_MODE   = 0x05;
-   
-  private MakerScriptState        state;
-  private MakerScriptCommands     processor;
-  
-  private ListDoc<String>         codeState;
-  private boolean                 shouldRebuild = false;
 
-  private UIManager  mgr    = null;
-  private UIWindow   cmdbox = null;
   
+
+  private MakerScriptState        state;
+  private MakerScriptInterpretor  processor;
+  private boolean                 shouldRebuild = false;
+  private StringDoc               code          = null;
+
+  
+  private String                  commandsFilePath;
+
+
+
+  public StringDoc getCode() {
+    return code;
+  }
+
+  // ---------------------------------------------------------------- //
   public static void main(String args[]) {
     PApplet.main(new String[] { "makerscript.MakerScript" });
   }
-  
-  // ---------------------------------------------------------------- //
-  public void setState( MakerScriptState state ) { this.state = state; }
+
   // ---------------------------------------------------------------- //
   public void setup () {
     size( screen.width-100, screen.height-100, PGraphicsOpenGL.OPENGL );
@@ -58,31 +67,18 @@ public class MakerScript extends PApplet {
     frame.setResizable(true);
     frame.setTitle("MakerScript");
 
+    code          = new StringDoc();
     state         = new MakerScriptState( this );
-    state.cam     = new PeasyCam( this, 300.f );
-    shouldRebuild = true;
-    codeState     = new ListDoc<String>();
-    
-    mgr     = new UIManager(this);
-    //mgr.getView().disableZoom();
-    //mgr.getView().disableDrag();
-    
-    //cmdbox = mgr.getUIFactory().newWindow();
-    //cmdbox.setSize(200,400);
-    //cmdbox.setCaption("ToolBox");
-    //cmdbox.enableShadow( false );
-    
-    processor     = new MakerScriptCommands( codeState, mgr, cmdbox );
+    processor     = new MakerScriptInterpretor( code );
+    shouldRebuild = false;
 
     frameRate( 120 );
 
-    
-    
-    
+    /*
     if( initProject() ) {
       compile();
       execute();
-    }
+    }*/
     
     state.cam.setActive(false);
   }
@@ -91,25 +87,20 @@ public class MakerScript extends PApplet {
   public void draw () {
       
     //For one reason or another, calling perspective breaks screen ray / world mouse pos generation.
-    perspective( PI/3.0f, (float)width / (float)height, state.nearPlane, state.farPlane );
-    
-    //if( frameCount % 120 == 0 )
-      //shouldRebuild = true;
+    perspective( PI/3.0f, (float)width/(float)height, state.nearPlane, state.farPlane );
     
     state.cam.setMinimumDistance(state.nearPlane);
     state.cam.setMaximumDistance(state.farPlane);
     state.cam.feed();
     state.updateGL();
-    
+
     if( state != null ) {
       rebuild();
       state.draw();
-    }    
+    }
     
     state.cam.beginHUD();
       state.drawGUI();
-      //mgr.draw();
-
     state.cam.endHUD();
   }
 
@@ -127,7 +118,7 @@ public class MakerScript extends PApplet {
       camera();
       execute();
     endCamera();
-    
+
     state.cam.setState( cs );
 
     shouldRebuild = false;
@@ -136,18 +127,8 @@ public class MakerScript extends PApplet {
   
   // ------------------------------------------------------------------------ //
   private void compile() {
-    
-    codeState.clear();
-    String[] codeLines = loadStrings( state.commandsFilePath );
-    System.out.println( "Command path: " + state.commandsFilePath );
-    //System.out.println( "code: " );
-    //for( String line : codeLines )
-      //System.out.println( line );
-    
-    for( String line : codeLines ) {
-      codeState.add( line );
-    }
-    
+    code.clear();
+    code.load(commandsFilePath);
     processor.compile();
   }
   
@@ -156,33 +137,7 @@ public class MakerScript extends PApplet {
     state.reset();
     processor.run( state );
   }
-  
-  // ------------------------------------------------------------------------ //
-  private boolean initProject()
-  {
-    String[] setupFile = loadStrings("setup.txt");
-    
-    boolean result = true;
-    for( String line : setupFile ) {
-      if( line != null && line.length() > 0 ) {
-        
-        String[] initTokens = line.split(":");
-        
-        if( initTokens.length == 2 ) {
-          
-          String variable = initTokens[0].trim();
-          String value    = initTokens[1].trim();
-          
-          if      ( variable.equals( "project" ) ) result = result && state.setProjectPath( value );
-          //else if ( variable.equals( "" ) )
-          
-          if( !result ) break;
-        }
-      }
-    }
 
-    return result;
-  }
   
   // ------------------------------------------------------------------------ //
   public void mousePressed() {
@@ -200,7 +155,6 @@ public class MakerScript extends PApplet {
       float miny = min( beginDrag.y, endDrag.y );
       float maxy = max( beginDrag.y, endDrag.y );
       state.selectRegion( minx, miny, maxx, maxy );
-      
       
       java.util.PriorityQueue<Integer> selected_paths = new java.util.PriorityQueue<Integer>();
       for( Selectable sel : state.selected ) {
@@ -224,14 +178,15 @@ public class MakerScript extends PApplet {
   		  saveStrings( "selection.txt", (String[])select_lines.toArray( new String[select_lines.size()]) );
       }
       
-      
-      
       state.clearSelection();
+
       shouldRebuild = true;
-      beginDrag = null;
+      beginDrag     = null;
     }
   }
-  public void mouseMoved()    {}
+  public void mouseMoved() {
+
+  }
   public void mouseDragged()  { 
 	if( keyPressed && keyCode == SHIFT && beginDrag != null ) {
 	  
